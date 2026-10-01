@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import { CountUp, TiltCard } from "@/components/Interactive";
+import { Logo } from "@/components/Logo";
 import {
   type Finding,
   byService,
@@ -19,28 +20,17 @@ type Tab = "overview" | "findings" | "connect" | "alerts" | "audit";
 type AuditEntry = { time: string; actor: string; event: string };
 
 const tabs: { id: Tab; label: string }[] = [
-  { id: "overview", label: "نظرة عامة" },
-  { id: "findings", label: "التوصيات" },
-  { id: "connect", label: "ربط السحابة" },
-  { id: "alerts", label: "التنبيهات" },
-  { id: "audit", label: "سجل التدقيق" },
+  { id: "overview", label: "Overview" },
+  { id: "findings", label: "Recommendations" },
+  { id: "connect", label: "Cloud accounts" },
+  { id: "alerts", label: "Alerts" },
+  { id: "audit", label: "Audit log" },
 ];
 
-// The scoped, temporary permission each remediation would request.
-const scopedPermission: Record<string, string> = {
-  "dev-schedule": "ec2:StopInstances, ec2:StartInstances على 8 سيرفرات env=dev",
-  "rds-rightsize": "rds:ModifyDBInstance, rds:CreateDBSnapshot على orders-db",
-  "idle-ec2": "ec2:StopInstances على staging-api-old",
-  "old-snapshots": "ec2:ModifySnapshotTier على 41 snapshot",
-  "gp2-gp3": "ec2:ModifyVolume على 23 قرص",
-  "orphan-ebs": "ec2:CreateSnapshot, ec2:DeleteVolume على 6 أقراص",
-  "unused-eip": "ec2:ReleaseAddress على 3 عناوين",
-};
-
 const initialAudit: AuditEntry[] = [
-  { time: "09:12", actor: "CloudTrim Agent", event: "اكتمل الفحص: 342 مورد، 7 فرص توفير" },
-  { time: "09:12", actor: "CloudTrim Agent", event: "أُرسل تنبيه WhatsApp إلى م. سارة (المسؤولة التقنية)" },
-  { time: "08:00", actor: "النظام", event: "تحقق من صلاحية الربط: قراءة فقط ✓" },
+  { time: "09:12", actor: "CloudTrim Agent", event: "Scan complete: 342 resources, 7 savings found" },
+  { time: "09:12", actor: "CloudTrim Agent", event: "WhatsApp alert sent to Sara (engineering lead)" },
+  { time: "08:00", actor: "System", event: "Connection verified: read-only ✓" },
 ];
 
 function now() {
@@ -57,7 +47,7 @@ export default function Demo() {
 
   const realized = findings.filter((f) => done.has(f.id)).reduce((s, f) => s + f.monthlySavings, 0);
 
-  function log(event: string, actor = "م. سارة") {
+  function log(event: string, actor = "Sara") {
     setAudit((a) => [{ time: now(), actor, event }, ...a]);
   }
 
@@ -66,54 +56,53 @@ export default function Demo() {
     setTimeout(() => setToast(null), 3500);
   }
 
-  function complete(f: Finding) {
-    setDone((d) => new Set(d).add(f.id));
-    flash(`تم التنفيذ: توفير ${sar(f.monthlySavings)} شهرياً`);
-  }
-
   return (
     <div className="min-h-screen">
-      <header className="bg-navy text-white">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="font-bold" dir="ltr">CloudTrim</Link>
-            <span className="rounded-full bg-white/10 px-2.5 py-0.5 text-xs text-white/80">عرض تجريبي</span>
+      <header className="sticky top-0 z-30 border-b border-line bg-bg/80 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 pt-3 md:px-6">
+          <div className="flex items-center gap-3">
+            <Logo />
+            <span className="rounded-full border border-amber/40 bg-amber-soft px-2.5 py-0.5 text-xs text-amber">Demo data</span>
           </div>
           <div className="flex items-center gap-3 text-sm">
-            <span className="hidden text-white/70 sm:inline">{company.name}</span>
-            <button
-              onClick={() => setConsultOpen(true)}
-              className="rounded-lg border border-white/25 px-3 py-1.5 hover:bg-white/10"
-            >
-              اطلب مهندس FinOps
+            <span className="hidden text-muted sm:inline">{company.name}</span>
+            <button onClick={() => setConsultOpen(true)} className="rounded-full border border-line px-3.5 py-1.5 hover:bg-card">
+              Talk to a FinOps engineer
             </button>
           </div>
         </div>
-        <nav className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4">
+        <nav className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 md:px-6">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`whitespace-nowrap border-b-2 px-3 py-2.5 text-sm ${
-                tab === t.id ? "border-[#5fd3b0] text-white" : "border-transparent text-white/60 hover:text-white"
+              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm transition-colors ${
+                tab === t.id ? "border-brand text-ink" : "border-transparent text-muted hover:text-ink-2"
               }`}
             >
               {t.label}
               {t.id === "findings" && (
-                <span className="num mr-1.5 rounded-full bg-white/15 px-1.5 text-xs">{findings.length - done.size}</span>
+                <span className="num ml-1.5 rounded-full bg-brand-soft px-1.5 text-xs text-brand">{findings.length - done.size}</span>
               )}
             </button>
           ))}
         </nav>
       </header>
 
-      <main className="mx-auto max-w-6xl px-4 py-8">
+      <main className="mx-auto max-w-7xl px-4 py-8 md:px-6">
         {tab === "overview" && <Overview realized={realized} goFindings={() => setTab("findings")} />}
         {tab === "findings" && (
-          <Findings done={done} onApprove={(f) => setApproving(f)} onExplain={(f) => log(`طلب شرح AI: ${f.title}`)} />
+          <Findings done={done} onApprove={(f) => setApproving(f)} onExplain={(f) => log(`Asked AI to explain: ${f.title}`)} />
         )}
         {tab === "connect" && <Connect />}
-        {tab === "alerts" && <Alerts onSent={(m) => { log(m, "CloudTrim Agent"); flash(m); }} />}
+        {tab === "alerts" && (
+          <Alerts
+            onSent={(m) => {
+              log(m, "CloudTrim Agent");
+              flash(m);
+            }}
+          />
+        )}
         {tab === "audit" && <Audit entries={audit} />}
       </main>
 
@@ -121,8 +110,11 @@ export default function Demo() {
         <ApproveModal
           finding={approving}
           onClose={() => setApproving(null)}
-          onStep={(e) => log(e, e.startsWith("وافق") ? "م. سارة" : "CloudTrim Agent")}
-          onDone={() => complete(approving)}
+          onStep={(e, actor) => log(e, actor)}
+          onDone={() => {
+            setDone((d) => new Set(d).add(approving.id));
+            flash(`Done: saving ${sar(approving.monthlySavings)} per month`);
+          }}
         />
       )}
       {consultOpen && (
@@ -130,13 +122,14 @@ export default function Demo() {
           onClose={() => setConsultOpen(false)}
           onSubmit={() => {
             setConsultOpen(false);
-            log("طلب استشارة مهندس FinOps");
-            flash("تم إرسال طلبك، وسيتواصل معك مهندس FinOps خلال يوم عمل");
+            log("Requested a FinOps engineer");
+            flash("Request sent. A FinOps engineer will reach out within one business day.");
           }}
         />
       )}
       {toast && (
-        <div className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-lg bg-navy px-4 py-3 text-sm text-white shadow-xl">
+        <div className="rise fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-brand/40 bg-card px-5 py-3 text-sm shadow-2xl">
+          <span className="mr-2 text-brand">✓</span>
           {toast}
         </div>
       )}
@@ -151,24 +144,28 @@ function Overview({ realized, goFindings }: { realized: number; goFindings: () =
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Kpi label="فاتورة الشهر الحالي" value={sar(company.monthlySpend)} sub="+7.3% عن الشهر السابق" />
-        <Kpi label="هدر مكتشف شهرياً" value={sar(totalSavings)} sub={`${Math.round((totalSavings / company.monthlySpend) * 100)}% من الفاتورة`} />
-        <Kpi label="توفير محقق" value={sar(realized)} sub="بعد موافقتك" accent />
-        <Kpi label="توقع الشهر القادم" value={sar(forecast)} sub="إن لم يتغير شيء" />
+        <Kpi label="This month's bill" value={company.monthlySpend} sub="+7.3% vs last month" />
+        <Kpi label="Waste found / month" value={totalSavings} sub={`${Math.round((totalSavings / company.monthlySpend) * 100)}% of the bill`} amber />
+        <Kpi label="Savings realized" value={realized} sub="After your approval" accent />
+        <Kpi label="Next month forecast" value={forecast} sub="If nothing changes" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-5">
-        <Card className="lg:col-span-3" title="الإنفاق الشهري (ر.س)">
+        <Card className="lg:col-span-3" title="Monthly spend (SAR)">
           <TrendChart />
         </Card>
-        <Card className="lg:col-span-2" title="التوزيع حسب الخدمة - سبتمبر">
+        <Card className="lg:col-span-2" title="Spend by service · September">
           <ServiceBars />
         </Card>
       </div>
 
       <Card
-        title="أعلى فرص التوفير"
-        action={<button onClick={goFindings} className="text-sm font-semibold text-brand hover:underline">عرض الكل</button>}
+        title="Top savings"
+        action={
+          <button onClick={goFindings} className="text-sm font-medium text-brand hover:underline">
+            View all
+          </button>
+        }
       >
         <ul className="divide-y divide-line">
           {findings.slice(0, 4).map((f) => (
@@ -177,14 +174,14 @@ function Overview({ realized, goFindings }: { realized: number; goFindings: () =
                 <p className="font-medium">{f.title}</p>
                 <p className="text-sm text-muted">{f.resource}</p>
               </div>
-              <span className="num shrink-0 font-semibold text-good">{sar(f.monthlySavings)}</span>
+              <span className="num shrink-0 font-semibold text-brand">{sar(f.monthlySavings)}</span>
             </li>
           ))}
         </ul>
       </Card>
 
       <p className="text-center text-xs text-muted">
-        آخر فحص {company.lastScan} · <span className="num">{company.resourcesScanned}</span> مورد · المنطقة{" "}
+        Last scan {company.lastScan} · <span className="num">{company.resourcesScanned}</span> resources · region{" "}
         <span className="num">{company.region}</span>
       </p>
     </div>
@@ -195,43 +192,42 @@ function TrendChart() {
   const [hover, setHover] = useState<number | null>(null);
   const max = 100000;
   const W = 560;
-  const H = 220;
-  const pad = { top: 16, bottom: 28, side: 8, axis: 36 };
-  const slot = (W - pad.side - pad.axis) / monthlyTrend.length;
-  const barW = Math.min(44, slot * 0.55);
+  const H = 230;
+  const pad = { top: 16, bottom: 28, left: 40, right: 8 };
+  const slot = (W - pad.left - pad.right) / monthlyTrend.length;
+  const barW = Math.min(46, slot * 0.58);
   const y = (v: number) => pad.top + (H - pad.top - pad.bottom) * (1 - v / max);
 
   return (
     <div className="relative">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="الإنفاق الشهري لآخر ستة أشهر مع توقع أكتوبر">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Monthly spend for the last six months with October forecast">
         <defs>
           <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="6" height="6" fill="#e3f4ef" />
-            <line x1="0" y1="0" x2="0" y2="6" stroke="#0f8a6d" strokeWidth="2" />
+            <rect width="6" height="6" fill="#2fd39a1f" />
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#2fd39a" strokeWidth="2" />
           </pattern>
         </defs>
         {[0, 25000, 50000, 75000, 100000].map((g) => (
           <g key={g}>
-            <line x1={pad.side} x2={W - pad.side} y1={y(g)} y2={y(g)} stroke="#e2e8ef" strokeWidth="1" />
-            <text x={W - pad.side} y={y(g) - 4} fontSize="10" fill="#6b7a8a" textAnchor="end" direction="ltr">
+            <line x1={pad.left} x2={W - pad.right} y1={y(g)} y2={y(g)} stroke="#2a2a24" strokeWidth="1" />
+            <text x={pad.left - 8} y={y(g) + 3} fontSize="10" fill="#8a8678" textAnchor="end">
               {g === 0 ? "0" : `${g / 1000}k`}
             </text>
           </g>
         ))}
-        {/* RTL: first month on the right */}
         {monthlyTrend.map((m, i) => {
-          const cx = W - pad.axis - slot * (i + 0.5);
+          const cx = pad.left + slot * (i + 0.5);
           const top = y(m.value);
-          const h = y(0) - top;
           return (
             <g key={m.month} onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)}>
               <rect x={cx - slot / 2} y={pad.top} width={slot} height={H - pad.top - pad.bottom} fill="transparent" />
               <path
                 d={`M${cx - barW / 2},${y(0)} V${top + 4} q0,-4 4,-4 H${cx + barW / 2 - 4} q4,0 4,4 V${y(0)} Z`}
-                fill={m.forecast ? "url(#hatch)" : "#0f8a6d"}
-                opacity={hover === null || hover === i ? 1 : 0.55}
+                fill={m.forecast ? "url(#hatch)" : "#2fd39a"}
+                opacity={hover === null || hover === i ? 1 : 0.45}
+                style={{ transition: "opacity .2s" }}
               />
-              <text x={cx} y={H - 10} fontSize="11" fill="#3c4d5f" textAnchor="middle">
+              <text x={cx} y={H - 10} fontSize="11" fill="#c9c5b8" textAnchor="middle">
                 {m.month}
               </text>
             </g>
@@ -239,14 +235,17 @@ function TrendChart() {
         })}
       </svg>
       {hover !== null && (
-        <div className="pointer-events-none absolute top-2 left-2 rounded-lg border border-line bg-card px-3 py-2 text-sm shadow">
-          <p className="text-muted">{monthlyTrend[hover].month}{monthlyTrend[hover].forecast ? " (توقع)" : ""}</p>
+        <div className="pointer-events-none absolute top-2 right-2 rounded-xl border border-line bg-bg-2 px-3 py-2 text-sm shadow-xl">
+          <p className="text-muted">
+            {monthlyTrend[hover].month}
+            {monthlyTrend[hover].forecast ? " (forecast)" : ""}
+          </p>
           <p className="num font-semibold">{sar(monthlyTrend[hover].value)}</p>
         </div>
       )}
       <p className="mt-2 flex items-center gap-2 text-xs text-muted">
-        <span className="inline-block h-3 w-3 rounded-sm" style={{ background: "repeating-linear-gradient(45deg,#0f8a6d 0 2px,#e3f4ef 2px 5px)" }} />
-        أكتوبر توقع من الوكيل الذكي
+        <span className="inline-block h-3 w-3 rounded-sm" style={{ background: "repeating-linear-gradient(45deg,#2fd39a 0 2px,#2fd39a1f 2px 5px)" }} />
+        October is the AI agent&apos;s forecast
       </p>
     </div>
   );
@@ -255,14 +254,14 @@ function TrendChart() {
 function ServiceBars() {
   const max = Math.max(...byService.map((s) => s.value));
   return (
-    <ul className="space-y-3">
+    <ul className="space-y-3.5">
       {byService.map((s) => (
         <li key={s.name} title={sar(s.value)}>
           <div className="flex justify-between text-sm">
-            <span>{s.name}</span>
-            <span className="num text-ink-2">{sar(s.value)}</span>
+            <span className="text-ink-2">{s.name}</span>
+            <span className="num">{sar(s.value)}</span>
           </div>
-          <div className="mt-1 h-2 rounded-full bg-surface">
+          <div className="mt-1.5 h-2 rounded-full bg-bg-2">
             <div className="h-2 rounded-full bg-brand" style={{ width: `${(s.value / max) * 100}%` }} />
           </div>
         </li>
@@ -273,24 +272,16 @@ function ServiceBars() {
 
 /* ---------- Findings ---------- */
 
-function Findings({
-  done,
-  onApprove,
-  onExplain,
-}: {
-  done: Set<string>;
-  onApprove: (f: Finding) => void;
-  onExplain: (f: Finding) => void;
-}) {
+function Findings({ done, onApprove, onExplain }: { done: Set<string>; onApprove: (f: Finding) => void; onExplain: (f: Finding) => void }) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-bold">توصيات الوكيل الذكي</h1>
-          <p className="mt-1 text-sm text-muted">لا يُنفّذ أي إجراء إلا بموافقتك. الربط الحالي قراءة فقط.</p>
+          <h1 className="font-display text-3xl font-semibold">AI recommendations</h1>
+          <p className="mt-1 text-sm text-muted">Nothing runs without your approval. The connection is read-only.</p>
         </div>
-        <p className="text-sm">
-          إجمالي التوفير الممكن: <span className="num font-bold text-good">{sar(totalSavings)}</span> شهرياً
+        <p className="text-sm text-ink-2">
+          Total potential: <span className="num font-semibold text-brand">{sar(totalSavings)}</span> / month
         </p>
       </div>
       {findings.map((f) => (
@@ -319,49 +310,45 @@ function FindingCard({ f, done, onApprove, onExplain }: { f: Finding; done: bool
   }
 
   return (
-    <article className={`rounded-xl border bg-card p-5 ${done ? "border-good/40" : "border-line"}`}>
+    <article className={`rounded-2xl border bg-card p-5 transition-colors ${done ? "border-brand/50" : "border-line hover:border-[#3a3a33]"}`}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="rounded-full bg-surface px-2 py-0.5 text-ink-2">{f.category}</span>
+            <span className="rounded-full border border-line px-2 py-0.5 text-ink-2">{f.category}</span>
             <RiskBadge risk={f.risk} />
           </div>
-          <h3 className="mt-2 text-lg font-semibold">{f.title}</h3>
-          <p className="mt-1 text-sm text-ink-2">{f.resource}</p>
+          <h3 className="mt-2.5 text-lg font-semibold">{f.title}</h3>
+          <p className="mt-1 font-mono text-sm text-ink-2">{f.resource}</p>
           <p className="mt-1 text-sm text-muted">{f.detail}</p>
         </div>
-        <div className="text-left">
-          <p className="text-xs text-muted">توفير شهري</p>
-          <p className="num text-2xl font-bold text-good">{sar(f.monthlySavings)}</p>
+        <div className="text-right">
+          <p className="text-xs text-muted">Monthly saving</p>
+          <p className="num font-display text-2xl font-semibold text-brand">{sar(f.monthlySavings)}</p>
         </div>
       </div>
 
-      <div className="mt-4 rounded-lg bg-surface p-3 text-sm">
-        <span className="font-semibold">الإجراء المقترح: </span>
-        {f.action}
+      <div className="mt-4 rounded-xl bg-bg-2 p-3 text-sm">
+        <span className="font-medium">Proposed action: </span>
+        <span className="text-ink-2">{f.action}</span>
       </div>
 
       {explanation && (
-        <div className="mt-3 rounded-lg border border-brand/30 bg-brand-soft p-3 text-sm leading-7">
-          <p className="mb-1 text-xs font-semibold text-brand-2">
-            شرح الوكيل الذكي {explanation.source === "live" ? "(مباشر)" : ""}
-          </p>
+        <div className="rise mt-3 rounded-xl border border-brand/30 bg-brand-soft p-4 text-sm leading-6">
+          <p className="mb-1 text-xs font-semibold text-brand">AI agent explanation {explanation.source === "live" ? "· live" : ""}</p>
           {explanation.text}
         </div>
       )}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {done ? (
-          <span className="flex items-center gap-1.5 rounded-lg bg-good/10 px-3 py-2 text-sm font-semibold text-good">
-            ✓ تم التنفيذ
-          </span>
+          <span className="rounded-full bg-brand-soft px-4 py-2 text-sm font-semibold text-brand">✓ Applied</span>
         ) : (
-          <button onClick={onApprove} className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-2">
-            راجع ووافق
+          <button onClick={onApprove} className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-bg hover:bg-brand-2">
+            Review & approve
           </button>
         )}
-        <button onClick={explain} className="rounded-lg border border-line px-4 py-2 text-sm hover:bg-surface">
-          {loading ? "جارٍ التحليل..." : explanation ? "إخفاء الشرح" : "لماذا؟ اشرح لي"}
+        <button onClick={explain} className="rounded-full border border-line px-4 py-2 text-sm hover:bg-card-2">
+          {loading ? "Analyzing..." : explanation ? "Hide explanation" : "Why? Explain"}
         </button>
       </div>
     </article>
@@ -369,7 +356,7 @@ function FindingCard({ f, done, onApprove, onExplain }: { f: Finding; done: bool
 }
 
 function RiskBadge({ risk }: { risk: Finding["risk"] }) {
-  const cls = { low: "bg-good/10 text-good", medium: "bg-warn/10 text-warn", high: "bg-bad/10 text-bad" }[risk];
+  const cls = { low: "bg-brand-soft text-brand", medium: "bg-amber-soft text-amber", high: "bg-bad/15 text-bad" }[risk];
   const icon = { low: "●", medium: "▲", high: "■" }[risk];
   return (
     <span className={`rounded-full px-2 py-0.5 ${cls}`}>
@@ -380,12 +367,7 @@ function RiskBadge({ risk }: { risk: Finding["risk"] }) {
 
 /* ---------- Approval ---------- */
 
-const execSteps = [
-  "إنشاء صلاحية مؤقتة محدودة (15 دقيقة)",
-  "تنفيذ إجراءات الحماية",
-  "تنفيذ الإجراء",
-  "سحب الصلاحية المؤقتة والتحقق",
-];
+const execSteps = ["Grant scoped temporary permission (15 min)", "Apply safeguards", "Execute the action", "Revoke permission and verify"];
 
 function ApproveModal({
   finding,
@@ -395,18 +377,18 @@ function ApproveModal({
 }: {
   finding: Finding;
   onClose: () => void;
-  onStep: (e: string) => void;
+  onStep: (e: string, actor: string) => void;
   onDone: () => void;
 }) {
   const [confirmed, setConfirmed] = useState(false);
-  const [step, setStep] = useState(-1); // -1 = not started, execSteps.length = finished
+  const [step, setStep] = useState(-1);
 
   async function run() {
-    onStep(`وافق على: ${finding.title}`);
+    onStep(`Approved: ${finding.title}`, "Sara");
     for (let i = 0; i < execSteps.length; i++) {
       setStep(i);
       await new Promise((r) => setTimeout(r, 900));
-      onStep(`${execSteps[i]} - ${finding.title}`);
+      onStep(`${execSteps[i]} · ${finding.title}`, "CloudTrim Agent");
     }
     setStep(execSteps.length);
     onDone();
@@ -417,65 +399,73 @@ function ApproveModal({
 
   return (
     <Modal onClose={running ? undefined : onClose}>
-      <h2 className="text-xl font-bold">مراجعة قبل التنفيذ</h2>
+      <h2 className="font-display text-2xl font-semibold">Review before applying</h2>
       <p className="mt-1 text-sm text-muted">{finding.title}</p>
 
       {step === -1 && (
         <>
           <dl className="mt-5 space-y-3 text-sm">
-            <Row k="المورد" v={<span>{finding.resource}</span>} />
-            <Row k="الإجراء" v={finding.action} />
-            <Row k="التوفير الشهري" v={<span className="num font-semibold text-good">{sar(finding.monthlySavings)}</span>} />
+            <Row k="Resource" v={<span className="font-mono">{finding.resource}</span>} />
+            <Row k="Action" v={finding.action} />
+            <Row k="Monthly saving" v={<span className="num font-semibold text-brand">{sar(finding.monthlySavings)}</span>} />
           </dl>
-          <div className="mt-5 rounded-lg border border-warn/30 bg-warn/5 p-3 text-sm">
-            <p className="font-semibold">صلاحية مؤقتة مطلوبة</p>
-            <p className="mt-1 text-ink-2">{scopedPermission[finding.id]}</p>
-            <p className="mt-1 text-xs text-muted">تنتهي تلقائياً بعد 15 دقيقة، ويعود الربط إلى قراءة فقط.</p>
+          <div className="mt-5 rounded-xl border border-amber/40 bg-amber-soft p-4 text-sm">
+            <p className="font-semibold text-amber">Temporary permission required</p>
+            <p className="mt-1 font-mono text-xs text-ink-2">{finding.permission}</p>
+            <p className="mt-2 text-xs text-muted">Expires automatically after 15 minutes, then the connection returns to read-only.</p>
           </div>
           <ul className="mt-4 space-y-1.5 text-sm">
             {finding.safeguards.map((s) => (
-              <li key={s} className="flex gap-2"><span className="text-good">✓</span>{s}</li>
+              <li key={s} className="flex gap-2">
+                <span className="text-brand">✓</span>
+                {s}
+              </li>
             ))}
           </ul>
-          <label className="mt-5 flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="h-4 w-4 accent-[#0f8a6d]" />
-            راجعت الإجراء وأوافق على تنفيذه
+          <label className="mt-5 flex items-center gap-2.5 text-sm">
+            <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="h-4 w-4 accent-[#2fd39a]" />
+            I reviewed this action and approve it
           </label>
           <div className="mt-6 flex gap-2">
             <button
               disabled={!confirmed}
               onClick={run}
-              className="rounded-lg bg-brand px-5 py-2.5 font-semibold text-white enabled:hover:bg-brand-2 disabled:opacity-40"
+              className="rounded-full bg-brand px-5 py-2.5 font-semibold text-bg enabled:hover:bg-brand-2 disabled:opacity-40"
             >
-              وافق ونفّذ
+              Approve & apply
             </button>
-            <button onClick={onClose} className="rounded-lg border border-line px-5 py-2.5 hover:bg-surface">إلغاء</button>
+            <button onClick={onClose} className="rounded-full border border-line px-5 py-2.5 hover:bg-card-2">
+              Cancel
+            </button>
           </div>
         </>
       )}
 
       {step >= 0 && (
         <>
-          <ol className="mt-6 space-y-3">
-            {execSteps.map((s, i) => (
-              <li key={s} className="flex items-center gap-3 text-sm">
-                <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full text-xs ${
-                    i < step || finished ? "bg-good text-white" : i === step ? "animate-pulse bg-brand-soft text-brand-2" : "bg-surface text-muted"
-                  }`}
-                >
-                  {i < step || finished ? "✓" : <span className="num">{i + 1}</span>}
-                </span>
-                <span className={i <= step || finished ? "" : "text-muted"}>{s}</span>
-              </li>
-            ))}
+          <ol className="mt-6 space-y-3.5">
+            {execSteps.map((s, i) => {
+              const ok = i < step || finished;
+              return (
+                <li key={s} className="flex items-center gap-3 text-sm">
+                  <span
+                    className={`flex h-7 w-7 items-center justify-center rounded-full text-xs ${
+                      ok ? "bg-brand text-bg" : i === step ? "animate-pulse bg-brand-soft text-brand" : "bg-bg-2 text-muted"
+                    }`}
+                  >
+                    {ok ? "✓" : <span className="num">{i + 1}</span>}
+                  </span>
+                  <span className={i <= step || finished ? "" : "text-muted"}>{s}</span>
+                </li>
+              );
+            })}
           </ol>
           {finished && (
-            <div className="mt-6">
-              <p className="rounded-lg bg-good/10 p-3 text-sm text-good">
-                تم بنجاح. سُجّل الإجراء في سجل التدقيق، ويمكن التراجع عنه في أي وقت.
-              </p>
-              <button onClick={onClose} className="mt-4 rounded-lg bg-navy px-5 py-2.5 font-semibold text-white">إغلاق</button>
+            <div className="rise mt-6">
+              <p className="rounded-xl bg-brand-soft p-3 text-sm text-brand">Done. The action is in the audit log and can be rolled back at any time.</p>
+              <button onClick={onClose} className="mt-4 rounded-full bg-ink px-5 py-2.5 font-semibold text-bg">
+                Close
+              </button>
             </div>
           )}
         </>
@@ -490,26 +480,30 @@ function Connect() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">ربط السحابة</h1>
-        <p className="mt-1 text-sm text-muted">نربط كل مزود بصلاحية قراءة فقط. لا نستطيع تغيير أي شيء دون موافقة منفصلة منك.</p>
+        <h1 className="font-display text-3xl font-semibold">Cloud accounts</h1>
+        <p className="mt-1 text-sm text-muted">Every provider connects read-only. Nothing can change without a separate approval.</p>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {providers.map((p) => (
-          <div key={p.name} className={`rounded-xl border bg-card p-4 ${p.status === "connected" ? "border-brand" : "border-line"}`}>
-            <p className="font-semibold" dir="ltr" style={{ textAlign: "right" }}>{p.name}</p>
-            <p className={`mt-1 text-sm ${p.status === "connected" ? "text-good" : "text-muted"}`}>
-              {p.status === "connected" ? "✓ " : ""}{p.note}
+          <TiltCard key={p.name} max={6} className={`rounded-2xl border bg-card p-5 ${p.status === "connected" ? "border-brand/50 glow" : "border-line"}`}>
+            <p className="font-display text-lg font-semibold">{p.name}</p>
+            <p className={`mt-1 text-sm ${p.status === "connected" ? "text-brand" : "text-muted"}`}>
+              {p.status === "connected" ? "✓ " : ""}
+              {p.note}
             </p>
-          </div>
+          </TiltCard>
         ))}
       </div>
-      <Card title="الصلاحيات التي نطلبها من AWS (قراءة فقط)">
-        <p className="mb-3 text-sm text-ink-2">
-          يُنشأ دور IAM عبر قالب CloudFormation بنقرة واحدة. هذه هي كل الصلاحيات، ولا يوجد بينها أي صلاحية تعديل أو حذف:
+      <Card title="AWS permissions we request (read-only)">
+        <p className="mb-4 text-sm text-ink-2">
+          A one-click CloudFormation template creates the IAM role. This is the complete list, and none of it can modify or
+          delete anything:
         </p>
-        <ul className="grid gap-2 sm:grid-cols-2" dir="ltr">
+        <ul className="grid gap-2 sm:grid-cols-2">
           {readOnlyPermissions.map((p) => (
-            <li key={p} className="rounded-md bg-surface px-3 py-2 font-mono text-xs">{p}</li>
+            <li key={p} className="rounded-lg bg-bg-2 px-3 py-2 font-mono text-xs text-ink-2">
+              {p}
+            </li>
           ))}
         </ul>
       </Card>
@@ -528,63 +522,59 @@ function Alerts({ onSent }: { onSent: (msg: string) => void }) {
     try {
       const res = await fetch("/api/alert", { method: "POST" });
       const data = await res.json();
-      onSent(data.sent ? "أُرسل تنبيه Telegram بنجاح" : "أُرسل تنبيه تجريبي (محاكاة)");
+      onSent(data.sent ? "Telegram alert sent" : "Test alert sent (simulated)");
     } catch {
-      onSent("أُرسل تنبيه تجريبي (محاكاة)");
+      onSent("Test alert sent (simulated)");
     } finally {
       setSending(false);
     }
   }
 
   return (
-    <div className="grid items-start gap-8 lg:grid-cols-2">
+    <div className="grid items-start gap-10 lg:grid-cols-2">
       <div>
-        <h1 className="text-2xl font-bold">التنبيهات الفورية</h1>
-        <p className="mt-2 leading-8 text-ink-2">
-          بدلاً من انتظار تقرير نهاية الشهر، يصل التنبيه إلى المسؤول التقني على WhatsApp أو Telegram لحظة اكتشاف الهدر،
-          مع رابط مباشر للموافقة.
+        <h1 className="font-display text-3xl font-semibold">Instant alerts</h1>
+        <p className="mt-3 leading-7 text-ink-2">
+          Instead of waiting for the end-of-month invoice, your engineering lead gets a WhatsApp or Telegram message the
+          moment waste is found, with a direct link to approve.
         </p>
-        <ul className="mt-4 space-y-2 text-sm text-ink-2">
-          <li>• تنبيه فوري عند اكتشاف هدر كبير أو قفزة مفاجئة في الإنفاق</li>
-          <li>• ملخص أسبوعي بالتوفير المحقق</li>
-          <li>• تقرير PDF شهري للإدارة المالية</li>
+        <ul className="mt-5 space-y-2 text-sm text-ink-2">
+          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand" />Real-time alerts for big waste or sudden spend spikes</li>
+          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand" />Weekly summary of savings realized</li>
+          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand" />Monthly PDF report for finance</li>
         </ul>
-        <button
-          onClick={send}
-          disabled={sending}
-          className="mt-6 rounded-lg bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-2 disabled:opacity-50"
-        >
-          {sending ? "جارٍ الإرسال..." : "أرسل تنبيهاً تجريبياً"}
+        <button onClick={send} disabled={sending} className="mt-7 rounded-full bg-brand px-5 py-2.5 font-semibold text-bg hover:bg-brand-2 disabled:opacity-50">
+          {sending ? "Sending..." : "Send a test alert"}
         </button>
       </div>
 
-      <div className="mx-auto w-full max-w-sm rounded-[2rem] border-8 border-navy bg-[#e5ddd5] shadow-xl">
-        <div className="rounded-t-[1.4rem] bg-[#075e54] px-4 py-3 text-white">
-          <p className="font-semibold" dir="ltr" style={{ textAlign: "right" }}>CloudTrim</p>
-          <p className="text-xs text-white/75">حساب أعمال موثّق</p>
+      <TiltCard max={8} className="mx-auto w-full max-w-sm rounded-[2.2rem] border-[7px] border-[#2a2a24] bg-[#0f1a14] shadow-2xl">
+        <div className="rounded-t-[1.6rem] bg-[#1d4a35] px-5 py-3.5">
+          <p className="font-semibold">CloudTrim</p>
+          <p className="text-xs text-ink-2">Verified business account</p>
         </div>
         <div className="space-y-3 p-4 pb-8 text-sm">
-          <div className="max-w-[90%] rounded-lg rounded-tr-none bg-white p-3 shadow-sm">
-            <p className="font-semibold">تنبيه توفير</p>
-            <p className="mt-1">
-              اكتشفنا فرص توفير بقيمة <span className="num font-semibold">{sar(totalSavings)}</span> شهرياً في حساب AWS:
+          <div className="max-w-[90%] rounded-2xl rounded-tl-sm bg-[#1e1e1a] p-3.5 shadow">
+            <p className="font-semibold text-brand">Savings alert</p>
+            <p className="mt-1 text-ink-2">
+              We found <span className="num font-semibold text-ink">{sar(totalSavings)}</span> per month in savings on your AWS account:
             </p>
-            <ul className="mt-2 space-y-1">
+            <ul className="mt-2 space-y-1 text-ink-2">
               {top.map((f) => (
                 <li key={f.id}>
-                  • {f.title}: <span className="num">{sar(f.monthlySavings)}</span>
+                  • {f.title}: <span className="num text-ink">{sar(f.monthlySavings)}</span>
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-[#075e54] underline">راجع ووافق من لوحة التحكم</p>
-            <p className="mt-1 text-left text-[10px] text-muted num">09:12</p>
+            <p className="mt-2 text-brand underline">Review & approve</p>
+            <p className="num mt-1 text-right text-[10px] text-muted">09:12</p>
           </div>
-          <div className="mr-auto max-w-[70%] rounded-lg rounded-tl-none bg-[#dcf8c6] p-3 shadow-sm">
-            وافقت على إيقاف بيئة التطوير ليلاً 👍
-            <p className="mt-1 text-left text-[10px] text-muted num">09:20</p>
+          <div className="ml-auto max-w-[70%] rounded-2xl rounded-tr-sm bg-[#1d4a35] p-3.5 shadow">
+            Approved stopping dev at night 👍
+            <p className="num mt-1 text-right text-[10px] text-ink-2">09:20</p>
           </div>
         </div>
-      </div>
+      </TiltCard>
     </div>
   );
 }
@@ -595,24 +585,24 @@ function Audit({ entries }: { entries: AuditEntry[] }) {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold">سجل التدقيق</h1>
-        <p className="mt-1 text-sm text-muted">كل توصية وموافقة وتنفيذ مسجل بالوقت والمسؤول، لمتطلبات NCA وISO 27001.</p>
+        <h1 className="font-display text-3xl font-semibold">Audit log</h1>
+        <p className="mt-1 text-sm text-muted">Every recommendation, approval and action, with time and actor, ready for NCA and ISO 27001 reviews.</p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-line bg-card">
+      <div className="overflow-x-auto rounded-2xl border border-line bg-card">
         <table className="w-full text-sm">
-          <thead className="bg-surface text-right text-muted">
+          <thead className="bg-bg-2 text-left text-muted">
             <tr>
-              <th className="px-4 py-3 font-medium">الوقت</th>
-              <th className="px-4 py-3 font-medium">المنفّذ</th>
-              <th className="px-4 py-3 font-medium">الحدث</th>
+              <th className="px-4 py-3 font-medium">Time</th>
+              <th className="px-4 py-3 font-medium">Actor</th>
+              <th className="px-4 py-3 font-medium">Event</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
             {entries.map((e, i) => (
               <tr key={i}>
-                <td className="num px-4 py-3 text-ink-2">{e.time}</td>
+                <td className="num px-4 py-3 text-muted">{e.time}</td>
                 <td className="whitespace-nowrap px-4 py-3">{e.actor}</td>
-                <td className="px-4 py-3">{e.event}</td>
+                <td className="px-4 py-3 text-ink-2">{e.event}</td>
               </tr>
             ))}
           </tbody>
@@ -625,10 +615,11 @@ function Audit({ entries }: { entries: AuditEntry[] }) {
 /* ---------- Consult ---------- */
 
 function ConsultModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: () => void }) {
+  const input = "w-full rounded-xl border border-line bg-bg-2 px-3.5 py-2.5 placeholder:text-muted focus:border-brand focus:outline-none";
   return (
     <Modal onClose={onClose}>
-      <h2 className="text-xl font-bold">اطلب مهندس FinOps</h2>
-      <p className="mt-1 text-sm text-muted">للقرارات المعقدة: خطط الالتزام، إعادة الهيكلة، حوكمة التكاليف.</p>
+      <h2 className="font-display text-2xl font-semibold">Talk to a FinOps engineer</h2>
+      <p className="mt-1 text-sm text-muted">For complex decisions: commitment plans, re-architecture, cost governance.</p>
       <form
         className="mt-5 space-y-3"
         onSubmit={(e) => {
@@ -636,12 +627,14 @@ function ConsultModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: ()
           onSubmit();
         }}
       >
-        <input required placeholder="الاسم" className="w-full rounded-lg border border-line px-3 py-2.5" />
-        <input required type="email" placeholder="البريد الإلكتروني" className="w-full rounded-lg border border-line px-3 py-2.5" dir="ltr" style={{ textAlign: "right" }} />
-        <textarea placeholder="ما الذي تحتاج المساعدة فيه؟" rows={3} className="w-full rounded-lg border border-line px-3 py-2.5" />
+        <input required placeholder="Name" className={input} />
+        <input required type="email" placeholder="Work email" className={input} />
+        <textarea placeholder="What do you need help with?" rows={3} className={input} />
         <div className="flex gap-2 pt-2">
-          <button className="rounded-lg bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-2">إرسال الطلب</button>
-          <button type="button" onClick={onClose} className="rounded-lg border border-line px-5 py-2.5 hover:bg-surface">إلغاء</button>
+          <button className="rounded-full bg-brand px-5 py-2.5 font-semibold text-bg hover:bg-brand-2">Send request</button>
+          <button type="button" onClick={onClose} className="rounded-full border border-line px-5 py-2.5 hover:bg-card-2">
+            Cancel
+          </button>
         </div>
       </form>
     </Modal>
@@ -652,8 +645,8 @@ function ConsultModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: ()
 
 function Modal({ children, onClose }: { children: React.ReactNode; onClose?: () => void }) {
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-navy/60 p-4" onClick={onClose}>
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-card p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onClick={onClose}>
+      <div className="rise max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-line bg-card p-7 shadow-2xl" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>
@@ -662,7 +655,7 @@ function Modal({ children, onClose }: { children: React.ReactNode; onClose?: () 
 
 function Card({ title, children, className = "", action }: { title: string; children: React.ReactNode; className?: string; action?: React.ReactNode }) {
   return (
-    <section className={`rounded-xl border border-line bg-card p-5 ${className}`}>
+    <section className={`rounded-2xl border border-line bg-card p-5 ${className}`}>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-semibold">{title}</h2>
         {action}
@@ -672,13 +665,15 @@ function Card({ title, children, className = "", action }: { title: string; chil
   );
 }
 
-function Kpi({ label, value, sub, accent }: { label: string; value: string; sub: string; accent?: boolean }) {
+function Kpi({ label, value, sub, accent, amber }: { label: string; value: number; sub: string; accent?: boolean; amber?: boolean }) {
   return (
-    <div className={`rounded-xl border p-4 ${accent ? "border-brand bg-brand-soft" : "border-line bg-card"}`}>
+    <TiltCard max={6} className={`rounded-2xl border p-4 ${accent ? "border-brand/50 bg-brand-soft glow" : "border-line bg-card"}`}>
       <p className="text-xs text-muted">{label}</p>
-      <p className={`num mt-1 text-xl font-bold sm:text-2xl ${accent ? "text-brand-2" : ""}`}>{value}</p>
+      <p className={`font-display mt-1 text-xl font-semibold sm:text-2xl ${accent ? "text-brand" : amber ? "text-amber" : ""}`}>
+        <CountUp value={value} prefix="SAR " />
+      </p>
       <p className="mt-1 text-xs text-ink-2">{sub}</p>
-    </div>
+    </TiltCard>
   );
 }
 
@@ -686,7 +681,7 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
   return (
     <div className="flex justify-between gap-4">
       <dt className="text-muted">{k}</dt>
-      <dd className="text-left">{v}</dd>
+      <dd className="text-right">{v}</dd>
     </div>
   );
 }

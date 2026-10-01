@@ -1,22 +1,19 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const arabic = IBM_Plex_Sans_Arabic({
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-arabic",
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const display = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-grotesk" });
 
 export const metadata: Metadata = {
-  title: "CloudTrim | إدارة تكاليف السحابة بذكاء",
+  title: "CloudTrim | AI FinOps for Saudi & GCC businesses",
   description:
-    "منصة FinOps محلية للشركات السعودية والخليجية: وكيل ذكاء اصطناعي يكتشف الهدر في فاتورة السحابة، وأنت توافق قبل أي تنفيذ.",
+    "CloudTrim finds waste in your cloud bill with read-only access, explains every saving in plain language, and never acts without your approval.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ar" dir="rtl" className={arabic.variable}>
+    <html lang="en" className={`${inter.variable} ${display.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

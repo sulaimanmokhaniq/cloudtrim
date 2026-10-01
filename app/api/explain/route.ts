@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         max_tokens: 1024,
         output_config: { effort: "low" },
         system:
-          "أنت مستشار FinOps لدى منصة CloudTrim. اشرح التوصية لمدير تقني في شركة سعودية متوسطة، بالعربية الفصحى المبسطة، في 2-3 جمل: لماذا هذا المورد هدر، وكم يوفر، وما أثر التنفيذ وكيف نحمي الخدمة. بلا عناوين ولا نقاط.",
+          "You are a FinOps advisor at CloudTrim. Explain this recommendation to the engineering lead of a mid-sized Saudi company in 2-3 plain English sentences: why the resource is waste, what it saves in SAR, and how the change is kept safe. No headings or bullet points.",
         messages: [
           {
             role: "user",

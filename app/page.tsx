@@ -1,225 +1,251 @@
 import Link from "next/link";
+import ResourceField3D from "@/components/ResourceField3D";
+import { SafetyFlow, SavingsCalculator, TiltCard } from "@/components/Interactive";
+import { Logo } from "@/components/Logo";
 import { TEAM_NAME, company, findings, sar, totalSavings } from "@/lib/data";
 
 const problems = [
   {
-    title: "فواتير سحابية تكبر كل شهر",
-    body: "سيرفرات خاملة وأقراص يتيمة ونسخ قديمة تُدفع قيمتها كل شهر دون أن يلاحظها أحد.",
+    stat: "~27%",
+    title: "of cloud spend is wasted",
+    body: "Idle servers, orphaned disks and forgotten snapshots are billed every month without anyone noticing.",
+    source: "Flexera State of the Cloud",
   },
   {
-    title: "الأدوات العالمية لا ترى المزودين المحليين",
-    body: "لا توجد أداة FinOps تجمع STC Cloud وSCCC وCNTXT مع AWS وAzure وGCP في لوحة واحدة.",
+    stat: "Local",
+    title: "clouds left out by global tools",
+    body: "No mainstream tool brings STC Cloud, SCCC and CNTXT together with AWS, Azure and Google Cloud in one view.",
   },
   {
-    title: "الخوف من الأتمتة",
-    body: "الفرق التقنية تتجنب أدوات الإيقاف التلقائي خوفاً من تعطيل خدمة حيوية بالخطأ.",
+    stat: "1 click",
+    title: "is all it takes to cause downtime",
+    body: "Engineers avoid automation tools because one wrong shutdown can take a critical service offline.",
   },
   {
-    title: "اشتراكات لا تناسب الشركات المتوسطة",
-    body: "الأدوات العالمية مصممة للشركات الكبرى باشتراكات ثابتة مرتفعة.",
+    stat: "Fixed",
+    title: "enterprise subscriptions",
+    body: "Global FinOps platforms are priced for large enterprises, not for 50 to 250 person companies.",
   },
 ];
 
 const steps = [
-  { n: "1", title: "سجّل مجاناً", body: "حساب في دقيقة، بدون بطاقة ائتمان." },
-  { n: "2", title: "اربط سحابتك بصلاحية قراءة فقط", body: "دور IAM يقرأ التكاليف والموارد، ولا يستطيع تغيير أي شيء." },
-  { n: "3", title: "الوكيل الذكي يفحص ويحلل", body: "يكتشف الهدر ويتوقع فاتورة الشهر القادم ويرتب الفرص حسب التوفير والخطورة." },
-  { n: "4", title: "أنت تقرر", body: "تنبيه على WhatsApp أو Telegram، ثم توافق بنقرة أو تطلب مهندس FinOps." },
+  { n: "01", title: "Sign up free", body: "One minute, no credit card." },
+  { n: "02", title: "Connect read-only", body: "A one-click IAM role that can read costs and resources, and nothing else." },
+  { n: "03", title: "AI agent scans", body: "Finds waste, forecasts next month and ranks savings by value and risk." },
+  { n: "04", title: "You decide", body: "Get an alert on WhatsApp or Telegram, approve in one click or call a FinOps engineer." },
 ];
 
-const safety = [
-  { title: "قراءة فقط افتراضياً", body: "الربط الأساسي لا يملك أي صلاحية تنفيذ. لا يمكن للمنصة إيقاف أو حذف شيء." },
-  { title: "صلاحية تنفيذ منفصلة باختيارك", body: "عند الموافقة تُمنح صلاحية مؤقتة محدودة بالإجراء نفسه فقط، وتنتهي تلقائياً." },
-  { title: "شبكة أمان قبل كل إجراء", body: "Snapshot قبل أي حذف، إيقاف بدلاً من الحذف كلما أمكن، وتراجع بنقرة." },
-  { title: "سجل تدقيق كامل", body: "كل توصية وموافقة وتنفيذ مسجل بالوقت واسم المسؤول، جاهز للمراجعة." },
+const providers = ["STC Cloud", "SCCC Alibaba Cloud", "CNTXT", "AWS", "Microsoft Azure", "Google Cloud"];
+const compliance = [
+  { k: "NCA ECC", v: "National Cybersecurity Authority controls" },
+  { k: "PDPL", v: "Personal Data Protection Law" },
+  { k: "ISO 27001", v: "Information security management" },
+  { k: "ISO 27017", v: "Cloud security controls" },
 ];
-
-const compliance = ["NCA ECC", "PDPL", "ISO 27001", "ISO 27017"];
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-x-clip">
       {/* Nav */}
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-navy/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <header className="fixed inset-x-0 top-0 z-30 border-b border-line/60 bg-bg/70 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 md:px-6">
           <Logo />
-          <nav className="hidden gap-6 text-sm text-white/75 md:flex">
-            <a href="#problem" className="hover:text-white">المشكلة</a>
-            <a href="#how" className="hover:text-white">كيف يعمل</a>
-            <a href="#safety" className="hover:text-white">الأمان</a>
-            <a href="#pricing" className="hover:text-white">التسعير</a>
+          <nav className="hidden gap-8 text-sm text-ink-2 md:flex">
+            <a href="#problem" className="hover:text-ink">Problem</a>
+            <a href="#how" className="hover:text-ink">How it works</a>
+            <a href="#safety" className="hover:text-ink">Safety</a>
+            <a href="#pricing" className="hover:text-ink">Pricing</a>
           </nav>
-          <Link href="/demo" className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-2">
-            جرّب العرض الحي
+          <Link href="/demo" className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-bg hover:bg-brand-2">
+            Live demo
           </Link>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="bg-navy text-white">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 md:grid-cols-2 md:py-24">
-          <div>
-            <p className="mb-4 inline-block rounded-full bg-white/10 px-3 py-1 text-xs text-white/80">
-              FinOps محلي للشركات السعودية والخليجية
+      <section className="relative min-h-[100svh] pt-16">
+        <div className="grid-bg absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_40%,black,transparent_70%)]" aria-hidden />
+        <div
+          className="absolute -top-40 right-0 h-[600px] w-[600px] rounded-full opacity-30 blur-3xl"
+          style={{ background: "radial-gradient(circle, #2fd39a55, transparent 60%)" }}
+          aria-hidden
+        />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-4 md:px-6 lg:min-h-[calc(100svh-4rem)] lg:grid-cols-[1fr_1.15fr]">
+          <div className="relative z-10 pt-12 lg:pt-0">
+            <p className="rise inline-flex items-center gap-2 rounded-full border border-line bg-card/70 px-3 py-1 text-xs text-ink-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand shadow-[0_0_8px_#2fd39a]" />
+              AI FinOps built for Saudi & GCC businesses
             </p>
-            <h1 className="text-4xl font-bold leading-tight md:text-5xl">
-              اكتشف الهدر في فاتورة السحابة.
+            <h1 className="rise-2 font-display mt-6 text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl">
+              Trim cloud waste.
               <br />
-              <span className="text-[#5fd3b0]">وأنت من يقرر.</span>
+              <span className="text-gradient">Stay in control.</span>
             </h1>
-            <p className="mt-5 max-w-lg text-lg leading-8 text-white/75">
-              وكيل ذكاء اصطناعي يفحص سحابتك بصلاحية قراءة فقط، ويرسل لك التوصيات على WhatsApp،
-              ولا يُنفّذ أي إجراء إلا بموافقتك.
+            <p className="rise-3 mt-6 max-w-xl text-lg leading-8 text-ink-2">
+              CloudTrim&apos;s AI agent scans your cloud with read-only access, explains every saving in plain language,
+              and never touches a resource without your approval.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/demo" className="rounded-lg bg-brand px-6 py-3 font-semibold hover:bg-brand-2">
-                شاهد العرض الحي
+            <div className="rise-3 mt-9 flex flex-wrap gap-3">
+              <Link href="/demo" className="rounded-full bg-brand px-6 py-3 font-semibold text-bg hover:bg-brand-2">
+                Explore the live demo
               </Link>
-              <a href="#how" className="rounded-lg border border-white/25 px-6 py-3 font-semibold hover:bg-white/10">
-                كيف يعمل؟
+              <a href="#how" className="rounded-full border border-line px-6 py-3 font-semibold hover:bg-card">
+                How it works
               </a>
             </div>
+            <dl className="rise-3 mt-12 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-6">
+              <HeroStat k="Read-only" v="by default" />
+              <HeroStat k="6 clouds" v="local + global" />
+              <HeroStat k="0 actions" v="without approval" />
+            </dl>
           </div>
-
-          <div className="rounded-2xl bg-white p-5 text-ink shadow-2xl">
-            <div className="flex items-center justify-between text-sm text-muted">
-              <span>{company.name}</span>
-              <span className="rounded-full bg-brand-soft px-2 py-0.5 text-xs text-brand-2">قراءة فقط</span>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-3">
-              <Stat label="الفاتورة الشهرية" value={sar(company.monthlySpend)} />
-              <Stat label="توفير ممكن شهرياً" value={sar(totalSavings)} accent />
-            </div>
-            <ul className="mt-4 divide-y divide-line text-sm">
-              {findings.slice(0, 3).map((f) => (
-                <li key={f.id} className="flex items-center justify-between py-2.5">
-                  <span>{f.title}</span>
-                  <span className="num font-semibold text-good">{sar(f.monthlySavings)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ResourceField3D className="h-[420px] md:h-[560px] lg:h-[680px]" />
         </div>
       </section>
 
-      {/* Problem */}
-      <section id="problem" className="mx-auto max-w-6xl px-4 py-20">
-        <SectionTitle kicker="المشكلة" title="لماذا تدفع الشركات أكثر مما تحتاج؟" />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {problems.map((p) => (
-            <div key={p.title} className="rounded-xl border border-line bg-card p-5">
-              <h3 className="font-semibold">{p.title}</h3>
-              <p className="mt-2 text-sm leading-7 text-ink-2">{p.body}</p>
-            </div>
+      {/* Providers strip */}
+      <section className="border-y border-line bg-bg-2">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-4 py-6 text-sm text-muted md:justify-between md:px-6">
+          <span className="text-ink-2">One view across</span>
+          {providers.map((p) => (
+            <span key={p} className="font-display font-medium tracking-wide">{p}</span>
           ))}
         </div>
       </section>
 
-      {/* How */}
-      <section id="how" className="border-y border-line bg-card">
-        <div className="mx-auto max-w-6xl px-4 py-20">
-          <SectionTitle kicker="الحل" title="أربع خطوات من الربط إلى التوفير" />
-          <ol className="mt-10 grid gap-6 md:grid-cols-4">
+      {/* Problem */}
+      <section id="problem" className="mx-auto max-w-7xl px-4 py-28 md:px-6">
+        <SectionTitle kicker="The problem" title="Growing cloud bills, and teams too afraid to automate." />
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {problems.map((p) => (
+            <TiltCard key={p.title} className="rounded-2xl border border-line bg-card p-6">
+              <p className="font-display text-4xl font-semibold text-amber">{p.stat}</p>
+              <h3 className="mt-2 font-semibold">{p.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-ink-2">{p.body}</p>
+              {p.source && <p className="mt-4 text-xs text-muted">Source: {p.source}</p>}
+            </TiltCard>
+          ))}
+        </div>
+      </section>
+
+      {/* Calculator */}
+      <section className="mx-auto max-w-7xl px-4 pb-28 md:px-6">
+        <SavingsCalculator />
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="relative border-y border-line bg-bg-2">
+        <div className="mx-auto max-w-7xl px-4 py-28 md:px-6">
+          <SectionTitle kicker="How it works" title="From connection to savings in four steps." />
+          <ol className="relative mt-14 grid gap-6 md:grid-cols-4">
+            <span className="absolute top-6 right-[12%] left-[12%] hidden h-px bg-gradient-to-r from-brand/0 via-brand/60 to-brand/0 md:block" aria-hidden />
             {steps.map((s) => (
-              <li key={s.n}>
-                <span className="num flex h-9 w-9 items-center justify-center rounded-full bg-brand text-white font-bold">
+              <li key={s.n} className="relative">
+                <span className="num font-display relative flex h-12 w-12 items-center justify-center rounded-2xl border border-brand/40 bg-card text-sm font-semibold text-brand">
                   {s.n}
                 </span>
-                <h3 className="mt-4 font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-ink-2">{s.body}</p>
+                <h3 className="mt-5 text-lg font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-ink-2">{s.body}</p>
               </li>
             ))}
           </ol>
-          <div className="mt-12 grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl bg-surface p-6">
-              <h3 className="font-semibold">وكيل ذكاء اصطناعي للعمل اليومي</h3>
-              <p className="mt-2 text-sm leading-7 text-ink-2">
-                يفحص الموارد باستمرار، ويشرح كل توصية بلغة واضحة: لماذا هي هدر، وكم توفر، وما أثرها.
-              </p>
+
+          <div className="mt-16 grid items-center gap-8 lg:grid-cols-2">
+            <div className="space-y-4">
+              <Feature title="AI agent for the daily work" body="Continuously scans resources and explains each recommendation: why it is waste, what it saves, and what changes." />
+              <Feature title="A FinOps engineer when it matters" body="For complex decisions like commitment plans and architecture changes, a human consultant takes over." />
+              <Feature title="Alerts where your team already is" body="Critical savings land on WhatsApp or Telegram the moment they are found, with a link to approve." />
             </div>
-            <div className="rounded-xl bg-surface p-6">
-              <h3 className="font-semibold">مهندس FinOps عند الحاجة</h3>
-              <p className="mt-2 text-sm leading-7 text-ink-2">
-                للقرارات المعقدة مثل خطط الالتزام وإعادة هيكلة البنية، يتولى مستشار بشري المهمة.
-              </p>
-            </div>
+            <TiltCard className="rounded-3xl border border-line bg-card p-6 glow" max={8}>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-ink-2">{company.name}</span>
+                <span className="rounded-full bg-brand-soft px-2.5 py-0.5 text-xs text-brand">Read-only</span>
+              </div>
+              <div className="mt-5 grid grid-cols-2 gap-3" style={{ transform: "translateZ(30px)" }}>
+                <MiniStat label="Monthly bill" value={sar(company.monthlySpend)} />
+                <MiniStat label="Savings found" value={sar(totalSavings)} accent />
+              </div>
+              <ul className="mt-5 divide-y divide-line text-sm" style={{ transform: "translateZ(20px)" }}>
+                {findings.slice(0, 4).map((f) => (
+                  <li key={f.id} className="flex items-center justify-between gap-4 py-3">
+                    <span className="text-ink-2">{f.title}</span>
+                    <span className="num font-semibold text-brand">{sar(f.monthlySavings)}</span>
+                  </li>
+                ))}
+              </ul>
+            </TiltCard>
           </div>
         </div>
       </section>
 
       {/* Safety */}
-      <section id="safety" className="mx-auto max-w-6xl px-4 py-20">
-        <SectionTitle kicker="الأمان أولاً" title="الذكاء الاصطناعي يوصي، والإنسان يقرر" />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          {safety.map((s) => (
-            <div key={s.title} className="flex gap-4 rounded-xl border border-line bg-card p-5">
-              <Check />
-              <div>
-                <h3 className="font-semibold">{s.title}</h3>
-                <p className="mt-1 text-sm leading-7 text-ink-2">{s.body}</p>
-              </div>
-            </div>
-          ))}
+      <section id="safety" className="mx-auto max-w-7xl px-4 py-28 md:px-6">
+        <SectionTitle kicker="Safety first" title="AI recommends. Humans decide." />
+        <p className="mt-4 max-w-2xl text-ink-2">
+          The connection is read-only by default. Changes need a separate, opt-in permission scoped to one action, that
+          expires on its own.
+        </p>
+        <div className="mt-12">
+          <SafetyFlow />
         </div>
       </section>
 
       {/* Local */}
-      <section className="bg-navy text-white">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-20 md:grid-cols-2">
+      <section className="border-y border-line bg-bg-2">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 py-28 md:px-6 lg:grid-cols-2">
           <div>
-            <p className="text-sm font-semibold text-[#5fd3b0]">مصمم للسوق المحلي</p>
-            <h2 className="mt-2 text-3xl font-bold">كل مزوديك في لوحة واحدة</h2>
-            <p className="mt-4 leading-8 text-white/75">
-              المزودون المحليون والعالميون معاً، مع بيانات تبقى داخل المملكة وتصميم يتوافق مع متطلبات
-              الهيئة الوطنية للأمن السيبراني ونظام حماية البيانات الشخصية.
+            <p className="text-sm font-medium text-brand">Built for the region</p>
+            <h2 className="font-display mt-3 text-4xl font-semibold tracking-tight">Every cloud you use, in one dashboard.</h2>
+            <p className="mt-5 leading-8 text-ink-2">
+              Local and global providers side by side, with data kept in the Kingdom and controls designed around Saudi
+              cybersecurity and data protection rules.
             </p>
           </div>
-          <div className="space-y-5">
-            <div className="flex flex-wrap gap-2">
-              {["STC Cloud", "SCCC (Alibaba)", "CNTXT", "AWS", "Azure", "Google Cloud"].map((p) => (
-                <span key={p} className="rounded-lg border border-white/20 px-3 py-2 text-sm">{p}</span>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {compliance.map((c) => (
-                <span key={c} className="rounded-lg bg-white/10 px-3 py-2 text-sm text-white/85">{c}</span>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 gap-3">
+            {compliance.map((c) => (
+              <TiltCard key={c.k} className="rounded-2xl border border-line bg-card p-5">
+                <p className="font-display text-xl font-semibold">{c.k}</p>
+                <p className="mt-1 text-sm text-muted">{c.v}</p>
+              </TiltCard>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="mx-auto max-w-6xl px-4 py-20">
-        <SectionTitle kicker="التسعير" title="ادفع حسب ما تستخدم، بلا اشتراك ثابت" />
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          <PriceCard title="الفحص الأول" price="مجاناً" items={["ربط حساب سحابي واحد", "تقرير هدر كامل PDF", "أهم التوصيات بالتوفير المتوقع"]} />
+      <section id="pricing" className="mx-auto max-w-7xl px-4 py-28 md:px-6">
+        <SectionTitle kicker="Pricing" title="Pay for what you use. No fixed subscription." />
+        <div className="mt-14 grid gap-4 md:grid-cols-3">
+          <PriceCard title="First scan" price="Free" items={["Connect one cloud account", "Full waste report as PDF", "Top savings with expected value"]} />
           <PriceCard
-            title="حسب الاستخدام"
-            price="حسب الموارد المُدارة"
+            title="Usage-based"
+            price="Per managed resource"
             highlight
-            items={["فحص مستمر وتوقع للفاتورة", "تنبيهات WhatsApp وTelegram", "تنفيذ بنقرة مع سجل تدقيق", "تدفع فقط على ما نديره لك"]}
+            items={["Continuous scanning and bill forecast", "WhatsApp & Telegram alerts", "One-click remediation with audit log", "Only pay for what we manage"]}
           />
-          <PriceCard title="استشارات FinOps" price="حسب المشروع" items={["مهندس FinOps مخصص", "خطط الالتزام والحجوزات", "حوكمة التكاليف بين الفرق"]} />
+          <PriceCard title="FinOps consulting" price="Per engagement" items={["Dedicated FinOps engineer", "Commitment and reservation plans", "Cost governance across teams"]} />
         </div>
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-6xl px-4 pb-20">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-brand p-8 text-white md:flex-row md:items-center">
-          <div>
-            <h2 className="text-2xl font-bold">شاهد CloudTrim يعمل الآن</h2>
-            <p className="mt-2 text-white/85">عرض تفاعلي على بيانات شركة سعودية افتراضية.</p>
+      <section className="mx-auto max-w-7xl px-4 pb-28 md:px-6">
+        <div className="relative overflow-hidden rounded-3xl border border-brand/30 bg-card p-10 md:p-14">
+          <div className="absolute -right-20 -bottom-40 h-96 w-96 rounded-full opacity-40 blur-3xl" style={{ background: "#2fd39a" }} aria-hidden />
+          <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
+            <div>
+              <h2 className="font-display text-3xl font-semibold md:text-4xl">See CloudTrim working now.</h2>
+              <p className="mt-2 text-ink-2">An interactive demo on a fictional Saudi company&apos;s AWS account.</p>
+            </div>
+            <Link href="/demo" className="rounded-full bg-brand px-7 py-3.5 font-semibold text-bg hover:bg-brand-2">
+              Open the live demo
+            </Link>
           </div>
-          <Link href="/demo" className="rounded-lg bg-white px-6 py-3 font-semibold text-brand-2 hover:bg-white/90">
-            افتح العرض الحي
-          </Link>
         </div>
       </section>
 
-      <footer className="border-t border-line bg-card">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-6 text-sm text-muted md:flex-row">
-          <Logo dark />
+      <footer className="border-t border-line">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-8 text-sm text-muted md:flex-row md:px-6">
+          <Logo />
           <span>{TEAM_NAME} · VentureX 2026</span>
         </div>
       </footer>
@@ -227,60 +253,56 @@ export default function Home() {
   );
 }
 
-function Logo({ dark }: { dark?: boolean }) {
-  return (
-    <span className={`flex items-center gap-2 font-bold ${dark ? "text-ink" : "text-white"}`} dir="ltr">
-      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden>
-        <rect width="32" height="32" rx="8" fill="#0f8a6d" />
-        <path d="M9 20a5 5 0 0 1 1.5-9.8A7 7 0 0 1 23.5 12 4 4 0 0 1 23 20Z" fill="#fff" />
-        <path d="M12 16h8" stroke="#0f8a6d" strokeWidth="2.2" strokeLinecap="round" />
-      </svg>
-      CloudTrim
-    </span>
-  );
-}
-
 function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
   return (
+    <div className="max-w-3xl">
+      <p className="text-sm font-medium text-brand">{kicker}</p>
+      <h2 className="font-display mt-3 text-4xl font-semibold tracking-tight md:text-5xl">{title}</h2>
+    </div>
+  );
+}
+
+function HeroStat({ k, v }: { k: string; v: string }) {
+  return (
     <div>
-      <p className="text-sm font-semibold text-brand">{kicker}</p>
-      <h2 className="mt-2 text-3xl font-bold">{title}</h2>
+      <dt className="font-display text-lg font-semibold">{k}</dt>
+      <dd className="text-xs text-muted">{v}</dd>
     </div>
   );
 }
 
-function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+function Feature({ title, body }: { title: string; body: string }) {
   return (
-    <div className={`rounded-xl p-3 ${accent ? "bg-brand-soft" : "bg-surface"}`}>
+    <div className="rounded-2xl border border-line bg-card p-5">
+      <h3 className="font-semibold">{title}</h3>
+      <p className="mt-1.5 text-sm leading-6 text-ink-2">{body}</p>
+    </div>
+  );
+}
+
+function MiniStat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className={`rounded-xl border p-3.5 ${accent ? "border-brand/40 bg-brand-soft" : "border-line bg-bg-2"}`}>
       <p className="text-xs text-muted">{label}</p>
-      <p className={`num mt-1 text-xl font-bold ${accent ? "text-brand-2" : ""}`}>{value}</p>
+      <p className={`num font-display mt-1 text-xl font-semibold ${accent ? "text-brand" : ""}`}>{value}</p>
     </div>
-  );
-}
-
-function Check() {
-  return (
-    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-2">
-      <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden>
-        <path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </span>
   );
 }
 
 function PriceCard({ title, price, items, highlight }: { title: string; price: string; items: string[]; highlight?: boolean }) {
   return (
-    <div className={`rounded-xl border p-6 ${highlight ? "border-brand bg-card shadow-lg" : "border-line bg-card"}`}>
-      <h3 className="font-semibold">{title}</h3>
-      <p className="mt-2 text-2xl font-bold text-brand-2">{price}</p>
-      <ul className="mt-5 space-y-2 text-sm text-ink-2">
+    <TiltCard className={`rounded-3xl border p-7 ${highlight ? "border-brand/50 bg-card glow" : "border-line bg-card"}`} max={6}>
+      {highlight && <span className="absolute top-5 right-5 rounded-full bg-brand px-2.5 py-0.5 text-xs font-semibold text-bg">Core</span>}
+      <h3 className="text-ink-2">{title}</h3>
+      <p className="font-display mt-2 text-2xl font-semibold">{price}</p>
+      <ul className="mt-6 space-y-2.5 text-sm text-ink-2">
         {items.map((i) => (
-          <li key={i} className="flex gap-2">
-            <span className="text-brand">•</span>
+          <li key={i} className="flex gap-2.5">
+            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
             {i}
           </li>
         ))}
       </ul>
-    </div>
+    </TiltCard>
   );
 }

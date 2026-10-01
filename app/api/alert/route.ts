@@ -5,10 +5,10 @@ import { findings, sar, totalSavings } from "@/lib/data";
 export async function POST() {
   const top = [...findings].sort((a, b) => b.monthlySavings - a.monthlySavings).slice(0, 3);
   const text = [
-    "CloudTrim | تنبيه توفير",
-    `اكتشفنا فرص توفير بقيمة ${sar(totalSavings)} شهرياً:`,
+    "CloudTrim | Savings alert",
+    `We found ${sar(totalSavings)} per month in savings:`,
     ...top.map((f) => `- ${f.title}: ${sar(f.monthlySavings)}`),
-    "راجع ووافق من لوحة التحكم.",
+    "Review and approve in your dashboard.",
   ].join("\n");
 
   const token = process.env.TELEGRAM_BOT_TOKEN;

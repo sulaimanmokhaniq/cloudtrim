@@ -73,7 +73,7 @@ export default function Home() {
       </header>
 
       {/* Hero: the 3D scene bleeds across the whole section */}
-      <section data-theme="dark" className="ember-mesh relative min-h-[100svh] overflow-hidden text-ink border-b border-line">
+      <section className="relative min-h-[100svh] overflow-hidden border-b border-line">
         <CloudGlow3D className="absolute inset-0 hidden lg:block" />
         <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col px-4 pt-32 md:px-6 lg:flex-row lg:items-center lg:pt-16">
           <div className="max-w-xl">
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
 
       {/* Tagline strip + provider badges */}
-      <section className="border-b border-line bg-bg-2">
+      <section className="border-b border-line">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-7 md:px-6 lg:flex-row lg:items-center lg:justify-between">
           <Reveal>
             <p className="font-display text-xl font-bold tracking-tight sm:text-2xl whitespace-nowrap">
@@ -122,7 +122,7 @@ export default function Home() {
       </section>
 
       {/* Problem */}
-      <section id="problem" className="border-b border-line bg-bg py-20 md:py-28">
+      <section id="problem" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <SectionTitle kicker="The problem" title="Why cloud spend gets out of control." />
           <div className="mt-12 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -139,7 +139,7 @@ export default function Home() {
       </section>
 
       {/* Safety */}
-      <section id="safety" className="border-b border-line bg-bg-2 py-20 md:py-28">
+      <section id="safety" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <SectionTitle kicker="Safety first" title="AI recommends. Humans decide." />
           <p className="mt-4 max-w-2xl text-base leading-7 text-ink-2">
@@ -153,7 +153,7 @@ export default function Home() {
       </section>
 
       {/* Local / Compliance */}
-      <section id="compliance" className="border-b border-line bg-bg py-20 md:py-28">
+      <section id="compliance" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
             <div>
@@ -177,7 +177,7 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="border-b border-line bg-bg-2 py-20 md:py-28">
+      <section id="pricing" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <SectionTitle kicker="Pricing" title="Pay as you go" />
           <div className="mt-12 md:mt-16 grid gap-6 md:grid-cols-3">

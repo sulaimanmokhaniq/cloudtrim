@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { MovingBackground } from "@/components/MovingBackground";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const display = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["500", "600", "700", "800"], variable: "--font-jakarta" });
@@ -22,7 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <MovingBackground />
+        {children}
+      </body>
     </html>
   );
 }

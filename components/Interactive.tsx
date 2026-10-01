@@ -26,10 +26,6 @@ export function TiltCard({ children, className = "", max = 10 }: { children: Rea
       style={{ transition: "transform 0.25s ease-out", transformStyle: "preserve-3d", ...style }}
       className={`group relative ${className}`}
     >
-      <div
-        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: "radial-gradient(400px circle at var(--gx,50%) var(--gy,50%), #2fd39a22, transparent 60%)" }}
-      />
       {children}
     </div>
   );
@@ -69,7 +65,7 @@ export function SavingsCalculator() {
   const pct = ((bill - 10000) / (500000 - 10000)) * 100;
 
   return (
-    <div className="grid gap-8 rounded-3xl border border-line bg-card p-6 md:grid-cols-2 md:p-10">
+    <div className="grid gap-8 border border-line bg-card p-6 md:grid-cols-2 md:p-10">
       <div>
         <p className="text-sm font-medium text-brand">Savings estimator</p>
         <h3 className="font-display mt-2 text-3xl font-semibold">How much could you trim?</h3>
@@ -91,8 +87,8 @@ export function SavingsCalculator() {
           step={5000}
           value={bill}
           onChange={(e) => setBill(Number(e.target.value))}
-          className="mt-5 h-2 w-full cursor-pointer appearance-none rounded-full accent-[#2fd39a]"
-          style={{ background: `linear-gradient(90deg, #2fd39a ${pct}%, #2a2a24 ${pct}%)` }}
+          className="mt-5 h-2 w-full cursor-pointer appearance-none accent-[#f5b83d]"
+          style={{ background: `linear-gradient(90deg, #f5b83d ${pct}%, #2e241c ${pct}%)` }}
         />
         <div className="mt-2 flex justify-between text-xs text-muted">
           <span>SAR 10k</span>
@@ -101,13 +97,13 @@ export function SavingsCalculator() {
       </div>
 
       <div className="flex flex-col justify-center gap-4">
-        <div className="rounded-2xl border border-line bg-bg-2 p-5">
+        <div className=" border border-line bg-bg-2 p-5">
           <p className="text-sm text-muted">Recoverable every month</p>
           <p className="font-display mt-1 text-3xl font-semibold text-brand">
             <CountUp value={low} prefix="SAR " /> – <CountUp value={high} />
           </p>
         </div>
-        <div className="rounded-2xl border border-line bg-bg-2 p-5">
+        <div className=" border border-line bg-bg-2 p-5">
           <p className="text-sm text-muted">Recoverable every year</p>
           <p className="font-display mt-1 text-3xl font-semibold text-amber">
             <CountUp value={low * 12} prefix="SAR " /> – <CountUp value={high * 12} />
@@ -124,8 +120,8 @@ function Bars({ bill, low, high }: { bill: number; low: number; high: number }) 
   const keep = ((bill - mid) / bill) * 100;
   return (
     <div>
-      <div className="flex h-3 overflow-hidden rounded-full">
-        <div className="bg-[#3a3a33] transition-all duration-500" style={{ width: `${keep}%` }} />
+      <div className="flex h-3 overflow-hidden">
+        <div className="bg-[#3a2f26] transition-all duration-500" style={{ width: `${keep}%` }} />
         <div className="ml-0.5 bg-brand transition-all duration-500" style={{ width: `${100 - keep}%` }} />
       </div>
       <div className="mt-2 flex justify-between text-xs text-muted">
@@ -167,18 +163,10 @@ export function SafetyFlow() {
                 setActive(i);
               }}
               onClick={() => setActive(i)}
-              className={`relative flex w-full items-center gap-4 rounded-xl px-1 py-2.5 text-left transition-colors ${
-                active === i ? "text-ink" : "text-muted hover:text-ink-2"
-              }`}
+              className={`relative flex w-full items-center gap-4 px-1 py-2.5 text-left transition-colors ${ active === i ? "text-ink" : "text-muted hover:text-ink-2" }`}
             >
               <span
-                className={`num relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-sm font-semibold transition-all ${
-                  active === i
-                    ? "border-brand bg-brand text-bg shadow-[0_0_24px_#2fd39a80]"
-                    : i < active
-                      ? "border-brand/50 bg-card text-brand"
-                      : "border-line bg-card"
-                }`}
+                className={`num relative z-10 flex h-10 w-10 shrink-0 items-center justify-center border text-sm font-semibold transition-all ${ active === i ? "border-brand bg-brand text-bg" : i < active ? "border-brand/50 bg-card text-brand" : "border-line bg-card" }`}
               >
                 {i + 1}
               </span>
@@ -187,7 +175,7 @@ export function SafetyFlow() {
           </li>
         ))}
       </ol>
-      <div className="relative flex min-h-64 items-center overflow-hidden rounded-3xl border border-line bg-card p-8">
+      <div className="relative flex min-h-64 items-center overflow-hidden border border-line bg-card p-8">
         <div className="grid-bg absolute inset-0 opacity-60" aria-hidden />
         <div key={active} className="rise relative">
           <p className="num text-sm text-brand">Step {active + 1} of {flow.length}</p>
@@ -195,7 +183,7 @@ export function SafetyFlow() {
           <p className="mt-3 leading-7 text-ink-2">{flow[active].d}</p>
           <div className="mt-6 flex gap-1.5">
             {flow.map((_, i) => (
-              <span key={i} className={`h-1 flex-1 rounded-full transition-colors ${i <= active ? "bg-brand" : "bg-line"}`} />
+              <span key={i} className={`h-1 flex-1 transition-colors ${i <= active ? "bg-brand" : "bg-line"}`} />
             ))}
           </div>
         </div>

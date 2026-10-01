@@ -58,15 +58,15 @@ export default function Demo() {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-30 border-b border-line bg-bg/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-line bg-bg">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 pt-3 md:px-6">
           <div className="flex items-center gap-3">
             <Logo />
-            <span className="rounded-full border border-amber/40 bg-amber-soft px-2.5 py-0.5 text-xs text-amber">Demo data</span>
+            <span className=" border border-amber/40 bg-amber-soft px-2.5 py-0.5 text-xs text-amber">Demo data</span>
           </div>
           <div className="flex items-center gap-3 text-sm">
             <span className="hidden text-muted sm:inline">{company.name}</span>
-            <button onClick={() => setConsultOpen(true)} className="rounded-full border border-line px-3.5 py-1.5 hover:bg-card">
+            <button onClick={() => setConsultOpen(true)} className="btn-ghost  border border-line px-3.5 py-1.5">
               Talk to a FinOps engineer
             </button>
           </div>
@@ -76,13 +76,11 @@ export default function Demo() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm transition-colors ${
-                tab === t.id ? "border-brand text-ink" : "border-transparent text-muted hover:text-ink-2"
-              }`}
+              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm transition-colors ${ tab === t.id ? "border-brand text-ink" : "border-transparent text-muted hover:text-ink-2" }`}
             >
               {t.label}
               {t.id === "findings" && (
-                <span className="num ml-1.5 rounded-full bg-brand-soft px-1.5 text-xs text-brand">{findings.length - done.size}</span>
+                <span className="num ml-1.5 bg-brand-soft px-1.5 text-xs text-brand">{findings.length - done.size}</span>
               )}
             </button>
           ))}
@@ -128,7 +126,7 @@ export default function Demo() {
         />
       )}
       {toast && (
-        <div className="rise fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-full border border-brand/40 bg-card px-5 py-3 text-sm shadow-2xl">
+        <div className="rise fixed bottom-6 left-1/2 z-50 -translate-x-1/2 border border-brand/40 bg-card px-5 py-3 text-sm">
           <span className="mr-2 text-brand">✓</span>
           {toast}
         </div>
@@ -203,13 +201,13 @@ function TrendChart() {
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Monthly spend for the last six months with October forecast">
         <defs>
           <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="6" height="6" fill="#2fd39a1f" />
-            <line x1="0" y1="0" x2="0" y2="6" stroke="#2fd39a" strokeWidth="2" />
+            <rect width="6" height="6" fill="#f5b83d1f" />
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#f5b83d" strokeWidth="2" />
           </pattern>
         </defs>
         {[0, 25000, 50000, 75000, 100000].map((g) => (
           <g key={g}>
-            <line x1={pad.left} x2={W - pad.right} y1={y(g)} y2={y(g)} stroke="#2a2a24" strokeWidth="1" />
+            <line x1={pad.left} x2={W - pad.right} y1={y(g)} y2={y(g)} stroke="#2e241c" strokeWidth="1" />
             <text x={pad.left - 8} y={y(g) + 3} fontSize="10" fill="#8a8678" textAnchor="end">
               {g === 0 ? "0" : `${g / 1000}k`}
             </text>
@@ -223,7 +221,7 @@ function TrendChart() {
               <rect x={cx - slot / 2} y={pad.top} width={slot} height={H - pad.top - pad.bottom} fill="transparent" />
               <path
                 d={`M${cx - barW / 2},${y(0)} V${top + 4} q0,-4 4,-4 H${cx + barW / 2 - 4} q4,0 4,4 V${y(0)} Z`}
-                fill={m.forecast ? "url(#hatch)" : "#2fd39a"}
+                fill={m.forecast ? "url(#hatch)" : "#f5b83d"}
                 opacity={hover === null || hover === i ? 1 : 0.45}
                 style={{ transition: "opacity .2s" }}
               />
@@ -235,7 +233,7 @@ function TrendChart() {
         })}
       </svg>
       {hover !== null && (
-        <div className="pointer-events-none absolute top-2 right-2 rounded-xl border border-line bg-bg-2 px-3 py-2 text-sm shadow-xl">
+        <div className="pointer-events-none absolute top-2 right-2 border border-line bg-bg-2 px-3 py-2 text-sm">
           <p className="text-muted">
             {monthlyTrend[hover].month}
             {monthlyTrend[hover].forecast ? " (forecast)" : ""}
@@ -244,7 +242,7 @@ function TrendChart() {
         </div>
       )}
       <p className="mt-2 flex items-center gap-2 text-xs text-muted">
-        <span className="inline-block h-3 w-3 rounded-sm" style={{ background: "repeating-linear-gradient(45deg,#2fd39a 0 2px,#2fd39a1f 2px 5px)" }} />
+        <span className="inline-block h-3 w-3" style={{ background: "repeating-linear-gradient(45deg,#f5b83d 0 2px,#f5b83d1f 2px 5px)" }} />
         October is the AI agent&apos;s forecast
       </p>
     </div>
@@ -261,8 +259,8 @@ function ServiceBars() {
             <span className="text-ink-2">{s.name}</span>
             <span className="num">{sar(s.value)}</span>
           </div>
-          <div className="mt-1.5 h-2 rounded-full bg-bg-2">
-            <div className="h-2 rounded-full bg-brand" style={{ width: `${(s.value / max) * 100}%` }} />
+          <div className="mt-1.5 h-2 bg-bg-2">
+            <div className="h-2 bg-brand" style={{ width: `${(s.value / max) * 100}%` }} />
           </div>
         </li>
       ))}
@@ -310,11 +308,11 @@ function FindingCard({ f, done, onApprove, onExplain }: { f: Finding; done: bool
   }
 
   return (
-    <article className={`rounded-2xl border bg-card p-5 transition-colors ${done ? "border-brand/50" : "border-line hover:border-[#3a3a33]"}`}>
+    <article className={` border bg-card p-5 transition-colors ${done ? "border-brand/50" : "border-line hover:border-[#3a2f26]"}`}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="rounded-full border border-line px-2 py-0.5 text-ink-2">{f.category}</span>
+            <span className=" border border-line px-2 py-0.5 text-ink-2">{f.category}</span>
             <RiskBadge risk={f.risk} />
           </div>
           <h3 className="mt-2.5 text-lg font-semibold">{f.title}</h3>
@@ -327,13 +325,13 @@ function FindingCard({ f, done, onApprove, onExplain }: { f: Finding; done: bool
         </div>
       </div>
 
-      <div className="mt-4 rounded-xl bg-bg-2 p-3 text-sm">
+      <div className="mt-4 bg-bg-2 p-3 text-sm">
         <span className="font-medium">Proposed action: </span>
         <span className="text-ink-2">{f.action}</span>
       </div>
 
       {explanation && (
-        <div className="rise mt-3 rounded-xl border border-brand/30 bg-brand-soft p-4 text-sm leading-6">
+        <div className="rise mt-3 border border-brand/30 bg-brand-soft p-4 text-sm leading-6">
           <p className="mb-1 text-xs font-semibold text-brand">AI agent explanation {explanation.source === "live" ? "· live" : ""}</p>
           {explanation.text}
         </div>
@@ -341,13 +339,13 @@ function FindingCard({ f, done, onApprove, onExplain }: { f: Finding; done: bool
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {done ? (
-          <span className="rounded-full bg-brand-soft px-4 py-2 text-sm font-semibold text-brand">✓ Applied</span>
+          <span className=" bg-brand-soft px-4 py-2 text-sm font-semibold text-brand">✓ Applied</span>
         ) : (
-          <button onClick={onApprove} className="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-bg hover:bg-brand-2">
+          <button onClick={onApprove} className="btn-primary  bg-brand px-4 py-2 text-sm font-semibold text-bg">
             Review & approve
           </button>
         )}
-        <button onClick={explain} className="rounded-full border border-line px-4 py-2 text-sm hover:bg-card-2">
+        <button onClick={explain} className="btn-ghost  border border-line px-4 py-2 text-sm">
           {loading ? "Analyzing..." : explanation ? "Hide explanation" : "Why? Explain"}
         </button>
       </div>
@@ -359,7 +357,7 @@ function RiskBadge({ risk }: { risk: Finding["risk"] }) {
   const cls = { low: "bg-brand-soft text-brand", medium: "bg-amber-soft text-amber", high: "bg-bad/15 text-bad" }[risk];
   const icon = { low: "●", medium: "▲", high: "■" }[risk];
   return (
-    <span className={`rounded-full px-2 py-0.5 ${cls}`}>
+    <span className={` px-2 py-0.5 ${cls}`}>
       {icon} {riskLabel[risk]}
     </span>
   );
@@ -409,7 +407,7 @@ function ApproveModal({
             <Row k="Action" v={finding.action} />
             <Row k="Monthly saving" v={<span className="num font-semibold text-brand">{sar(finding.monthlySavings)}</span>} />
           </dl>
-          <div className="mt-5 rounded-xl border border-amber/40 bg-amber-soft p-4 text-sm">
+          <div className="mt-5 border border-amber/40 bg-amber-soft p-4 text-sm">
             <p className="font-semibold text-amber">Temporary permission required</p>
             <p className="mt-1 font-mono text-xs text-ink-2">{finding.permission}</p>
             <p className="mt-2 text-xs text-muted">Expires automatically after 15 minutes, then the connection returns to read-only.</p>
@@ -423,18 +421,18 @@ function ApproveModal({
             ))}
           </ul>
           <label className="mt-5 flex items-center gap-2.5 text-sm">
-            <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="h-4 w-4 accent-[#2fd39a]" />
+            <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="h-4 w-4 accent-[#f5b83d]" />
             I reviewed this action and approve it
           </label>
           <div className="mt-6 flex gap-2">
             <button
               disabled={!confirmed}
               onClick={run}
-              className="rounded-full bg-brand px-5 py-2.5 font-semibold text-bg enabled:hover:bg-brand-2 disabled:opacity-40"
+              className="btn-primary  bg-brand px-5 py-2.5 font-semibold text-bg enabled: disabled:opacity-40"
             >
               Approve & apply
             </button>
-            <button onClick={onClose} className="rounded-full border border-line px-5 py-2.5 hover:bg-card-2">
+            <button onClick={onClose} className="btn-ghost  border border-line px-5 py-2.5">
               Cancel
             </button>
           </div>
@@ -449,9 +447,7 @@ function ApproveModal({
               return (
                 <li key={s} className="flex items-center gap-3 text-sm">
                   <span
-                    className={`flex h-7 w-7 items-center justify-center rounded-full text-xs ${
-                      ok ? "bg-brand text-bg" : i === step ? "animate-pulse bg-brand-soft text-brand" : "bg-bg-2 text-muted"
-                    }`}
+                    className={`flex h-7 w-7 items-center justify-center text-xs ${ ok ? "bg-brand text-bg" : i === step ? "animate-pulse bg-brand-soft text-brand" : "bg-bg-2 text-muted" }`}
                   >
                     {ok ? "✓" : <span className="num">{i + 1}</span>}
                   </span>
@@ -462,8 +458,8 @@ function ApproveModal({
           </ol>
           {finished && (
             <div className="rise mt-6">
-              <p className="rounded-xl bg-brand-soft p-3 text-sm text-brand">Done. The action is in the audit log and can be rolled back at any time.</p>
-              <button onClick={onClose} className="mt-4 rounded-full bg-ink px-5 py-2.5 font-semibold text-bg">
+              <p className=" bg-brand-soft p-3 text-sm text-brand">Done. The action is in the audit log and can be rolled back at any time.</p>
+              <button onClick={onClose} className="mt-4 bg-ink px-5 py-2.5 font-semibold text-bg">
                 Close
               </button>
             </div>
@@ -485,7 +481,7 @@ function Connect() {
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {providers.map((p) => (
-          <TiltCard key={p.name} max={6} className={`rounded-2xl border bg-card p-5 ${p.status === "connected" ? "border-brand/50 glow" : "border-line"}`}>
+          <TiltCard key={p.name} max={6} className={` border bg-card p-5 ${p.status === "connected" ? "border-brand/50 glow" : "border-line"}`}>
             <p className="font-display text-lg font-semibold">{p.name}</p>
             <p className={`mt-1 text-sm ${p.status === "connected" ? "text-brand" : "text-muted"}`}>
               {p.status === "connected" ? "✓ " : ""}
@@ -501,7 +497,7 @@ function Connect() {
         </p>
         <ul className="grid gap-2 sm:grid-cols-2">
           {readOnlyPermissions.map((p) => (
-            <li key={p} className="rounded-lg bg-bg-2 px-3 py-2 font-mono text-xs text-ink-2">
+            <li key={p} className=" bg-bg-2 px-3 py-2 font-mono text-xs text-ink-2">
               {p}
             </li>
           ))}
@@ -539,22 +535,22 @@ function Alerts({ onSent }: { onSent: (msg: string) => void }) {
           moment waste is found, with a direct link to approve.
         </p>
         <ul className="mt-5 space-y-2 text-sm text-ink-2">
-          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand" />Real-time alerts for big waste or sudden spend spikes</li>
-          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand" />Weekly summary of savings realized</li>
-          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand" />Monthly PDF report for finance</li>
+          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 bg-brand" />Real-time alerts for big waste or sudden spend spikes</li>
+          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 bg-brand" />Weekly summary of savings realized</li>
+          <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 bg-brand" />Monthly PDF report for finance</li>
         </ul>
-        <button onClick={send} disabled={sending} className="mt-7 rounded-full bg-brand px-5 py-2.5 font-semibold text-bg hover:bg-brand-2 disabled:opacity-50">
+        <button onClick={send} disabled={sending} className="btn-primary mt-7 bg-brand px-5 py-2.5 font-semibold text-bg disabled:opacity-50">
           {sending ? "Sending..." : "Send a test alert"}
         </button>
       </div>
 
-      <TiltCard max={8} className="mx-auto w-full max-w-sm rounded-[2.2rem] border-[7px] border-[#2a2a24] bg-[#0f1a14] shadow-2xl">
-        <div className="rounded-t-[1.6rem] bg-[#1d4a35] px-5 py-3.5">
+      <TiltCard max={8} className="mx-auto w-full max-w-sm border-[7px] border-[#2e241c] bg-[#14100b]">
+        <div className=" bg-[#3a2814] px-5 py-3.5">
           <p className="font-semibold">CloudTrim</p>
           <p className="text-xs text-ink-2">Verified business account</p>
         </div>
         <div className="space-y-3 p-4 pb-8 text-sm">
-          <div className="max-w-[90%] rounded-2xl rounded-tl-sm bg-[#1e1e1a] p-3.5 shadow">
+          <div className="max-w-[90%] bg-[#1f1712] p-3.5">
             <p className="font-semibold text-brand">Savings alert</p>
             <p className="mt-1 text-ink-2">
               We found <span className="num font-semibold text-ink">{sar(totalSavings)}</span> per month in savings on your AWS account:
@@ -569,7 +565,7 @@ function Alerts({ onSent }: { onSent: (msg: string) => void }) {
             <p className="mt-2 text-brand underline">Review & approve</p>
             <p className="num mt-1 text-right text-[10px] text-muted">09:12</p>
           </div>
-          <div className="ml-auto max-w-[70%] rounded-2xl rounded-tr-sm bg-[#1d4a35] p-3.5 shadow">
+          <div className="ml-auto max-w-[70%] bg-[#3a2814] p-3.5">
             Approved stopping dev at night 👍
             <p className="num mt-1 text-right text-[10px] text-ink-2">09:20</p>
           </div>
@@ -588,7 +584,7 @@ function Audit({ entries }: { entries: AuditEntry[] }) {
         <h1 className="font-display text-3xl font-semibold">Audit log</h1>
         <p className="mt-1 text-sm text-muted">Every recommendation, approval and action, with time and actor, ready for NCA and ISO 27001 reviews.</p>
       </div>
-      <div className="overflow-x-auto rounded-2xl border border-line bg-card">
+      <div className="overflow-x-auto border border-line bg-card">
         <table className="w-full text-sm">
           <thead className="bg-bg-2 text-left text-muted">
             <tr>
@@ -615,7 +611,7 @@ function Audit({ entries }: { entries: AuditEntry[] }) {
 /* ---------- Consult ---------- */
 
 function ConsultModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: () => void }) {
-  const input = "w-full rounded-xl border border-line bg-bg-2 px-3.5 py-2.5 placeholder:text-muted focus:border-brand focus:outline-none";
+  const input = "w-full border border-line bg-bg-2 px-3.5 py-2.5 placeholder:text-muted focus:border-brand focus:outline-none";
   return (
     <Modal onClose={onClose}>
       <h2 className="font-display text-2xl font-semibold">Talk to a FinOps engineer</h2>
@@ -631,8 +627,8 @@ function ConsultModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: ()
         <input required type="email" placeholder="Work email" className={input} />
         <textarea placeholder="What do you need help with?" rows={3} className={input} />
         <div className="flex gap-2 pt-2">
-          <button className="rounded-full bg-brand px-5 py-2.5 font-semibold text-bg hover:bg-brand-2">Send request</button>
-          <button type="button" onClick={onClose} className="rounded-full border border-line px-5 py-2.5 hover:bg-card-2">
+          <button className="btn-primary  bg-brand px-5 py-2.5 font-semibold text-bg">Send request</button>
+          <button type="button" onClick={onClose} className="btn-ghost  border border-line px-5 py-2.5">
             Cancel
           </button>
         </div>
@@ -645,8 +641,8 @@ function ConsultModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: ()
 
 function Modal({ children, onClose }: { children: React.ReactNode; onClose?: () => void }) {
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm" onClick={onClose}>
-      <div className="rise max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-line bg-card p-7 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
+      <div className="rise max-h-[90vh] w-full max-w-lg overflow-y-auto border border-line bg-card p-7" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>
@@ -655,7 +651,7 @@ function Modal({ children, onClose }: { children: React.ReactNode; onClose?: () 
 
 function Card({ title, children, className = "", action }: { title: string; children: React.ReactNode; className?: string; action?: React.ReactNode }) {
   return (
-    <section className={`rounded-2xl border border-line bg-card p-5 ${className}`}>
+    <section className={` border border-line bg-card p-5 ${className}`}>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-semibold">{title}</h2>
         {action}
@@ -667,7 +663,7 @@ function Card({ title, children, className = "", action }: { title: string; chil
 
 function Kpi({ label, value, sub, accent, amber }: { label: string; value: number; sub: string; accent?: boolean; amber?: boolean }) {
   return (
-    <TiltCard max={6} className={`rounded-2xl border p-4 ${accent ? "border-brand/50 bg-brand-soft glow" : "border-line bg-card"}`}>
+    <TiltCard max={6} className={` border p-4 ${accent ? "border-brand/50 bg-brand-soft glow" : "border-line bg-card"}`}>
       <p className="text-xs text-muted">{label}</p>
       <p className={`font-display mt-1 text-xl font-semibold sm:text-2xl ${accent ? "text-brand" : amber ? "text-amber" : ""}`}>
         <CountUp value={value} prefix="SAR " />

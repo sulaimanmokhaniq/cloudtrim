@@ -210,3 +210,39 @@ input[type="range"]::-moz-range-thumb {
   background: var(--color-ink);
   border: 3px solid var(--color-brand);
 }
+
+/* Print & PDF styling */
+@media print {
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+  #pdf-report-content, #pdf-report-content * {
+    visibility: visible;
+  }
+  #pdf-report-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+    background: white !important;
+  }
+  @page {
+    margin: 1.5cm;
+    size: auto;
+  }
+}

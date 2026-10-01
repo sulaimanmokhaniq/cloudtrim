@@ -72,14 +72,35 @@ export default function Demo() {
             <Logo />
             <span className=" border border-amber/40 bg-amber-soft px-2.5 py-0.5 text-xs text-amber">Demo data</span>
           </div>
-          <div className="flex items-center gap-3 text-sm">
+          <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="hidden text-muted sm:inline">{companyName}</span>
-            <Link href="/start" className="hidden px-2 text-ink-2 hover:text-ink md:inline">
-              Create account
-            </Link>
             <ThemeToggle />
-            <button onClick={() => setConsultOpen(true)} className="btn-ghost  border border-line px-3.5 py-1.5">
-              Talk to a FinOps engineer
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") window.print();
+              }}
+              className="btn-ghost border border-line px-3 py-1.5 text-xs font-semibold text-ink flex items-center gap-1.5"
+            >
+              <span>📄 PDF Report</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => alert("WhatsApp export is currently under development.")}
+              className="border border-line/60 bg-card/50 px-2.5 py-1.5 text-xs text-muted opacity-60 cursor-not-allowed flex items-center gap-1"
+              title="Currently unavailable"
+            >
+              <span>💬 WhatsApp</span>
+              <span className="text-[9px] bg-line px-1 rounded">(Unavailable)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => alert("Telegram export is currently under development.")}
+              className="border border-line/60 bg-card/50 px-2.5 py-1.5 text-xs text-muted opacity-60 cursor-not-allowed flex items-center gap-1"
+              title="Currently unavailable"
+            >
+              <span>✈️ Telegram</span>
+              <span className="text-[9px] bg-line px-1 rounded">(Unavailable)</span>
             </button>
           </div>
         </div>

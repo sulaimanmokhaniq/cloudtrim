@@ -2,6 +2,7 @@ import Link from "next/link";
 import CloudGlow3D from "@/components/CloudGlow3D";
 import { Reveal } from "@/components/Reveal";
 import { SafetyFlow, SavingsCalculator, TiltCard } from "@/components/Interactive";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/Logo";
 import { TEAM_NAME, company, findings, sar, totalSavings } from "@/lib/data";
 
@@ -30,19 +31,19 @@ const problems = [
 ];
 
 const steps = [
-  { n: "01", title: "Sign up free", body: "One minute, no credit card." },
-  { n: "02", title: "Connect read-only", body: "A one-click IAM role that can read costs and resources, and nothing else." },
-  { n: "03", title: "AI agent scans", body: "Finds waste, forecasts next month and ranks savings by value and risk." },
-  { n: "04", title: "You decide", body: "Get an alert on WhatsApp or Telegram, approve in one click or call a FinOps engineer." },
+  { n: "01", title: "Create account", body: "Name, work email and company. One minute, no credit card." },
+  { n: "02", title: "Connect via API", body: "Paste a read-only API key or create a read-only role. CloudTrim can read costs and resources, and nothing else." },
+  { n: "03", title: "Analyze by AI", body: "The AI agent scans every resource, finds waste and ranks savings by value and risk." },
+  { n: "04", title: "Stats & feedback", body: "Your dashboard shows the numbers and plain-language feedback on what to fix first." },
 ];
 
 const providers = [
-  { name: "STC Cloud", color: "#e8684a" },
-  { name: "SCCC Alibaba", color: "#9fd59a" },
-  { name: "CNTXT", color: "#f5b83d" },
-  { name: "AWS", color: "#f5b83d" },
-  { name: "Azure", color: "#9fd59a" },
-  { name: "Google Cloud", color: "#e8684a" },
+  { name: "STC Cloud", color: "var(--color-amber)" },
+  { name: "SCCC Alibaba", color: "var(--color-sage)" },
+  { name: "CNTXT", color: "var(--color-brand-text)" },
+  { name: "AWS", color: "var(--color-brand-text)" },
+  { name: "Azure", color: "var(--color-sage)" },
+  { name: "Google Cloud", color: "var(--color-amber)" },
 ];
 const compliance = [
   { k: "NCA ECC", v: "National Cybersecurity Authority controls" },
@@ -64,19 +65,20 @@ export default function Home() {
             <a href="#safety" className="hover:text-ink">Safety</a>
             <a href="#pricing" className="hover:text-ink">Pricing</a>
           </nav>
-          <div className="flex items-center gap-1">
-            <Link href="/demo" className="hidden px-4 py-2 text-sm text-ink-2 hover:text-ink sm:block">
+          <div className="flex items-center gap-2">
+            <Link href="/demo" className="hidden px-3 py-2 text-sm text-ink-2 hover:text-ink sm:block">
               Dashboard
             </Link>
-            <Link href="/demo" className="btn-primary arrow bg-brand px-4 py-2 text-sm font-semibold text-bg">
-              Get a demo
+            <ThemeToggle />
+            <Link href="/start" className="btn-primary arrow bg-brand px-4 py-2 text-sm font-semibold text-onbrand">
+              Start free
             </Link>
           </div>
         </div>
       </header>
 
       {/* Hero: the 3D scene bleeds across the whole section */}
-      <section className="ember-mesh relative min-h-[100svh] overflow-hidden">
+      <section data-theme="dark" className="ember-mesh relative min-h-[100svh] overflow-hidden text-ink">
         <CloudGlow3D className="absolute inset-0 hidden lg:block" />
         <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col px-4 pt-32 md:px-6 lg:flex-row lg:items-center lg:pt-16">
           <div className="max-w-xl">
@@ -89,12 +91,12 @@ export default function Home() {
               team&apos;s one-click approval before anything changes.
             </p>
             <div className="rise-4 mt-9 flex flex-wrap gap-3">
-              <Link href="/demo" className="btn-primary arrow bg-brand px-7 py-3.5 font-semibold text-bg">
+              <Link href="/start" className="btn-primary arrow bg-brand px-7 py-3.5 font-semibold text-onbrand">
+                Start free
+              </Link>
+              <Link href="/demo" className="btn-ghost border border-line bg-bg px-7 py-3.5 font-semibold">
                 Explore the live demo
               </Link>
-              <a href="#how" className="btn-ghost border border-line bg-bg px-7 py-3.5 font-semibold">
-                How it works
-              </a>
             </div>
             <p className="rise-4 mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
               <span>6 cloud providers</span>
@@ -154,7 +156,7 @@ export default function Home() {
       {/* How it works */}
       <section id="how" className="relative border-y border-line bg-bg-2">
         <div className="mx-auto max-w-7xl px-4 py-28 md:px-6">
-          <SectionTitle kicker="How it works" title="From connection to savings in four steps." />
+          <SectionTitle kicker="How it works" title="From sign-up to savings in four steps." />
           <ol className="relative mt-14 grid gap-6 md:grid-cols-4">
             <span className="absolute top-6 right-[12%] left-[12%] hidden h-px bg-line md:block" aria-hidden />
             {steps.map((s) => (
@@ -167,6 +169,12 @@ export default function Home() {
               </li>
             ))}
           </ol>
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <Link href="/start" className="btn-primary arrow px-6 py-3 font-semibold">
+              Try the sign-up walkthrough
+            </Link>
+            <span className="text-sm text-muted">Simulated with sample data, takes under a minute.</span>
+          </div>
 
           <div className="mt-16 grid items-center gap-8 lg:grid-cols-2">
             <div className="space-y-4">
@@ -253,7 +261,7 @@ export default function Home() {
               <h2 className="font-display text-3xl font-semibold md:text-4xl">See CloudTrim working now.</h2>
               <p className="mt-2 text-ink-2">An interactive demo on a fictional Saudi company&apos;s AWS account.</p>
             </div>
-            <Link href="/demo" className="btn-primary arrow  bg-brand px-7 py-3.5 font-semibold text-bg">
+            <Link href="/demo" className="btn-primary arrow  bg-brand px-7 py-3.5 font-semibold text-onbrand">
               Open the live demo
             </Link>
           </div>
@@ -286,7 +294,7 @@ function Dot() {
 function CloudIcon({ color }: { color: string }) {
   return (
     <svg width="18" height="12" viewBox="0 0 24 16" aria-hidden>
-      <path d="M6 15a5 5 0 0 1-.6-10A6.5 6.5 0 0 1 17.8 4 4.5 4.5 0 0 1 18.5 15Z" fill={color} />
+      <path d="M6 15a5 5 0 0 1-.6-10A6.5 6.5 0 0 1 17.8 4 4.5 4.5 0 0 1 18.5 15Z" style={{ fill: color }} />
     </svg>
   );
 }
@@ -313,7 +321,7 @@ function MiniStat({ label, value, accent }: { label: string; value: string; acce
 function PriceCard({ title, price, items, highlight }: { title: string; price: string; items: string[]; highlight?: boolean }) {
   return (
     <TiltCard className={` border p-7 ${highlight ? "border-brand/50 bg-card glow" : "border-line bg-card"}`} max={6}>
-      {highlight && <span className="btn-primary absolute top-5 right-5 bg-brand px-2.5 py-0.5 text-xs font-semibold text-bg">Core</span>}
+      {highlight && <span className="btn-primary absolute top-5 right-5 bg-brand px-2.5 py-0.5 text-xs font-semibold text-onbrand">Core</span>}
       <h3 className="text-ink-2">{title}</h3>
       <p className="font-display mt-2 text-2xl font-semibold">{price}</p>
       <ul className="mt-6 space-y-2.5 text-sm text-ink-2">

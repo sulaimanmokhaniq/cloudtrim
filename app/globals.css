@@ -1,40 +1,97 @@
 @import "tailwindcss";
 
-/* CloudTrim "Desert Dusk" identity: ember-black, saffron gold, copper, sage. Deliberately no blue or purple. */
+/* CloudTrim "Matte Burgundy" identity: matte burgundy, sand, sage. Deliberately no blue or purple.
+   Dark is the default; [data-theme="light"] on <html> switches the tokens. Solid colors only. */
 @theme {
-  --color-bg: #0b0806;
-  --color-bg-2: #110c09;
-  --color-card: #17110d;
-  --color-card-2: #1f1712;
-  --color-line: #2e241c;
+  --color-bg: #0c0809;
+  --color-bg-2: #120c0d;
+  --color-card: #191113;
+  --color-card-2: #21171a;
+  --color-line: #33242a;
+  --color-line-strong: #4f3a40;
   --color-ink: #fbf6ee;
   --color-ink-2: #d6cabb;
   --color-muted: #9a8d7f;
-  --color-brand: #f5b83d;
-  --color-brand-2: #e0a128;
-  --color-brand-soft: #f5b83d1f;
-  --color-amber: #e8684a;
-  --color-amber-soft: #e8684a1f;
+  --color-brand: #8e2f3c;
+  --color-brand-2: #74242f;
+  --color-brand-soft: #8e2f3c2e;
+  --color-brand-text: #d48a93;
+  --color-brand-dim: #4a2228;
+  --color-onbrand: #fbf6ee;
+  --color-amber: #c9a46e;
+  --color-amber-soft: #c9a46e1f;
   --color-sage: #9fd59a;
   --color-good: #9fd59a;
-  --color-warn: #e8684a;
+  --color-warn: #c9a46e;
   --color-bad: #f0624d;
   --font-sans: var(--font-inter), system-ui, sans-serif;
   --font-display: var(--font-jakarta), var(--font-inter), system-ui, sans-serif;
 }
 
+:root,
+[data-theme="dark"] {
+  --color-bg: #0c0809;
+  --color-bg-2: #120c0d;
+  --color-card: #191113;
+  --color-card-2: #21171a;
+  --color-line: #33242a;
+  --color-line-strong: #4f3a40;
+  --color-ink: #fbf6ee;
+  --color-ink-2: #d6cabb;
+  --color-muted: #9a8d7f;
+  --color-brand-soft: #8e2f3c2e;
+  --color-brand-text: #d48a93;
+  --color-brand-dim: #4a2228;
+  --color-amber: #c9a46e;
+  --color-amber-soft: #c9a46e1f;
+  --color-sage: #9fd59a;
+  --color-good: #9fd59a;
+  --color-warn: #c9a46e;
+  --color-bad: #f0624d;
+  --grid-line: #ffffff07;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --color-bg: #f8f3ef;
+  --color-bg-2: #f1e9e3;
+  --color-card: #fffbf8;
+  --color-card-2: #f4ece6;
+  --color-line: #e3d5cc;
+  --color-line-strong: #cdb9ad;
+  --color-ink: #21141a;
+  --color-ink-2: #4b3a40;
+  --color-muted: #7f6c72;
+  --color-brand-soft: #8e2f3c14;
+  --color-brand-text: #8e2f3c;
+  --color-brand-dim: #c9a0a6;
+  --color-amber: #93682c;
+  --color-amber-soft: #93682c1a;
+  --color-sage: #3f7f45;
+  --color-good: #3f7f45;
+  --color-warn: #93682c;
+  --color-bad: #b3261e;
+  --grid-line: #21141a0a;
+  color-scheme: light;
+}
+
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-ink);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Burgundy is for fills; text accents use the readable brand-text shade of the current theme */
+.text-brand {
+  color: var(--color-brand-text);
 }
 
 ::selection {
-  background: #f5b83d55;
+  background: #8e2f3c55;
 }
 
 .num {
@@ -49,17 +106,17 @@ body {
 }
 
 .grid-bg {
-  background-image: linear-gradient(#ffffff07 1px, transparent 1px), linear-gradient(90deg, #ffffff07 1px, transparent 1px);
+  background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
 .glow {
-  border-color: #f5b83d !important;
+  border-color: var(--color-brand) !important;
 }
 
 /* Solid hero surface */
 .ember-mesh {
-  background: #0b0806;
+  background: var(--color-bg);
 }
 
 /* Buttons: sharp, solid, chamfered corner. No rounding, shadows or gradients. */
@@ -75,25 +132,27 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .btn-primary {
-  background-color: #f5b83d;
-  color: #0b0806;
+  background-color: var(--color-brand);
+  color: var(--color-onbrand);
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
 }
 .btn-primary:hover {
-  background-color: #fbf6ee;
+  background-color: var(--color-ink);
+  color: var(--color-bg);
 }
 .btn-primary:disabled {
-  background-color: #6b5320;
+  background-color: var(--color-brand-dim);
+  color: var(--color-onbrand);
 }
 .btn-ghost {
-  border-color: #4a3b2e;
-  color: #fbf6ee;
+  border-color: var(--color-line-strong);
+  color: var(--color-ink);
   background-color: transparent;
 }
 .btn-ghost:hover {
-  background-color: #fbf6ee;
-  border-color: #fbf6ee;
-  color: #0b0806;
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-bg);
 }
 .arrow::after {
   content: "→";
@@ -107,7 +166,7 @@ body {
 }
 .lift:hover {
   transform: translateY(-3px);
-  border-color: #f5b83d;
+  border-color: var(--color-brand);
 }
 
 /* Scroll reveal */
@@ -141,13 +200,13 @@ input[type="range"]::-webkit-slider-thumb {
   width: 18px;
   height: 18px;
   border-radius: 0;
-  background: #fbf6ee;
-  border: 3px solid #f5b83d;
+  background: var(--color-ink);
+  border: 3px solid var(--color-brand);
 }
 input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 0;
-  background: #fbf6ee;
-  border: 3px solid #f5b83d;
+  background: var(--color-ink);
+  border: 3px solid var(--color-brand);
 }

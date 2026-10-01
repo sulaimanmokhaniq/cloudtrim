@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CountUp, TiltCard } from "@/components/Interactive";
+import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/Logo";
 import {
   type Finding,
@@ -44,6 +46,12 @@ export default function Demo() {
   const [approving, setApproving] = useState<Finding | null>(null);
   const [consultOpen, setConsultOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [companyName, setCompanyName] = useState(company.name);
+
+  useEffect(() => {
+    const name = new URLSearchParams(window.location.search).get("company")?.trim();
+    if (name) setCompanyName(name.slice(0, 60));
+  }, []);
 
   const realized = findings.filter((f) => done.has(f.id)).reduce((s, f) => s + f.monthlySavings, 0);
 
@@ -65,7 +73,11 @@ export default function Demo() {
             <span className=" border border-amber/40 bg-amber-soft px-2.5 py-0.5 text-xs text-amber">Demo data</span>
           </div>
           <div className="flex items-center gap-3 text-sm">
-            <span className="hidden text-muted sm:inline">{company.name}</span>
+            <span className="hidden text-muted sm:inline">{companyName}</span>
+            <Link href="/start" className="hidden px-2 text-ink-2 hover:text-ink md:inline">
+              Create account
+            </Link>
+            <ThemeToggle />
             <button onClick={() => setConsultOpen(true)} className="btn-ghost  border border-line px-3.5 py-1.5">
               Talk to a FinOps engineer
             </button>
@@ -201,14 +213,14 @@ function TrendChart() {
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Monthly spend for the last six months with October forecast">
         <defs>
           <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="6" height="6" fill="#f5b83d1f" />
-            <line x1="0" y1="0" x2="0" y2="6" stroke="#f5b83d" strokeWidth="2" />
+            <rect width="6" height="6" className="fill-brand-soft" />
+            <line x1="0" y1="0" x2="0" y2="6" className="stroke-brand" strokeWidth="2" />
           </pattern>
         </defs>
         {[0, 25000, 50000, 75000, 100000].map((g) => (
           <g key={g}>
-            <line x1={pad.left} x2={W - pad.right} y1={y(g)} y2={y(g)} stroke="#2e241c" strokeWidth="1" />
-            <text x={pad.left - 8} y={y(g) + 3} fontSize="10" fill="#8a8678" textAnchor="end">
+            <line x1={pad.left} x2={W - pad.right} y1={y(g)} y2={y(g)} className="stroke-line" strokeWidth="1" />
+            <text x={pad.left - 8} y={y(g) + 3} fontSize="10" className="fill-muted" textAnchor="end">
               {g === 0 ? "0" : `${g / 1000}k`}
             </text>
           </g>
@@ -221,11 +233,11 @@ function TrendChart() {
               <rect x={cx - slot / 2} y={pad.top} width={slot} height={H - pad.top - pad.bottom} fill="transparent" />
               <path
                 d={`M${cx - barW / 2},${y(0)} V${top + 4} q0,-4 4,-4 H${cx + barW / 2 - 4} q4,0 4,4 V${y(0)} Z`}
-                fill={m.forecast ? "url(#hatch)" : "#f5b83d"}
+                fill={m.forecast ? "url(#hatch)" : "var(--color-brand)"}
                 opacity={hover === null || hover === i ? 1 : 0.45}
                 style={{ transition: "opacity .2s" }}
               />
-              <text x={cx} y={H - 10} fontSize="11" fill="#c9c5b8" textAnchor="middle">
+              <text x={cx} y={H - 10} fontSize="11" className="fill-ink-2" textAnchor="middle">
                 {m.month}
               </text>
             </g>
@@ -242,7 +254,7 @@ function TrendChart() {
         </div>
       )}
       <p className="mt-2 flex items-center gap-2 text-xs text-muted">
-        <span className="inline-block h-3 w-3" style={{ background: "repeating-linear-gradient(45deg,#f5b83d 0 2px,#f5b83d1f 2px 5px)" }} />
+        <span className="inline-block h-3 w-3" style={{ background: "repeating-linear-gradient(45deg,var(--color-brand) 0 2px,var(--color-brand-soft) 2px 5px)" }} />
         October is the AI agent&apos;s forecast
       </p>
     </div>
@@ -308,7 +320,7 @@ function FindingCard({ f, done, onApprove, onExplain }: { f: Finding; done: bool
   }
 
   return (
-    <article className={` border bg-card p-5 transition-colors ${done ? "border-brand/50" : "border-line hover:border-[#3a2f26]"}`}>
+    <article className={` border bg-card p-5 transition-colors ${done ? "border-brand/50" : "border-line hover:border-muted"}`}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -341,7 +353,7 @@ function FindingCard({ f, done, onApprove, onExplain }: { f: Finding; done: bool
         {done ? (
           <span className=" bg-brand-soft px-4 py-2 text-sm font-semibold text-brand">✓ Applied</span>
         ) : (
-          <button onClick={onApprove} className="btn-primary  bg-brand px-4 py-2 text-sm font-semibold text-bg">
+          <button onClick={onApprove} className="btn-primary  bg-brand px-4 py-2 text-sm font-semibold text-onbrand">
             Review & approve
           </button>
         )}
@@ -421,14 +433,14 @@ function ApproveModal({
             ))}
           </ul>
           <label className="mt-5 flex items-center gap-2.5 text-sm">
-            <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="h-4 w-4 accent-[#f5b83d]" />
+            <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="h-4 w-4 accent-brand" />
             I reviewed this action and approve it
           </label>
           <div className="mt-6 flex gap-2">
             <button
               disabled={!confirmed}
               onClick={run}
-              className="btn-primary  bg-brand px-5 py-2.5 font-semibold text-bg enabled: disabled:opacity-40"
+              className="btn-primary  bg-brand px-5 py-2.5 font-semibold text-onbrand enabled: disabled:opacity-40"
             >
               Approve & apply
             </button>
@@ -447,7 +459,7 @@ function ApproveModal({
               return (
                 <li key={s} className="flex items-center gap-3 text-sm">
                   <span
-                    className={`flex h-7 w-7 items-center justify-center text-xs ${ ok ? "bg-brand text-bg" : i === step ? "animate-pulse bg-brand-soft text-brand" : "bg-bg-2 text-muted" }`}
+                    className={`flex h-7 w-7 items-center justify-center text-xs ${ ok ? "bg-brand text-onbrand" : i === step ? "animate-pulse bg-brand-soft text-brand" : "bg-bg-2 text-muted" }`}
                   >
                     {ok ? "✓" : <span className="num">{i + 1}</span>}
                   </span>
@@ -539,18 +551,18 @@ function Alerts({ onSent }: { onSent: (msg: string) => void }) {
           <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 bg-brand" />Weekly summary of savings realized</li>
           <li className="flex gap-2.5"><span className="mt-2 h-1.5 w-1.5 bg-brand" />Monthly PDF report for finance</li>
         </ul>
-        <button onClick={send} disabled={sending} className="btn-primary mt-7 bg-brand px-5 py-2.5 font-semibold text-bg disabled:opacity-50">
+        <button onClick={send} disabled={sending} className="btn-primary mt-7 bg-brand px-5 py-2.5 font-semibold text-onbrand disabled:opacity-50">
           {sending ? "Sending..." : "Send a test alert"}
         </button>
       </div>
 
-      <TiltCard max={8} className="mx-auto w-full max-w-sm border-[7px] border-[#2e241c] bg-[#14100b]">
-        <div className=" bg-[#3a2814] px-5 py-3.5">
+      <TiltCard max={8} className="mx-auto w-full max-w-sm border-[7px] border-[#33242a] bg-[#130c0e]">
+        <div className=" bg-[#4a2228] px-5 py-3.5">
           <p className="font-semibold">CloudTrim</p>
           <p className="text-xs text-ink-2">Verified business account</p>
         </div>
         <div className="space-y-3 p-4 pb-8 text-sm">
-          <div className="max-w-[90%] bg-[#1f1712] p-3.5">
+          <div className="max-w-[90%] bg-[#21171a] p-3.5">
             <p className="font-semibold text-brand">Savings alert</p>
             <p className="mt-1 text-ink-2">
               We found <span className="num font-semibold text-ink">{sar(totalSavings)}</span> per month in savings on your AWS account:
@@ -565,7 +577,7 @@ function Alerts({ onSent }: { onSent: (msg: string) => void }) {
             <p className="mt-2 text-brand underline">Review & approve</p>
             <p className="num mt-1 text-right text-[10px] text-muted">09:12</p>
           </div>
-          <div className="ml-auto max-w-[70%] bg-[#3a2814] p-3.5">
+          <div className="ml-auto max-w-[70%] bg-[#4a2228] p-3.5">
             Approved stopping dev at night 👍
             <p className="num mt-1 text-right text-[10px] text-ink-2">09:20</p>
           </div>
@@ -627,7 +639,7 @@ function ConsultModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: ()
         <input required type="email" placeholder="Work email" className={input} />
         <textarea placeholder="What do you need help with?" rows={3} className={input} />
         <div className="flex gap-2 pt-2">
-          <button className="btn-primary  bg-brand px-5 py-2.5 font-semibold text-bg">Send request</button>
+          <button className="btn-primary  bg-brand px-5 py-2.5 font-semibold text-onbrand">Send request</button>
           <button type="button" onClick={onClose} className="btn-ghost  border border-line px-5 py-2.5">
             Cancel
           </button>

@@ -7,8 +7,8 @@ import * as THREE from "three";
 // laptop running CloudTrim, and a floating crystal above it. Pointer parallax, idle bob,
 // flowing pulses. Falls back to the CSS background if WebGL is unavailable.
 
-const GOLD = "#f5b83d";
-const COPPER = "#e8684a";
+const GOLD = "#8e2f3c";
+const COPPER = "#c9a46e";
 const SAGE = "#9fd59a";
 
 const CLOUDS = [
@@ -67,7 +67,7 @@ function labelTexture(text: string, color: string) {
   g.font = "600 44px Inter, system-ui, sans-serif";
   const w = g.measureText(text).width + 70;
   const x = (512 - w) / 2;
-  g.fillStyle = "rgba(23,17,13,0.85)";
+  g.fillStyle = "rgba(25,17,19,0.85)";
   g.strokeStyle = color + "99";
   g.lineWidth = 3;
   g.beginPath();
@@ -91,10 +91,10 @@ function screenTexture() {
   c.width = 1024;
   c.height = 640;
   const g = c.getContext("2d")!;
-  g.fillStyle = "#120d0a";
+  g.fillStyle = "#130c0e";
   g.fillRect(0, 0, 1024, 640);
   // header
-  g.fillStyle = "#1f1712";
+  g.fillStyle = "#21171a";
   g.fillRect(0, 0, 1024, 70);
   g.fillStyle = GOLD;
   g.fillRect(32, 24, 10, 24);
@@ -115,7 +115,7 @@ function screenTexture() {
   ];
   tiles.forEach(([l, v, col], i) => {
     const x = 32 + i * 326;
-    g.fillStyle = "#1a130e";
+    g.fillStyle = "#1b1215";
     g.beginPath();
     g.roundRect(x, 96, 306, 120, 18);
     g.fill();
@@ -127,7 +127,7 @@ function screenTexture() {
     g.fillText(v, x + 22, 190);
   });
   // bars
-  g.fillStyle = "#1a130e";
+  g.fillStyle = "#1b1215";
   g.beginPath();
   g.roundRect(32, 236, 600, 372, 18);
   g.fill();
@@ -141,7 +141,7 @@ function screenTexture() {
     g.fill();
   });
   // list
-  g.fillStyle = "#1a130e";
+  g.fillStyle = "#1b1215";
   g.beginPath();
   g.roundRect(652, 236, 340, 372, 18);
   g.fill();
@@ -194,7 +194,7 @@ export default function CloudGlow3D({ className = "" }: { className?: string }) 
     const key = new THREE.DirectionalLight(0xfff0dc, 1.4);
     key.position.set(4, 10, 8);
     scene.add(key);
-    const crystalLight = new THREE.PointLight(0xf5b83d, 30, 14);
+    const crystalLight = new THREE.PointLight(0x8e2f3c, 30, 14);
     scene.add(crystalLight);
 
     const root = new THREE.Group();
@@ -217,7 +217,7 @@ export default function CloudGlow3D({ className = "" }: { className?: string }) 
     const laptop = new THREE.Group();
     laptop.position.set(0, -1.6, 0.6);
     root.add(laptop);
-    const bodyMat = new THREE.MeshStandardMaterial({ color: 0x241a13, roughness: 0.45, metalness: 0.6 });
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0x26181c, roughness: 0.45, metalness: 0.6 });
     const baseGeo = new THREE.BoxGeometry(5.2, 0.16, 3.4);
     const base = new THREE.Mesh(baseGeo, bodyMat);
     laptop.add(base);
@@ -243,8 +243,8 @@ export default function CloudGlow3D({ className = "" }: { className?: string }) 
     // Crystal
     const crystalGeo = new THREE.OctahedronGeometry(0.62, 0);
     const crystalMat = new THREE.MeshStandardMaterial({
-      color: 0xffd98a,
-      emissive: 0xf5b83d,
+      color: 0xe7a3ac,
+      emissive: 0x8e2f3c,
       emissiveIntensity: 0.9,
       roughness: 0.15,
       metalness: 0.4,
@@ -337,7 +337,7 @@ export default function CloudGlow3D({ className = "" }: { className?: string }) 
     }
     const pGeo = new THREE.BufferGeometry();
     pGeo.setAttribute("position", new THREE.BufferAttribute(pts, 3));
-    const pMat = new THREE.PointsMaterial({ color: 0xf5b83d, size: 0.06, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false });
+    const pMat = new THREE.PointsMaterial({ color: 0x8e2f3c, size: 0.06, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false });
     const embers = new THREE.Points(pGeo, pMat);
     root.add(embers);
     disposables.push(pGeo, pMat);

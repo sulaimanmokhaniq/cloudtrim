@@ -87,8 +87,8 @@ export function SavingsCalculator() {
           step={5000}
           value={bill}
           onChange={(e) => setBill(Number(e.target.value))}
-          className="mt-5 h-2 w-full cursor-pointer appearance-none accent-[#f5b83d]"
-          style={{ background: `linear-gradient(90deg, #f5b83d ${pct}%, #2e241c ${pct}%)` }}
+          className="mt-5 h-2 w-full cursor-pointer appearance-none accent-brand"
+          style={{ background: `linear-gradient(90deg, var(--color-brand) ${pct}%, var(--color-line) ${pct}%)` }}
         />
         <div className="mt-2 flex justify-between text-xs text-muted">
           <span>SAR 10k</span>
@@ -121,7 +121,7 @@ function Bars({ bill, low, high }: { bill: number; low: number; high: number }) 
   return (
     <div>
       <div className="flex h-3 overflow-hidden">
-        <div className="bg-[#3a2f26] transition-all duration-500" style={{ width: `${keep}%` }} />
+        <div className="bg-line transition-all duration-500" style={{ width: `${keep}%` }} />
         <div className="ml-0.5 bg-brand transition-all duration-500" style={{ width: `${100 - keep}%` }} />
       </div>
       <div className="mt-2 flex justify-between text-xs text-muted">
@@ -166,7 +166,7 @@ export function SafetyFlow() {
               className={`relative flex w-full items-center gap-4 px-1 py-2.5 text-left transition-colors ${ active === i ? "text-ink" : "text-muted hover:text-ink-2" }`}
             >
               <span
-                className={`num relative z-10 flex h-10 w-10 shrink-0 items-center justify-center border text-sm font-semibold transition-all ${ active === i ? "border-brand bg-brand text-bg" : i < active ? "border-brand/50 bg-card text-brand" : "border-line bg-card" }`}
+                className={`num relative z-10 flex h-10 w-10 shrink-0 items-center justify-center border text-sm font-semibold transition-all ${ active === i ? "border-brand bg-brand text-onbrand" : i < active ? "border-brand/50 bg-card text-brand" : "border-line bg-card" }`}
               >
                 {i + 1}
               </span>

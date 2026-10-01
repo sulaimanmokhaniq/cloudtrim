@@ -203,7 +203,7 @@ export default function Start() {
   };
 
   return (
-    <div className="min-h-screen bg-bg text-ink">
+    <div className="min-h-screen text-ink">
       <header className="sticky top-0 z-40 border-b border-line bg-card/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 md:px-6">
           <Logo />

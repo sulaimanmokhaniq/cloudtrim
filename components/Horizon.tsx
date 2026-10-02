@@ -105,17 +105,27 @@ function bank(seed: number, base: number, rMin: number, rMax: number): Puff[] {
 const BACK_CLOUDS = bank(7, 128, 44, 74);
 const FRONT_CLOUDS = bank(23, 160, 34, 58);
 
-// Small floating clouds: puffy top, soft rounded underside (no flat base)
-const SMALL_CLOUDS = [
-  [170, 232, 0.4],
-  [330, 222, 0.58],
-  [520, 262, 0.82],
-  [610, 212, 0.66],
-  [790, 236, 0.74],
-  [960, 214, 0.5],
-  [1060, 264, 0.9],
-  [1240, 230, 0.62],
-] as const;
+// Our own flat cloud shapes (in the style of the reference): domes on a rounded base,
+// with a fold line inside. Three variants, placed many times at different sizes.
+type Variant = { puffs: Puff[]; base: [number, number]; fold?: [number, number, number] };
+const VARIANTS: Variant[] = [
+  { puffs: [{ cx: -18, cy: -10, r: 30 }, { cx: 20, cy: -2, r: 22 }, { cx: -44, cy: 6, r: 14 }, { cx: 42, cy: 8, r: 12 }], base: [-58, 114], fold: [-14, 10, 18] },
+  { puffs: [{ cx: -14, cy: -8, r: 28 }, { cx: 18, cy: -16, r: 22 }, { cx: 38, cy: 0, r: 16 }, { cx: -40, cy: 4, r: 16 }], base: [-56, 112], fold: [14, 2, 16] },
+  { puffs: [{ cx: -26, cy: -2, r: 18 }, { cx: 4, cy: -8, r: 24 }, { cx: 30, cy: 0, r: 16 }], base: [-52, 102], fold: [2, 8, 12] },
+];
+
+// [x, y, scale, variant]
+type Spot = readonly [number, number, number, number];
+// Plain clouds drifting in the sky above the cloud bank
+const SKY_CLOUDS: Spot[] = [
+  [110, 70, 0.6, 2], [330, 44, 0.85, 0], [590, 80, 0.5, 1], [840, 40, 0.75, 2], [1060, 74, 0.55, 0], [1290, 46, 0.9, 1],
+];
+// Burgundy clouds with a light outline, floating below the bank
+const LOW_CLOUDS: Spot[] = [
+  [40, 262, 0.55, 2], [170, 236, 0.8, 0], [300, 300, 1.15, 1], [420, 228, 0.5, 2], [520, 262, 0.9, 2],
+  [660, 312, 1.4, 0], [780, 236, 0.7, 1], [890, 286, 0.85, 2], [1000, 232, 0.6, 0], [1120, 304, 1.3, 1],
+  [1240, 246, 0.8, 0], [1350, 290, 0.65, 2], [1420, 230, 0.45, 1],
+];
 
 // Arc inside a cloud, drawn in the sky color, like the fold lines in a flat illustration
 function fold(cx: number, cy: number, r: number) {
@@ -125,18 +135,22 @@ function fold(cx: number, cy: number, r: number) {
   return `M${p(a0)} A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${p(a1)}`;
 }
 
-function SmallCloud({ x, y, s, fill, line }: { x: number; y: number; s: number; fill: string; line: string }) {
+function Cloud({ spot, fill, line, outline }: { spot: Spot; fill: string; line: string; outline?: string }) {
+  const [x, y, s, v] = spot;
+  const { puffs, base, fold: f } = VARIANTS[v];
+  const shape = (
+    <>
+      {puffs.map((p, i) => (
+        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} />
+      ))}
+      <rect x={base[0]} y="0" width={base[1]} height="24" rx="12" />
+    </>
+  );
   return (
     <g transform={`translate(${x} ${y}) scale(${s})`}>
-      <g style={{ fill }}>
-        <circle cx="-34" cy="-2" r="20" />
-        <circle cx="0" cy="-16" r="32" />
-        <circle cx="34" cy="-2" r="22" />
-        <circle cx="-50" cy="8" r="10" />
-        <ellipse cx="0" cy="10" rx="62" ry="16" />
-      </g>
-      <path d={fold(4, 6, 20)} fill="none" stroke={line} strokeWidth="4" />
-      <path d={fold(36, 10, 12)} fill="none" stroke={line} strokeWidth="3.5" />
+      {outline && <g style={{ fill: outline, stroke: outline }} strokeWidth="12">{shape}</g>}
+      <g style={{ fill }}>{shape}</g>
+      {f && <path d={fold(f[0], f[1], f[2])} fill="none" stroke={line} strokeWidth="4" />}
     </g>
   );
 }
@@ -219,7 +233,7 @@ type Props = {
   accent?: string;
 };
 
-const HEIGHT = { clouds: 300, mountains: 200, waves: 190 };
+const HEIGHT = { clouds: 350, mountains: 200, waves: 190 };
 
 export function Horizon({ kind, from, to, back, mid, accent }: Props) {
   const ref = useEasedVar<HTMLDivElement>("--s", viewportPos);
@@ -235,6 +249,11 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
       >
         {kind === "clouds" && (
           <>
+            <g style={shift(-14, 8)}>
+              {SKY_CLOUDS.map((c, i) => (
+                <Cloud key={i} spot={c} fill={back} line={from} />
+              ))}
+            </g>
             <g style={{ ...shift(-24, 6), fill: back }}>
               {BACK_CLOUDS.map((c, i) => (
                 <circle key={i} cx={c.cx} cy={c.cy} r={c.r} />
@@ -249,8 +268,8 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
             </g>
             {accent && (
               <g style={shift(50, -8)}>
-                {SMALL_CLOUDS.map(([x, y, s], i) => (
-                  <SmallCloud key={i} x={x} y={y} s={s} fill={accent} line={to} />
+                {LOW_CLOUDS.map((c, i) => (
+                  <Cloud key={i} spot={c} fill={accent} line={to} outline={to} />
                 ))}
               </g>
             )}

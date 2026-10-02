@@ -17,6 +17,7 @@ const problems = [
 // Placeholder until the team sets real prices
 const PRICE_PER_RESOURCE = "SAR 15";
 const CTA = "Run free scan";
+const GITHUB_URL = "https://github.com/sulaimanmokhaniq/cloudtrim";
 
 const steps = [
   { n: "01", title: "Create account", body: "Name, work email and company. One minute, no credit card." },
@@ -210,6 +211,12 @@ export default function Home() {
       <footer className="bg-bg py-10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted md:flex-row md:px-6">
           <Logo />
+          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2" aria-label="Footer">
+            <Link href="/demo" className="hover:text-ink">Demo</Link>
+            <Link href="/start" className="hover:text-ink">Sign up</Link>
+            <Link href="/privacy" className="hover:text-ink">Privacy</Link>
+            <a href={GITHUB_URL} className="hover:text-ink">GitHub</a>
+          </nav>
           <span>{TEAM_NAME} · VentureX 2026</span>
         </div>
       </footer>

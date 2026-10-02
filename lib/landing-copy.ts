@@ -66,7 +66,7 @@ export const en = {
   safety: {
     kicker: "Safety first",
     title: "AI recommends, humans decide.",
-    body: "The connection is read-only by default. Changes need a separate, opt-in permission scoped to one action, that expires on its own.",
+    body: "The connection is read-only by default. Changes need a separate opt-in permission that covers one action and expires on its own.",
     step: "Step {n} of {of}",
     steps: [
       { t: "Read-only scan", d: "IAM role can read costs and resources. It cannot change anything." },
@@ -178,7 +178,7 @@ export const ar: LandingCopy = {
   safety: {
     kicker: "الأمان أولًا",
     title: "الذكاء الاصطناعي يقترح، والإنسان يقرر.",
-    body: "الاتصال للقراءة فقط افتراضيًا. أي تغيير يحتاج صلاحية منفصلة واختيارية، محصورة في إجراء واحد وتنتهي تلقائيًا.",
+    body: "الاتصال للقراءة فقط افتراضيًا. أي تغيير يحتاج صلاحية منفصلة واختيارية تغطي إجراءً واحدًا وتنتهي تلقائيًا.",
     step: "الخطوة {n} من {of}",
     steps: [
       { t: "فحص للقراءة فقط", d: "دور IAM يقرأ التكاليف والموارد فقط، ولا يستطيع تغيير أي شيء." },

@@ -14,7 +14,7 @@ export const en = {
   hero: {
     kicker: "AI FinOps · Saudi Arabia",
     // [plain, brand word, plain, amber word, plain]
-    title: ["Trim the ", "cloud", ". Keep the ", "control", "."],
+    title: ["Trim the ", "cloud", ", keep the ", "control", "."],
     body: "CloudTrim's AI agent scans your clouds with read-only access, finds the waste, and waits for your team's one-click approval before anything changes.",
   },
   card: {

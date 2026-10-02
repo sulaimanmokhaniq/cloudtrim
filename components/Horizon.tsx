@@ -84,26 +84,6 @@ function rng(seed: number) {
   };
 }
 
-type Puff = { cx: number; cy: number; r: number };
-
-// A cumulus bank: big puffs of uneven height, each with smaller puffs on its shoulders
-function bank(seed: number, base: number, rMin: number, rMax: number): Puff[] {
-  const rand = rng(seed);
-  const out: Puff[] = [];
-  let x = -80;
-  while (x < 1580) {
-    const r = rMin + rand() * (rMax - rMin);
-    const cy = base + (rand() - 0.5) * 18;
-    out.push({ cx: x, cy, r });
-    if (rand() > 0.35) out.push({ cx: x - r * 0.45, cy: cy - r * 0.55, r: r * (0.42 + rand() * 0.12) });
-    if (rand() > 0.5) out.push({ cx: x + r * 0.5, cy: cy - r * 0.45, r: r * (0.36 + rand() * 0.12) });
-    x += r * (1.1 + rand() * 0.4);
-  }
-  return out;
-}
-
-const BACK_CLOUDS = bank(7, 128, 44, 74);
-const FRONT_CLOUDS = bank(23, 160, 34, 58);
 
 // Cloud artwork from the reference site (public/clouds), split into a body mask and a
 // line mask so both parts can be painted in our theme colors: [width, height] in px
@@ -121,11 +101,26 @@ const SKY_CLOUDS: Spot[] = [
   [120, 96, 0.7, "plain-1"], [380, 80, 0.55, "plain-2"], [640, 100, 0.6, "plain-1"],
   [900, 112, 0.45, "plain-3"], [1150, 98, 0.7, "plain-2"], [1360, 82, 0.6, "plain-1"],
 ];
-// Light clouds piled on the top of the bank
-const BANK_CLOUDS: Spot[] = [
-  [140, 190, 0.8, "plain-1"], [470, 186, 0.8, "plain-2"], [760, 192, 0.6, "plain-2"],
-  [1040, 184, 0.9, "plain-1"], [1300, 190, 0.85, "plain-1"],
-];
+// A continuous cloud line made only of the cloud artwork: plain clouds of mixed sizes,
+// overlapping side by side, with their bottoms sunk into a solid band
+const MAX_SCALE: Record<string, number> = { "plain-1": 1.35, "plain-2": 1.15, "plain-3": 0.55 };
+function cloudRow(seed: number, bottom: number, maxH: number): Spot[] {
+  const rand = rng(seed);
+  const arts = ["plain-1", "plain-2", "plain-3"] as const;
+  const out: Spot[] = [];
+  let x = -120;
+  while (x < 1560) {
+    const art = arts[Math.floor(rand() * 3)];
+    const [w, ht] = CLOUD_ART[art];
+    const s = Math.min(MAX_SCALE[art], (maxH / ht) * (0.6 + rand() * 0.4));
+    out.push([x + (w * s) / 2, bottom + (rand() - 0.5) * 14, s, art]);
+    x += w * s * (0.55 + rand() * 0.2);
+  }
+  return out;
+}
+const BACK_ROW = cloudRow(7, 150, 105);
+const FRONT_ROW = cloudRow(23, 196, 100);
+
 // Burgundy clouds with a light outline floating below the bank, many sizes
 const LOW_CLOUDS: Spot[] = [
   [50, 262, 0.7, "red-1"], [170, 248, 0.9, "red-5"], [300, 318, 1.3, "red-4"], [420, 244, 0.7, "red-6"],
@@ -261,20 +256,17 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
                 <Cloud key={i} spot={c} uid={uid} fill={back} />
               ))}
             </g>
-            <g style={{ ...shift(-24, 20), fill: back }}>
-              {BACK_CLOUDS.map((c, i) => (
-                <circle key={i} cx={c.cx} cy={c.cy} r={c.r} />
+            <g style={shift(-24, 20)}>
+              {BACK_ROW.map((c, i) => (
+                <Cloud key={i} spot={c} uid={uid} fill={back} />
               ))}
-              <rect x="-80" y="128" width="1640" height={h} />
+              <rect x="-80" y="140" width="1640" height={h} style={{ fill: back }} />
             </g>
-            <g style={{ ...shift(30, -10), fill: to }}>
-              {FRONT_CLOUDS.map((c, i) => (
-                <circle key={i} cx={c.cx} cy={c.cy} r={c.r} />
-              ))}
-              <rect x="-80" y="160" width="1640" height={h} />
-              {BANK_CLOUDS.map((c, i) => (
+            <g style={shift(30, -10)}>
+              {FRONT_ROW.map((c, i) => (
                 <Cloud key={i} spot={c} uid={uid} fill={to} />
               ))}
+              <rect x="-80" y="186" width="1640" height={h} style={{ fill: to }} />
             </g>
             {accent && (
               <g style={shift(50, -36)}>

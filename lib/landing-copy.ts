@@ -14,7 +14,7 @@ export const en = {
   hero: {
     kicker: "AI FinOps · Saudi Arabia",
     // [plain, brand word, plain, amber word, plain]
-    title: ["Every riyal of your ", "cloud", ", working. Every action, ", "approved", "."],
+    title: ["Trim the ", "cloud", ". Keep the ", "control", "."],
     body: "CloudTrim's AI agent scans your clouds with read-only access, finds the waste, and waits for your team's one-click approval before anything changes.",
   },
   card: {
@@ -126,7 +126,7 @@ export const ar: LandingCopy = {
   demo: "شاهد العرض",
   hero: {
     kicker: "إدارة تكاليف السحابة بالذكاء الاصطناعي · السعودية",
-    title: ["كل ريال في ", "سحابتك", " يعمل لصالحك. وكل إجراء ", "بموافقتك", "."],
+    title: ["وفّر في ", "سحابتك", "… والقرار ", "بيدك", "."],
     body: "يفحص وكيل CloudTrim الذكي سحاباتك بصلاحية قراءة فقط، ويكتشف الهدر، ولا يغيّر شيئًا قبل موافقة فريقك بنقرة واحدة.",
   },
   card: {

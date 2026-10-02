@@ -65,7 +65,7 @@ export const en = {
   },
   safety: {
     kicker: "Safety first",
-    title: "AI recommends. Humans decide.",
+    title: "AI recommends, humans decide.",
     body: "The connection is read-only by default. Changes need a separate, opt-in permission scoped to one action, that expires on its own.",
     step: "Step {n} of {of}",
     steps: [

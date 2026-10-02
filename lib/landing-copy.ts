@@ -12,7 +12,7 @@ export const en = {
   cta: "Run free scan",
   demo: "See the demo",
   hero: {
-    kicker: "AI FinOps · Saudi Arabia & GCC",
+    kicker: "AI FinOps · Saudi Arabia",
     // [plain, brand word, plain, amber word, plain]
     title: ["Every riyal of your ", "cloud", ", working. Every action, ", "approved", "."],
     body: "CloudTrim's AI agent scans your clouds with read-only access, finds the waste, and waits for your team's one-click approval before anything changes.",
@@ -126,7 +126,7 @@ export const ar: LandingCopy = {
   cta: "ابدأ فحصًا مجانيًا",
   demo: "شاهد العرض",
   hero: {
-    kicker: "إدارة تكاليف السحابة بالذكاء الاصطناعي · السعودية والخليج",
+    kicker: "إدارة تكاليف السحابة بالذكاء الاصطناعي · السعودية",
     title: ["كل ريال في ", "سحابتك", " يعمل لصالحك. وكل إجراء ", "بموافقتك", "."],
     body: "يفحص وكيل CloudTrim الذكي سحاباتك بصلاحية قراءة فقط، ويكتشف الهدر، ولا يغيّر شيئًا قبل موافقة فريقك بنقرة واحدة.",
     points: ["6 مزودي سحابة", "قراءة فقط افتراضيًا", "كل إجراء بموافقة بشرية"],

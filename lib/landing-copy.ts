@@ -51,16 +51,6 @@ export const en = {
       },
     ],
   },
-  how: {
-    kicker: "How it works",
-    title: "From sign-up to savings in four steps.",
-    steps: [
-      { title: "Create account", body: "Name, work email and company. One minute, no credit card." },
-      { title: "Connect read-only", body: "Paste a read-only API key or create a read-only role. CloudTrim can read costs and resources, and nothing else." },
-      { title: "AI analysis", body: "The AI agent scans every resource, finds waste and ranks savings by value and risk." },
-      { title: "Approve and save", body: "Your dashboard shows the numbers in plain language. You approve each fix with one click." },
-    ],
-  },
   compare: {
     kicker: "Why CloudTrim",
     title: "Built for Saudi SMEs, not adapted for them.",
@@ -172,16 +162,6 @@ export const ar: LandingCopy = {
         stat: "12",
         title: "شهرًا مدة عقود الأدوات الكبرى، وهذا يبعدها عن الشركات الصغيرة والمتوسطة",
       },
-    ],
-  },
-  how: {
-    kicker: "كيف يعمل",
-    title: "من التسجيل إلى التوفير في أربع خطوات.",
-    steps: [
-      { title: "أنشئ حسابًا", body: "الاسم والبريد واسم الشركة. دقيقة واحدة وبدون بطاقة." },
-      { title: "اربط للقراءة فقط", body: "الصق مفتاحًا للقراءة فقط أو أنشئ دورًا للقراءة فقط. يقرأ CloudTrim التكاليف والموارد ولا شيء غيرها." },
-      { title: "تحليل بالذكاء الاصطناعي", body: "يفحص الوكيل الذكي كل مورد، ويكتشف الهدر، ويرتب فرص التوفير حسب القيمة والمخاطرة." },
-      { title: "وافق ووفّر", body: "تعرض لوحتك الأرقام بلغة واضحة، وتوافق على كل إصلاح بنقرة واحدة." },
     ],
   },
   compare: {

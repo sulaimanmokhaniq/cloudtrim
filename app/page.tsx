@@ -8,23 +8,15 @@ import { Logo } from "@/components/Logo";
 import { TEAM_NAME, company, findings, sar, totalSavings } from "@/lib/data";
 
 const problems = [
-  {
-    stat: "~27%",
-    title: "of cloud spend is wasted",
-  },
-  {
-    stat: "Local",
-    title: "clouds left out by global tools",
-  },
-  {
-    stat: "1 click",
-    title: "can cause downtime",
-  },
-  {
-    stat: "Fixed",
-    title: "enterprise subscriptions",
-  },
+  { stat: "27%", title: "of cloud spend is wasted on idle and oversized resources" },
+  { stat: "3", title: "local clouds (STC, SCCC, CNTXT) that global FinOps tools leave out" },
+  { stat: "1", title: "wrong click on an automated fix can take production down" },
+  { stat: "12", title: "month contracts that put enterprise FinOps tools out of reach for SMEs" },
 ];
+
+// Placeholder until the team sets real prices
+const PRICE_PER_RESOURCE = "SAR 15";
+const CTA = "Run free scan";
 
 const steps = [
   { n: "01", title: "Create account", body: "Name, work email and company. One minute, no credit card." },
@@ -67,7 +59,7 @@ export default function Home() {
             </Link>
             <ThemeToggle />
             <Link href="/start" className="btn-primary arrow bg-brand px-4 py-2 text-sm font-semibold text-onbrand">
-              Start
+              {CTA}
             </Link>
           </div>
         </div>
@@ -86,7 +78,7 @@ export default function Home() {
           </p>
           <div className="rise-4 mt-9 flex flex-wrap gap-3">
             <Link href="/start" className="btn-primary arrow bg-brand px-7 py-3.5 font-semibold text-onbrand">
-              Start now
+              {CTA}
             </Link>
           </div>
           <p className="rise-4 mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
@@ -126,8 +118,8 @@ export default function Home() {
             {problems.map((p, i) => (
               <Reveal key={p.title} delay={i * 90}>
                 <TiltCard className="h-full border border-line bg-card p-6 md:p-7 text-center flex flex-col items-center justify-center">
-                  <p className="font-display text-4xl font-semibold text-amber">{p.stat}</p>
-                  <h3 className="mt-3 font-semibold text-ink leading-snug">{p.title}</h3>
+                  <p className="font-display text-4xl font-semibold text-brand">{p.stat}</p>
+                  <h3 className="mt-3 font-medium text-ink leading-snug">{p.title}</h3>
                 </TiltCard>
               </Reveal>
             ))}
@@ -158,16 +150,17 @@ export default function Home() {
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
             <div>
               <p className="micro text-brand">Compliance</p>
-              <h2 className="font-display mt-3 text-4xl font-bold tracking-tight md:text-5xl">Every cloud you use, in one dashboard.</h2>
+              <h2 className="font-display mt-3 text-4xl font-bold tracking-tight md:text-5xl">Aligned with Saudi rules from day one.</h2>
               <p className="mt-5 text-base leading-8 text-ink-2">
-                Local and global providers side by side, with data kept in the Kingdom and controls designed around Saudi
-                cybersecurity and data protection rules.
+                Data stays in the Kingdom, and our controls are designed to align with Saudi cybersecurity and data
+                protection rules. These are the frameworks we align with; CloudTrim does not claim certification.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
               {compliance.map((c) => (
                 <TiltCard key={c.k} className="border border-line bg-card p-6">
-                  <p className="font-display text-xl font-semibold text-ink">{c.k}</p>
+                  <p className="text-xs text-muted">Aligned with</p>
+                  <p className="font-display mt-1 text-xl font-semibold text-ink">{c.k}</p>
                   <p className="mt-2 text-sm leading-6 text-muted">{c.v}</p>
                 </TiltCard>
               ))}
@@ -184,18 +177,39 @@ export default function Home() {
       {/* Pricing */}
       <section id="pricing" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <SectionTitle kicker="Pricing" title="Pay as you go" />
+          <SectionTitle kicker="Pricing" title="Start free, then pay per resource." />
           <div className="mt-12 md:mt-16 grid gap-6 md:grid-cols-3">
-            <PriceCard title="First scan" price="Free" items={["Connect multi cloud account", "Full waste report as PDF", "Top savings with expected value"]} />
+            <PriceCard title="First scan" price="Free" unit="one-time, no card" cta={CTA} href="/start" items={["Connect multi cloud account", "Full waste report as PDF", "Top savings with expected value"]} />
             <PriceCard
               title="Usage-based"
-              price="Per managed resource"
+              price={`From ${PRICE_PER_RESOURCE}`}
+              unit="per managed resource / month"
               highlight
+              cta={CTA}
+              href="/start"
               items={["Continuous scanning and bill forecast", "WhatsApp & Telegram alerts", "One-click remediation with audit log", "Only pay for what we manage"]}
             />
-            <PriceCard title="FinOps consulting" price="Per engagement" items={["Dedicated FinOps engineer", "Commitment and reservation plans", "Cost governance across teams"]} />
+            <PriceCard title="FinOps consulting" price="Quoted" unit="per engagement" cta="See the demo" href="/demo" items={["Dedicated FinOps engineer", "Commitment and reservation plans", "Cost governance across teams"]} />
           </div>
         </div>
+      </section>
+
+      {/* Closing call to action */}
+      <section className="border-b border-line py-20 md:py-24">
+        <Reveal className="mx-auto flex max-w-3xl flex-col items-center px-4 text-center md:px-6">
+          <h2 className="font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl md:text-5xl">See what your cloud is wasting.</h2>
+          <p className="mt-4 max-w-[48ch] text-base leading-7 text-ink-2">
+            Connect a read-only key and get your first waste report free. Nothing changes without your approval.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link href="/start" className="btn-primary arrow bg-brand px-7 py-3.5 font-semibold text-onbrand">
+              {CTA}
+            </Link>
+            <Link href="/demo" className="border border-line-strong px-7 py-3.5 font-semibold text-ink hover:border-ink-2">
+              See the demo
+            </Link>
+          </div>
+        </Reveal>
       </section>
 
       <footer className="bg-bg py-10">
@@ -249,20 +263,43 @@ function MiniStat({ label, value, accent }: { label: string; value: string; acce
   );
 }
 
-function PriceCard({ title, price, items, highlight }: { title: string; price: string; items: string[]; highlight?: boolean }) {
+function PriceCard({
+  title,
+  price,
+  unit,
+  items,
+  cta,
+  href,
+  highlight,
+}: {
+  title: string;
+  price: string;
+  unit: string;
+  items: string[];
+  cta: string;
+  href: string;
+  highlight?: boolean;
+}) {
   return (
-    <TiltCard className={` border p-7 ${highlight ? "border-brand/50 bg-card glow" : "border-line bg-card"}`} max={6}>
+    <TiltCard className={`flex h-full flex-col border p-7 ${highlight ? "border-brand/50 bg-card glow" : "border-line bg-card"}`} max={6}>
       {highlight && <span className="btn-primary absolute top-5 right-5 bg-brand px-2.5 py-0.5 text-xs font-semibold text-onbrand">Core</span>}
       <h3 className="text-ink-2">{title}</h3>
-      <p className="font-display mt-2 text-2xl font-semibold">{price}</p>
-      <ul className="mt-6 space-y-2.5 text-sm text-ink-2">
+      <p className="font-display mt-2 text-3xl font-semibold">{price}</p>
+      <p className="mt-1 text-sm text-muted">{unit}</p>
+      <ul className="mt-6 mb-8 space-y-2.5 text-sm text-ink-2">
         {items.map((i) => (
           <li key={i} className="flex gap-2.5">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-brand" />
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: "var(--color-brand-text)" }} />
             {i}
           </li>
         ))}
       </ul>
+      <Link
+        href={href}
+        className={`mt-auto px-5 py-3 text-center text-sm font-semibold ${highlight ? "btn-primary bg-brand text-onbrand" : "border border-line-strong text-ink hover:border-ink-2"}`}
+      >
+        {cta}
+      </Link>
     </TiltCard>
   );
 }

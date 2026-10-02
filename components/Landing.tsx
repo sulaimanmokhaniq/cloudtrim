@@ -54,14 +54,6 @@ export function Landing({ t }: { t: LandingCopy }) {
               {t.cta}
             </Link>
           </div>
-          <p className="rise-4 mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
-            {t.hero.points.map((p, i) => (
-              <span key={p} className="contents">
-                {i > 0 && <Dot />}
-                <span>{p}</span>
-              </span>
-            ))}
-          </p>
         </div>
       </ParallaxHero>
 
@@ -257,10 +249,6 @@ function Mark({ v, label, strong }: { v: string; label: string; strong?: boolean
       <span className="text-xs">{label}</span>
     </span>
   );
-}
-
-function Dot() {
-  return <span className="h-1 w-1 bg-brand" aria-hidden />;
 }
 
 function PriceCard({

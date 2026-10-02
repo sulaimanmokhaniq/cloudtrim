@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ParallaxHero } from "@/components/ParallaxHero";
 import { Horizon } from "@/components/Horizon";
+import { NavSpy } from "@/components/NavSpy";
 import { Reveal } from "@/components/Reveal";
 import { SafetyFlow, TiltCard } from "@/components/Interactive";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -29,12 +30,14 @@ export function Landing({ t }: { t: LandingCopy }) {
       <header className="fixed inset-x-0 top-4 z-30 px-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between border border-line/80 bg-card py-2 ps-5 pe-2">
           <Logo />
-          <nav className="hidden gap-8 text-sm text-ink-2 md:flex">
-            <a href="#problem" className="hover:text-ink">{t.nav.problem}</a>
-            <a href="#safety" className="hover:text-ink">{t.nav.safety}</a>
-            <a href="#compliance" className="hover:text-ink">{t.nav.compliance}</a>
-            <a href="#pricing" className="hover:text-ink">{t.nav.pricing}</a>
-          </nav>
+          <NavSpy
+            items={[
+              { id: "problem", label: t.nav.problem },
+              { id: "safety", label: t.nav.safety },
+              { id: "compliance", label: t.nav.compliance },
+              { id: "pricing", label: t.nav.pricing },
+            ]}
+          />
           <div className="flex items-center gap-2">
             <Link href={t.switchHref} lang={t.lang === "en" ? "ar" : "en"} className="px-2 py-2 text-sm text-ink-2 hover:text-ink">
               {t.switchLabel}

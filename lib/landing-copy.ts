@@ -33,20 +33,20 @@ export const en = {
     title: "Why cloud spend gets out of control.",
     items: [
       {
-        stat: "27%",
+        stat: "29%",
         title: "of cloud spend wasted",
       },
       {
-        stat: "3",
-        title: "local clouds left out",
+        stat: "17%",
+        title: "over cloud budget",
       },
       {
-        stat: "1",
-        title: "wrong click, full outage",
+        stat: "40%",
+        title: "human-error outages",
       },
       {
-        stat: "12",
-        title: "month lock-in contracts",
+        stat: "$5.1B",
+        title: "Saudi cloud market, 2025",
       },
     ],
   },
@@ -145,20 +145,20 @@ export const ar: LandingCopy = {
     title: "لماذا تخرج تكاليف السحابة عن السيطرة؟",
     items: [
       {
-        stat: "27%",
+        stat: "29%",
         title: "من الإنفاق السحابي مهدر",
       },
       {
-        stat: "3",
-        title: "سحابات محلية غير مدعومة",
+        stat: "17%",
+        title: "تجاوز ميزانية السحابة",
       },
       {
-        stat: "1",
-        title: "نقرة خاطئة توقف الإنتاج",
+        stat: "40%",
+        title: "أعطال بسبب خطأ بشري",
       },
       {
-        stat: "12",
-        title: "شهرًا مدة العقود الملزمة",
+        stat: "$5.1B",
+        title: "سوق السحابة السعودي ٢٠٢٥",
       },
     ],
   },

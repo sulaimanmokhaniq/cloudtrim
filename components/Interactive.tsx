@@ -138,7 +138,7 @@ const flow = [
   { t: "AI recommendation", d: "Each saving comes with evidence, risk level and a plain-language reason." },
   { t: "Human approval", d: "Your engineer reviews and approves with one click, on web or WhatsApp." },
   { t: "Scoped, temporary access", d: "A permission limited to that single action is granted for 15 minutes." },
-  { t: "Safe execution", d: "Snapshot first, stop rather than delete, one-click rollback." },
+  { t: "Safe execution", d: "Stop rather than delete, with one-click rollback." },
   { t: "Revoke & audit", d: "Access returns to read-only and every step is logged for NCA and ISO audits." },
 ];
 

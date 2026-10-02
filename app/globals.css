@@ -94,6 +94,13 @@ html {
   scroll-padding-top: 96px;
 }
 
+/* Phones show the section links in a second header row, so anchors need more room */
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 140px;
+  }
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-ink);

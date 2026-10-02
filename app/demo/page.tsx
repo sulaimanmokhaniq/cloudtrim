@@ -72,7 +72,7 @@ export default function Demo() {
             <Logo />
             <span className=" border border-amber/40 bg-amber-soft px-2.5 py-0.5 text-xs text-amber">Demo data</span>
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-sm">
+          <div className="flex w-full flex-wrap items-center gap-2 text-sm sm:w-auto">
             <span className="hidden text-muted sm:inline">{companyName}</span>
             <ThemeToggle />
             <button
@@ -80,36 +80,36 @@ export default function Demo() {
               onClick={() => {
                 if (typeof window !== "undefined") window.print();
               }}
-              className="btn-ghost border border-line px-3 py-1.5 text-xs font-semibold text-ink flex items-center gap-1.5"
+              className="btn-ghost border border-line whitespace-nowrap px-3 py-2 text-xs font-semibold text-ink flex items-center gap-1.5"
             >
               <span>📄 PDF Report</span>
             </button>
             <button
               type="button"
               onClick={() => alert("WhatsApp export is currently under development.")}
-              className="border border-line/60 bg-card/50 px-2.5 py-1.5 text-xs text-muted opacity-60 cursor-not-allowed flex items-center gap-1"
+              className="border border-line/60 bg-card/50 whitespace-nowrap px-2.5 py-2 text-xs text-muted opacity-60 cursor-not-allowed flex items-center gap-1"
               title="Currently unavailable"
             >
               <span>💬 WhatsApp</span>
-              <span className="text-[9px] bg-line px-1 rounded">(Unavailable)</span>
+              <span className="hidden rounded bg-line px-1 text-[11px] sm:inline">(Unavailable)</span>
             </button>
             <button
               type="button"
               onClick={() => alert("Telegram export is currently under development.")}
-              className="border border-line/60 bg-card/50 px-2.5 py-1.5 text-xs text-muted opacity-60 cursor-not-allowed flex items-center gap-1"
+              className="border border-line/60 bg-card/50 whitespace-nowrap px-2.5 py-2 text-xs text-muted opacity-60 cursor-not-allowed flex items-center gap-1"
               title="Currently unavailable"
             >
               <span>✈️ Telegram</span>
-              <span className="text-[9px] bg-line px-1 rounded">(Unavailable)</span>
+              <span className="hidden rounded bg-line px-1 text-[11px] sm:inline">(Unavailable)</span>
             </button>
           </div>
         </div>
-        <nav className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 md:px-6">
+        <nav className="mx-auto flex max-w-7xl flex-wrap gap-x-1 px-4 sm:flex-nowrap sm:overflow-x-auto md:px-6">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`whitespace-nowrap border-b-2 px-3 py-3 text-sm transition-colors ${ tab === t.id ? "border-brand text-ink" : "border-transparent text-muted hover:text-ink-2" }`}
+              className={`whitespace-nowrap border-b-2 px-2.5 py-3 text-[13px] transition-colors sm:px-3 sm:text-sm ${ tab === t.id ? "border-brand text-ink" : "border-transparent text-muted hover:text-ink-2" }`}
             >
               {t.label}
               {t.id === "findings" && (
@@ -193,7 +193,7 @@ function Overview({ realized, goFindings }: { realized: number; goFindings: () =
       <Card
         title="Top savings"
         action={
-          <button onClick={goFindings} className="text-sm font-medium text-brand hover:underline">
+          <button onClick={goFindings} className="-my-2 py-2.5 text-sm font-medium text-brand hover:underline">
             View all
           </button>
         }
@@ -224,7 +224,7 @@ function TrendChart() {
   const max = 100000;
   const W = 560;
   const H = 230;
-  const pad = { top: 16, bottom: 28, left: 40, right: 8 };
+  const pad = { top: 16, bottom: 34, left: 52, right: 8 };
   const slot = (W - pad.left - pad.right) / monthlyTrend.length;
   const barW = Math.min(46, slot * 0.58);
   const y = (v: number) => pad.top + (H - pad.top - pad.bottom) * (1 - v / max);
@@ -241,7 +241,7 @@ function TrendChart() {
         {[0, 25000, 50000, 75000, 100000].map((g) => (
           <g key={g}>
             <line x1={pad.left} x2={W - pad.right} y1={y(g)} y2={y(g)} className="stroke-line" strokeWidth="1" />
-            <text x={pad.left - 8} y={y(g) + 3} fontSize="10" className="fill-muted" textAnchor="end">
+            <text x={pad.left - 8} y={y(g) + 5} fontSize="15" className="fill-muted" textAnchor="end">
               {g === 0 ? "0" : `${g / 1000}k`}
             </text>
           </g>
@@ -258,7 +258,7 @@ function TrendChart() {
                 opacity={hover === null || hover === i ? 1 : 0.45}
                 style={{ transition: "opacity .2s" }}
               />
-              <text x={cx} y={H - 10} fontSize="11" className="fill-ink-2" textAnchor="middle">
+              <text x={cx} y={H - 10} fontSize="16" className="fill-ink-2" textAnchor="middle">
                 {m.month}
               </text>
             </g>

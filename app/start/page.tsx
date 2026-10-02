@@ -358,12 +358,12 @@ function CreateAccountStep({
 
           <div className="flex items-center gap-3 pt-2">
             <button type="submit" className="btn-primary arrow bg-brand px-6 py-2.5 text-xs font-bold text-onbrand">
-              Next: Connect Cloud →
+              Next: Connect Cloud
             </button>
             <button
               type="button"
               onClick={() => onChange({ name: "Sara Al-Qahtani", email: "sara@nakhla.sa", company: "Nakhla Tech" })}
-              className="text-xs text-muted underline hover:text-ink"
+              className="px-2 py-2.5 text-xs text-muted underline hover:text-ink"
             >
               Fill Sample
             </button>
@@ -377,7 +377,7 @@ function CreateAccountStep({
           <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-brand" /> Full waste & savings report</li>
           <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-brand" /> Multi-cloud account support</li>
           <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-brand" /> Read-only API security</li>
-          <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-brand" /> Saudi NCA ECC & PDPL compliant</li>
+          <li className="flex items-center gap-2"><span className="h-1.5 w-1.5 bg-brand" /> Aligned with Saudi NCA ECC & PDPL</li>
         </ul>
       </div>
     </div>
@@ -489,7 +489,7 @@ function ConnectCloudStep({
           Back
         </button>
         <button type="button" onClick={onNext} className="btn-primary arrow bg-brand px-6 py-2.5 text-xs font-bold text-onbrand">
-          Start Fetch & Analysis →
+          Start Fetch & Analysis
         </button>
       </div>
     </div>
@@ -578,7 +578,7 @@ function FetchAndAnalysisStep({ cloudName, onDone }: { cloudName: string; onDone
             done ? "bg-brand text-onbrand cursor-pointer" : "bg-muted text-bg opacity-50 cursor-not-allowed"
           }`}
         >
-          {done ? "View Dashboard →" : "Analyzing..."}
+          {done ? "View Dashboard" : "Analyzing..."}
         </button>
       </div>
     </div>

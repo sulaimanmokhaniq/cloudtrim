@@ -73,7 +73,7 @@ export function MonthlySpendBarChart({ data }: { data: SpendBarItem[] }) {
                   x={chartLeft - 10}
                   y={y + 4}
                   textAnchor="end"
-                  fontSize="11"
+                  fontSize="15"
                   fontFamily="sans-serif"
                   className="fill-muted"
                 >
@@ -117,7 +117,7 @@ export function MonthlySpendBarChart({ data }: { data: SpendBarItem[] }) {
                   x={centerX}
                   y={chartBottom + 20}
                   textAnchor="middle"
-                  fontSize="12"
+                  fontSize="16"
                   fontWeight="500"
                   fontFamily="sans-serif"
                   className="fill-ink"

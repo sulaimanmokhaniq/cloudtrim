@@ -146,7 +146,7 @@ body {
   border-radius: 14px;
 }
 
-/* Buttons: solid pills. The primary button gets two small cloud puffs on its top edge. */
+/* Buttons: solid pills. */
 .btn-primary,
 .btn-ghost {
   display: inline-flex;
@@ -159,26 +159,8 @@ body {
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .btn-primary {
-  position: relative;
-  isolation: isolate;
   background-color: var(--color-brand);
   color: var(--color-onbrand);
-}
-.btn-primary::before {
-  content: "";
-  position: absolute;
-  left: 16px;
-  top: -13px;
-  width: 56px;
-  height: 30px;
-  background: inherit;
-  pointer-events: none;
-  z-index: -1;
-  /* two hard-edged circles = the cloud puffs */
-  -webkit-mask: radial-gradient(circle at 16px 16px, #000 13.5px, transparent 14px),
-    radial-gradient(circle at 38px 20px, #000 9.5px, transparent 10px);
-  mask: radial-gradient(circle at 16px 16px, #000 13.5px, transparent 14px),
-    radial-gradient(circle at 38px 20px, #000 9.5px, transparent 10px);
 }
 .btn-primary:hover {
   background-color: var(--color-ink);

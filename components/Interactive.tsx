@@ -142,20 +142,26 @@ const flow = [
   { t: "Revoke & audit", d: "Access returns to read-only and every step is logged for NCA and ISO audits." },
 ];
 
-export function SafetyFlow() {
+export function SafetyFlow({
+  steps = flow,
+  stepLabel = "Step {n} of {of}",
+}: {
+  steps?: { t: string; d: string }[];
+  stepLabel?: string;
+} = {}) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => setActive((a) => (a + 1) % flow.length), 2200);
+    const id = setInterval(() => setActive((a) => (a + 1) % steps.length), 2200);
     return () => clearInterval(id);
   }, [paused]);
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]" onMouseLeave={() => setPaused(false)}>
       <ol className="relative space-y-2">
-        <span className="absolute top-4 bottom-4 left-[19px] w-px bg-line" aria-hidden />
-        {flow.map((s, i) => (
+        <span className="absolute top-4 bottom-4 start-[19px] w-px bg-line" aria-hidden />
+        {steps.map((s, i) => (
           <li key={s.t}>
             <button
               onMouseEnter={() => {
@@ -163,7 +169,7 @@ export function SafetyFlow() {
                 setActive(i);
               }}
               onClick={() => setActive(i)}
-              className={`relative flex w-full items-center gap-4 px-1 py-2.5 text-left transition-colors ${ active === i ? "text-ink" : "text-muted hover:text-ink-2" }`}
+              className={`relative flex w-full items-center gap-4 px-1 py-2.5 text-start transition-colors ${ active === i ? "text-ink" : "text-muted hover:text-ink-2" }`}
             >
               <span
                 className={`num relative z-10 flex h-10 w-10 shrink-0 items-center justify-center border text-sm font-semibold transition-all ${ active === i ? "border-brand bg-brand text-onbrand" : i < active ? "border-brand/50 bg-card text-brand" : "border-line bg-card" }`}
@@ -178,11 +184,11 @@ export function SafetyFlow() {
       <div className="relative flex min-h-64 items-center overflow-hidden border border-line bg-card p-8">
         <div className="grid-bg absolute inset-0 opacity-60" aria-hidden />
         <div key={active} className="rise relative">
-          <p className="num text-sm text-brand">Step {active + 1} of {flow.length}</p>
-          <h3 className="font-display mt-2 text-2xl font-semibold">{flow[active].t}</h3>
-          <p className="mt-3 leading-7 text-ink-2">{flow[active].d}</p>
+          <p className="num text-sm text-brand">{stepLabel.replace("{n}", String(active + 1)).replace("{of}", String(steps.length))}</p>
+          <h3 className="font-display mt-2 text-2xl font-semibold">{steps[active].t}</h3>
+          <p className="mt-3 leading-7 text-ink-2">{steps[active].d}</p>
           <div className="mt-6 flex gap-1.5">
-            {flow.map((_, i) => (
+            {steps.map((_, i) => (
               <span key={i} className={`h-1 flex-1 transition-colors ${i <= active ? "bg-brand" : "bg-line"}`} />
             ))}
           </div>

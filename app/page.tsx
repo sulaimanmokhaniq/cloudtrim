@@ -1,5 +1,6 @@
 import Link from "next/link";
-import CloudGlow3D from "@/components/CloudGlow3D";
+import { ParallaxHero } from "@/components/ParallaxHero";
+import { Horizon } from "@/components/Horizon";
 import { Reveal } from "@/components/Reveal";
 import { SafetyFlow, SavingsCalculator, TiltCard } from "@/components/Interactive";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -72,35 +73,31 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero: the 3D scene bleeds across the whole section */}
-      <section className="relative min-h-[100svh] overflow-hidden border-b border-line">
-        <CloudGlow3D className="absolute inset-0 hidden lg:block" />
-        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-6xl flex-col px-4 pt-32 md:px-6 lg:flex-row lg:items-center lg:pt-16">
-          <div className="max-w-xl">
-            <p className="rise micro text-brand">AI FinOps · Saudi Arabia & GCC</p>
-            <h1 className="rise-2 font-display mt-5 text-5xl font-bold leading-[1.02] tracking-[-0.035em] md:text-7xl">
-              Every riyal of your <span className="text-brand">cloud</span>, working. Every action, <span className="text-amber">approved</span>.
-            </h1>
-            <p className="rise-3 mt-6 max-w-[50ch] text-base leading-7 text-muted md:text-lg">
-              CloudTrim&apos;s AI agent scans your clouds with read-only access, finds the waste, and waits for your
-              team&apos;s one-click approval before anything changes.
-            </p>
-            <div className="rise-4 mt-9 flex flex-wrap gap-3">
-              <Link href="/start" className="btn-primary arrow bg-brand px-7 py-3.5 font-semibold text-onbrand">
-                Start now
-              </Link>
-            </div>
-            <p className="rise-4 mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
-              <span>6 cloud providers</span>
-              <Dot />
-              <span>Read-only by default</span>
-              <Dot />
-              <span>Every action human-approved</span>
-            </p>
+      {/* Hero: pinned while the cloud layers drift and the bill gets trimmed on scroll */}
+      <ParallaxHero>
+        <div className="max-w-xl">
+          <p className="rise micro text-brand">AI FinOps · Saudi Arabia & GCC</p>
+          <h1 className="rise-2 font-display mt-5 text-5xl font-bold leading-[1.02] tracking-[-0.035em] md:text-7xl">
+            Every riyal of your <span className="text-brand">cloud</span>, working. Every action, <span className="text-amber">approved</span>.
+          </h1>
+          <p className="rise-3 mt-6 max-w-[50ch] text-base leading-7 text-muted md:text-lg">
+            CloudTrim&apos;s AI agent scans your clouds with read-only access, finds the waste, and waits for your
+            team&apos;s one-click approval before anything changes.
+          </p>
+          <div className="rise-4 mt-9 flex flex-wrap gap-3">
+            <Link href="/start" className="btn-primary arrow bg-brand px-7 py-3.5 font-semibold text-onbrand">
+              Start now
+            </Link>
           </div>
-          <CloudGlow3D className="-mx-4 mt-4 h-[400px] lg:hidden" />
+          <p className="rise-4 mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
+            <span>6 cloud providers</span>
+            <Dot />
+            <span>Read-only by default</span>
+            <Dot />
+            <span>Every action human-approved</span>
+          </p>
         </div>
-      </section>
+      </ParallaxHero>
 
       {/* Tagline strip + provider badges */}
       <section className="border-b border-line">
@@ -138,6 +135,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Dunes lead into the deeper sand band */}
+      <Horizon kind="mountains" from="var(--color-bg)" back="var(--color-ridge)" mid="var(--color-band-shade)" accent="var(--color-snow)" to="var(--color-band)" />
+      <div style={{ background: "var(--color-band)" }}>
       {/* Safety */}
       <section id="safety" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -176,6 +176,11 @@ export default function Home() {
         </div>
       </section>
 
+      </div>
+
+      {/* Waves lead into the dark band that holds pricing and the footer */}
+      <Horizon kind="waves" from="var(--color-band)" back="#3a2a24" mid="#221819" to="#0c0809" />
+      <div data-theme="dark" className="bg-bg text-ink">
       {/* Pricing */}
       <section id="pricing" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -199,6 +204,7 @@ export default function Home() {
           <span>{TEAM_NAME} · VentureX 2026</span>
         </div>
       </footer>
+      </div>
     </main>
   );
 }

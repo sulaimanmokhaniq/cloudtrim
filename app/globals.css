@@ -49,19 +49,23 @@
   --color-warn: #c9a46e;
   --color-bad: #f0624d;
   --grid-line: #ffffff07;
+  --color-band: #160f11;
+  --color-band-shade: #0f0a0b;
+  --color-ridge: #2a1e1b;
+  --color-snow: #4a3832;
   color-scheme: dark;
 }
 
 [data-theme="light"] {
-  --color-bg: #f8f3ef;
-  --color-bg-2: #f1e9e3;
-  --color-card: #fffbf8;
-  --color-card-2: #f4ece6;
-  --color-line: #e3d5cc;
-  --color-line-strong: #cdb9ad;
-  --color-ink: #21141a;
-  --color-ink-2: #4b3a40;
-  --color-muted: #7f6c72;
+  --color-bg: #f4ece0;
+  --color-bg-2: #ede2d3;
+  --color-card: #faf5ee;
+  --color-card-2: #f0e6d8;
+  --color-line: #ddd0bd;
+  --color-line-strong: #c7b59d;
+  --color-ink: #2a1d17;
+  --color-ink-2: #54443a;
+  --color-muted: #85735f;
   --color-brand-soft: #8e2f3c14;
   --color-brand-text: #8e2f3c;
   --color-brand-dim: #c9a0a6;
@@ -71,7 +75,11 @@
   --color-good: #3f7f45;
   --color-warn: #93682c;
   --color-bad: #b3261e;
-  --grid-line: #21141a0a;
+  --grid-line: #2a1d170a;
+  --color-band: #dcc8a6;
+  --color-band-shade: #c2aa83;
+  --color-ridge: #c7b59d;
+  --color-snow: #f4ece0;
   color-scheme: light;
 }
 
@@ -83,6 +91,19 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hero "sky" band: copy sits on solid burgundy, so flip the tokens it uses */
+[data-band="sky"] {
+  --color-ink: #fbf6ee;
+  --color-ink-2: #f3dfe1;
+  --color-muted: #ecc9cd;
+  --color-brand: #fbf6ee;
+  --color-onbrand: #8e2f3c;
+  --color-brand-text: #f6d29a;
+  --color-amber: #f6d29a;
+  --color-bg: #8e2f3c;
+  color: var(--color-ink);
 }
 
 /* Burgundy is for fills; text accents use the readable brand-text shade of the current theme */

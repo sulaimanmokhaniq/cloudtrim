@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" className={`${inter.variable} ${display.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="light" className={`${inter.variable} ${display.variable}`} suppressHydrationWarning>
       <head>
         {/* Apply the saved theme before paint so the page never flashes the wrong mode */}
         <script

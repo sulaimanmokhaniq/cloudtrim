@@ -50,6 +50,9 @@
   --color-bad: #f0624d;
   --grid-line: #ffffff07;
   --color-band: #160f11;
+  --color-band-shade: #0f0a0b;
+  --color-ridge: #2a1e1b;
+  --color-snow: #4a3832;
   color-scheme: dark;
 }
 
@@ -73,7 +76,10 @@
   --color-warn: #93682c;
   --color-bad: #b3261e;
   --grid-line: #2a1d170a;
-  --color-band: #e8dac5;
+  --color-band: #dcc8a6;
+  --color-band-shade: #c2aa83;
+  --color-ridge: #c7b59d;
+  --color-snow: #f4ece0;
   color-scheme: light;
 }
 

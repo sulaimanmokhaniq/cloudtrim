@@ -136,7 +136,7 @@ export default function Home() {
       </section>
 
       {/* Dunes lead into the deeper sand band */}
-      <Horizon kind="dunes" from="var(--color-bg)" back="var(--color-line-strong)" to="var(--color-band)" />
+      <Horizon kind="mountains" from="var(--color-bg)" back="var(--color-ridge)" mid="var(--color-band-shade)" accent="var(--color-snow)" to="var(--color-band)" />
       <div style={{ background: "var(--color-band)" }}>
       {/* Safety */}
       <section id="safety" className="border-b border-line py-20 md:py-28">

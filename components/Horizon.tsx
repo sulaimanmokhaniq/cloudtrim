@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 
-// Flat illustrated horizons between page bands (clouds, dunes, waves), drawn in solid
+// Flat illustrated horizons between page bands (clouds, mountains, waves), drawn in solid
 // colors. Each one has layers that slide at different speeds while the visitor scrolls,
 // which gives the page its layered parallax depth. The motion eases toward the scroll
 // position instead of jumping with it, so it stays slow and smooth.
@@ -157,8 +157,54 @@ function curls(top: number, offset: number, h: number) {
   return `${d} L1640 ${h} Z`;
 }
 
+// A jagged mountain ridge: alternating peaks and valleys, each peak with a snow cap on
+// its left face and a shadow facet on its right face (flat two-tone shading)
+type Pt = [number, number];
+function ridge(seed: number, top: [number, number], valley: [number, number], step: [number, number]) {
+  const rand = rng(seed);
+  const pts: Pt[] = [[-120, valley[0] + rand() * (valley[1] - valley[0])]];
+  let x = -120;
+  while (x < 1560) {
+    x += step[0] + rand() * (step[1] - step[0]);
+    pts.push([x, top[0] + rand() * (top[1] - top[0])]);
+    x += step[0] + rand() * (step[1] - step[0]);
+    pts.push([x, valley[0] + rand() * (valley[1] - valley[0])]);
+  }
+  return pts;
+}
+
+const lerp = (a: Pt, b: Pt, t: number): Pt => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const poly = (pts: Pt[]) => pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+
+function Ridge({ pts, h, body, snow, shade }: { pts: Pt[]; h: number; body: string; snow: string; shade: string }) {
+  const peaks = pts.map((p, i) => i).filter((i) => i % 2 === 1 && i + 1 < pts.length);
+  return (
+    <>
+      <polygon points={poly([[-120, h], ...pts, [pts[pts.length - 1][0], h]])} style={{ fill: body }} />
+      {peaks.map((i) => {
+        const [l, p, r] = [pts[i - 1], pts[i], pts[i + 1]];
+        const ls = lerp(p, l, 0.5);
+        const rs = lerp(p, r, 0.38);
+        const notch = lerp(ls, rs, 0.45);
+        return (
+          <g key={i}>
+            <polygon points={poly([p, r, lerp(r, l, 0.22)])} style={{ fill: shade }} />
+            <polygon
+              points={poly([p, rs, lerp(ls, rs, 0.7), [notch[0], notch[1] + 7], ls])}
+              style={{ fill: snow }}
+            />
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
+const BACK_RIDGE = ridge(11, [34, 62], [92, 110], [70, 120]);
+const FRONT_RIDGE = ridge(5, [70, 110], [150, 170], [90, 170]);
+
 type Props = {
-  kind: "clouds" | "dunes" | "waves";
+  kind: "clouds" | "mountains" | "waves";
   /** Color of the band above (fills the top of the horizon) */
   from: string;
   /** Color of the band below (the front layer) */
@@ -167,11 +213,11 @@ type Props = {
   back: string;
   /** Waves only: color of the middle swell */
   mid?: string;
-  /** Color of the small floating shapes under the clouds */
+  /** Clouds: color of the small floating clouds. Mountains: color of the snow caps */
   accent?: string;
 };
 
-const HEIGHT = { clouds: 300, dunes: 150, waves: 160 };
+const HEIGHT = { clouds: 300, mountains: 200, waves: 160 };
 
 export function Horizon({ kind, from, to, back, mid, accent }: Props) {
   const ref = useEasedVar<HTMLDivElement>("--s", viewportPos);
@@ -209,16 +255,14 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
           </>
         )}
 
-        {kind === "dunes" && (
+        {kind === "mountains" && (
           <>
-            <path
-              style={{ ...shift(-36, 4), fill: back }}
-              d="M-100 70 C 120 10, 300 10, 520 60 S 900 120, 1120 50 S 1420 0, 1560 50 V 150 H -100 Z"
-            />
-            <path
-              style={{ ...shift(40, -3), fill: to }}
-              d="M-100 110 C 160 60, 380 70, 600 105 S 980 140, 1200 90 S 1440 70, 1560 95 V 150 H -100 Z"
-            />
+            <g style={shift(-18, 4)}>
+              <Ridge pts={BACK_RIDGE} h={h} body={back} snow={accent ?? from} shade={mid ?? back} />
+            </g>
+            <g style={shift(22, -3)}>
+              <Ridge pts={FRONT_RIDGE} h={h} body={to} snow={accent ?? from} shade={mid ?? back} />
+            </g>
           </>
         )}
 

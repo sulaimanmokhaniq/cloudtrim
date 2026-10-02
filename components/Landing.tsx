@@ -103,23 +103,6 @@ export function Landing({ t }: { t: LandingCopy }) {
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="how" className="border-b border-line py-20 md:py-28">
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <SectionTitle kicker={t.how.kicker} title={t.how.title} />
-          <div className="mt-12 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {t.how.steps.map((step, i) => (
-              <Reveal key={step.title} delay={i * 90}>
-                <div className="h-full border border-line bg-card p-6">
-                  <p className="num font-display text-sm font-semibold text-brand">0{i + 1}</p>
-                  <h3 className="mt-3 font-semibold text-ink">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-ink-2">{step.body}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Dunes lead into the deeper sand band */}
       <Horizon kind="mountains" from="var(--color-bg)" back="var(--color-ridge)" mid="var(--color-band-shade)" accent="var(--color-snow)" to="var(--color-band)" />

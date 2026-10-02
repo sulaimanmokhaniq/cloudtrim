@@ -9,7 +9,15 @@ import { TEAM_NAME } from "@/lib/data";
 import type { LandingCopy } from "@/lib/landing-copy";
 
 const GITHUB_URL = "https://github.com/sulaimanmokhaniq/cloudtrim";
-const providers = ["STC Cloud", "SCCC Alibaba", "CNTXT", "AWS", "Azure", "Google Cloud"];
+// [label shown here, provider name preselected on the /start connect step]
+const providers = [
+  ["STC Cloud", "STC Cloud"],
+  ["SCCC Alibaba", "SCCC (Alibaba Cloud)"],
+  ["CNTXT", "CNTXT"],
+  ["AWS", "AWS"],
+  ["Azure", "Microsoft Azure"],
+  ["Google Cloud", "Google Cloud"],
+] as const;
 
 /* The landing page, rendered in English at / and in Arabic (right to left) at /ar. */
 export function Landing({ t }: { t: LandingCopy }) {
@@ -59,18 +67,24 @@ export function Landing({ t }: { t: LandingCopy }) {
 
       {/* Tagline strip + providers */}
       <section className="border-b border-line">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-7 md:px-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 py-8 text-center md:px-6">
           <Reveal>
             <p className="font-display text-xl font-bold tracking-tight sm:text-2xl whitespace-nowrap">
               {s0}<span className="text-brand">{s1}</span>{s2}<span className="text-amber">{s3}</span>
             </p>
           </Reveal>
           <Reveal delay={120}>
-            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2" aria-label={t.worksWith}>
-              <li className="micro text-muted">{t.worksWith}</li>
-              {providers.map((p) => (
-                <li key={p} dir="ltr" className="font-display text-base font-semibold tracking-tight text-muted">
-                  {p}
+            <ul className="flex flex-wrap items-center justify-center gap-2" aria-label={t.worksWith}>
+              <li className="micro me-2 text-muted">{t.worksWith}</li>
+              {providers.map(([label, name]) => (
+                <li key={label}>
+                  <Link
+                    href={`/start?provider=${encodeURIComponent(name)}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-card px-4 py-2 font-display text-sm font-semibold tracking-tight text-ink-2 transition-colors hover:border-brand hover:text-ink"
+                  >
+                    <span dir="ltr">{label}</span>
+                    {label !== "AWS" && <span className="text-[10px] font-medium uppercase tracking-wider text-muted">{t.preview}</span>}
+                  </Link>
                 </li>
               ))}
             </ul>

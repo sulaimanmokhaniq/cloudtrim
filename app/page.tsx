@@ -63,7 +63,7 @@ export default function Home() {
       <ParallaxHero>
         <div className="max-w-xl">
           <p className="rise micro text-brand">AI FinOps · Saudi Arabia & GCC</p>
-          <h1 className="rise-2 font-display mt-5 text-5xl font-bold leading-[1.02] tracking-[-0.035em] md:text-7xl">
+          <h1 className="rise-2 font-display mt-5 text-5xl font-bold leading-[1.02] tracking-[-0.02em] md:text-7xl">
             Every riyal of your <span className="text-brand">cloud</span>, working. Every action, <span className="text-amber">approved</span>.
           </h1>
           <p className="rise-3 mt-6 max-w-[50ch] text-base leading-7 text-muted md:text-lg">
@@ -87,7 +87,7 @@ export default function Home() {
 
       {/* Tagline strip + provider badges */}
       <section className="border-b border-line">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-7 md:px-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-7 md:px-6 lg:flex-row lg:items-center lg:justify-between">
           <Reveal>
             <p className="font-display text-xl font-bold tracking-tight sm:text-2xl whitespace-nowrap">
               Scan, <span className="text-brand">Explain,</span> Approve, <span className="text-amber">Save.</span>
@@ -108,7 +108,7 @@ export default function Home() {
 
       {/* Problem */}
       <section id="problem" className="border-b border-line py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
           <SectionTitle kicker="The problem" title="Why cloud spend gets out of control." />
           <div className="mt-12 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {problems.map((p, i) => (
@@ -128,7 +128,7 @@ export default function Home() {
       <div style={{ background: "var(--color-band)" }}>
       {/* Safety */}
       <section id="safety" className="border-b border-line py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
           <SectionTitle kicker="Safety first" title="AI recommends. Humans decide." />
           <p className="mt-4 max-w-2xl text-base leading-7 text-ink-2">
             The connection is read-only by default. Changes need a separate, opt-in permission scoped to one action, that
@@ -142,7 +142,7 @@ export default function Home() {
 
       {/* Local / Compliance */}
       <section id="compliance" className="border-b border-line py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
           <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
             <div>
               <p className="micro text-brand">Compliance</p>
@@ -172,7 +172,7 @@ export default function Home() {
       <div data-band="sea" className="bg-bg text-ink">
       {/* Pricing */}
       <section id="pricing" className="border-b border-line py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
           <SectionTitle kicker="Pricing" title="Start free, then pay per resource." />
           <div className="mt-12 md:mt-16 grid gap-6 md:grid-cols-3">
             <PriceCard title="First scan" price="Free" unit="one-time, no card" cta={CTA} href="/start" items={["Connect multi cloud account", "Full waste report as PDF", "Top savings with expected value"]} />
@@ -193,7 +193,7 @@ export default function Home() {
       {/* Closing call to action */}
       <section className="border-b border-line py-20 md:py-24">
         <Reveal className="mx-auto flex max-w-3xl flex-col items-center px-4 text-center md:px-6">
-          <h2 className="font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl md:text-5xl">See what your cloud is wasting.</h2>
+          <h2 className="font-display text-3xl font-bold tracking-[-0.015em] sm:text-4xl md:text-5xl">See what your cloud is wasting.</h2>
           <p className="mt-4 max-w-[48ch] text-base leading-7 text-ink-2">
             Connect a read-only key and get your first waste report free. Nothing changes without your approval.
           </p>
@@ -209,7 +209,7 @@ export default function Home() {
       </section>
 
       <footer className="bg-bg py-10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted md:flex-row md:px-6">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted md:flex-row md:px-6">
           <Logo />
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2" aria-label="Footer">
             <Link href="/demo" className="hover:text-ink">Demo</Link>
@@ -229,7 +229,7 @@ function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
   return (
     <Reveal className="max-w-5xl">
       <p className="micro text-brand">{kicker}</p>
-      <h2 className="font-display mt-3 text-3xl font-bold tracking-[-0.03em] sm:text-4xl md:text-5xl">{title}</h2>
+      <h2 className="font-display mt-3 text-3xl font-bold tracking-[-0.015em] sm:text-4xl md:text-5xl">{title}</h2>
     </Reveal>
   );
 }

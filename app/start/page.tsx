@@ -430,6 +430,7 @@ function ConnectCloudStep({
                 }`}
               >
                 <div className="font-semibold">{p.name}</div>
+                {p.status === "soon" && <div className="mt-0.5 text-[10px] font-normal text-muted">Preview</div>}
               </button>
             );
           })}
@@ -439,6 +440,12 @@ function ConnectCloudStep({
       {/* Credentials Form */}
       <div className="border border-line bg-card p-5 space-y-4">
         <h3 className="font-bold text-xs">API Read-Only Credentials ({selectedCloud})</h3>
+        {selectedCloud !== "AWS" && (
+          <p className="text-[11px] text-muted">
+            Preview: {selectedCloud} uses sample findings in this demo. The live connector is on the roadmap; AWS is the
+            connector built today.
+          </p>
+        )}
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
             <label className="block text-[11px] text-muted mb-1">API Key ID / Username</label>
@@ -593,7 +600,7 @@ function DashboardStep({
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [auditLog, setAuditLog] = useState<{ time: string; event: string }[]>([
     { time: "Just now", event: "Multi-cloud AI waste scan completed successfully." },
-    { time: "Just now", event: "Read-only security verification confirmed for all connected API keys." },
+    { time: "Just now", event: "Read-only access checked for all connected API keys." },
   ]);
 
   const showToast = (msg: string) => {
@@ -1135,6 +1142,9 @@ function DashboardStep({
                     <span className="font-mono text-[10px] bg-ink text-bg px-2 py-0.5 rounded font-bold uppercase tracking-wider">
                       {item.cloudProvider}
                     </span>
+                    {item.cloudProvider !== "AWS" && (
+                      <span className="text-[10px] font-mono border border-line px-2 py-0.5 rounded text-muted">Preview</span>
+                    )}
                     {/* Category Badge */}
                     <span className="text-[10px] font-mono bg-brand-soft text-brand px-2 py-0.5 rounded font-semibold border border-brand/20">
                       {item.category}
@@ -1339,7 +1349,7 @@ function PdfReportModal({
           <div className="space-y-3">
             <h3 className="text-sm font-bold text-gray-900 border-b-2 border-gray-200 pb-1 uppercase tracking-wider flex items-center justify-between">
               <span>Connected Cloud Accounts ({activeClouds.length})</span>
-              <span className="text-xs text-gray-500 font-normal">Read-Only Security Certified</span>
+              <span className="text-xs text-gray-500 font-normal">Read-only access</span>
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {activeClouds.map((cloud) => {
@@ -1409,7 +1419,7 @@ function PdfReportModal({
           <div className="border-t border-gray-200 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
             <div>
               <p className="font-bold text-gray-900">CloudTrim AI FinOps Engine</p>
-              <p>Generated automatically with 100% Read-Only safety verification.</p>
+              <p>Generated automatically from read-only access. No changes were made to your accounts.</p>
             </div>
             <div className="text-right font-mono text-[11px]">
               <p>Report Ref: CT-AUDIT-{Math.floor(100000 + Math.random() * 900000)}</p>

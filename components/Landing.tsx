@@ -31,9 +31,6 @@ export function Landing({ t }: { t: LandingCopy }) {
             <Link href={t.switchHref} lang={t.lang === "en" ? "ar" : "en"} className="px-2 py-2 text-sm text-ink-2 hover:text-ink">
               {t.switchLabel}
             </Link>
-            <Link href="/demo" className="hidden px-3 py-2 text-sm text-ink-2 hover:text-ink lg:block">
-              {t.nav.dashboard}
-            </Link>
             <ThemeToggle />
             <span className="hidden sm:block">
               <Link href="/start" className="btn-primary arrow whitespace-nowrap bg-brand px-4 py-2 text-sm font-semibold text-onbrand">
@@ -96,10 +93,39 @@ export function Landing({ t }: { t: LandingCopy }) {
           <div className="mt-12 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {t.problem.items.map((p, i) => (
               <Reveal key={p.title} delay={i * 90}>
-                <TiltCard className="h-full border border-line bg-card p-6 md:p-7 text-center flex flex-col items-center justify-center">
+                <TiltCard className="h-full border border-line bg-card p-6 md:p-7 text-center flex flex-col items-center">
                   <p className="font-display text-4xl font-semibold text-brand">{p.stat}</p>
                   <h3 className="mt-3 font-medium text-ink leading-snug">{p.title}</h3>
+                  <dl className="mt-5 w-full space-y-3 border-t border-line pt-4 text-start text-sm leading-6">
+                    <div>
+                      <dt className="text-xs text-muted">{t.problem.whyLabel}</dt>
+                      <dd className="text-ink-2">{p.why}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs text-muted">{t.problem.whoLabel}</dt>
+                      <dd className="text-ink-2">{p.who}</dd>
+                    </div>
+                  </dl>
                 </TiltCard>
+              </Reveal>
+            ))}
+          </div>
+          <p className="mt-8 max-w-3xl text-xs leading-5 text-muted">{t.problem.source}</p>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="border-b border-line py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+          <SectionTitle kicker={t.how.kicker} title={t.how.title} />
+          <div className="mt-12 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {t.how.steps.map((step, i) => (
+              <Reveal key={step.title} delay={i * 90}>
+                <div className="h-full border border-line bg-card p-6">
+                  <p className="num font-display text-sm font-semibold text-brand">0{i + 1}</p>
+                  <h3 className="mt-3 font-semibold text-ink">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-ink-2">{step.body}</p>
+                </div>
               </Reveal>
             ))}
           </div>
@@ -142,6 +168,39 @@ export function Landing({ t }: { t: LandingCopy }) {
         </div>
       </section>
 
+      {/* Comparison with other tool types */}
+      <section id="compare" className="border-b border-line py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+          <SectionTitle kicker={t.compare.kicker} title={t.compare.title} />
+          <div className="mt-12 overflow-x-auto border border-line bg-card">
+            <table className="w-full min-w-[560px] text-sm">
+              <thead>
+                <tr className="border-b border-line text-start">
+                  <th className="p-4" />
+                  {t.compare.cols.map((c, i) => (
+                    <th key={c} className={`p-4 text-center font-semibold ${i === 0 ? "text-brand" : "text-ink-2"}`}>
+                      {c}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {t.compare.rows.map((r) => (
+                  <tr key={r.label} className="border-b border-line last:border-0">
+                    <th scope="row" className="p-4 text-start font-medium text-ink">{r.label}</th>
+                    {r.v.map((v, i) => (
+                      <td key={i} className="p-4 text-center">
+                        <Mark v={v} label={t.compare.legend[v as keyof typeof t.compare.legend]} strong={i === 0} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       </div>
 
       {/* Waves lead into the dark band that holds pricing and the footer */}
@@ -163,6 +222,7 @@ export function Landing({ t }: { t: LandingCopy }) {
               />
             ))}
           </div>
+          <p className="mt-6 text-sm text-ink-2">{t.pricing.cap}</p>
         </div>
       </section>
 
@@ -205,6 +265,25 @@ function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
       <p className="micro text-brand">{kicker}</p>
       <h2 className="font-display mt-3 text-3xl font-bold tracking-[-0.015em] sm:text-4xl md:text-5xl">{title}</h2>
     </Reveal>
+  );
+}
+
+function Mark({ v, label, strong }: { v: string; label: string; strong?: boolean }) {
+  const shape =
+    v === "yes" ? (
+      <path d="M4 10.5 8 14.5 16 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    ) : v === "some" ? (
+      <path d="M5 10h10" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    ) : (
+      <path d="M6 6l8 8M14 6l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    );
+  return (
+    <span className={`inline-flex items-center gap-1.5 ${v === "yes" ? (strong ? "text-brand" : "text-ink") : "text-muted"}`}>
+      <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden>
+        {shape}
+      </svg>
+      <span className="text-xs">{label}</span>
+    </span>
   );
 }
 

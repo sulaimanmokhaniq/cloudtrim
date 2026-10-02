@@ -33,11 +33,58 @@ export const en = {
     kicker: "The problem",
     title: "Why cloud spend gets out of control.",
     items: [
-      { stat: "27%", title: "of cloud spend is wasted on idle and oversized resources" },
-      { stat: "3", title: "local clouds (STC, SCCC, CNTXT) that global FinOps tools leave out" },
-      { stat: "1", title: "wrong click on an automated fix can take production down" },
-      { stat: "12", title: "month contracts that put enterprise FinOps tools out of reach for SMEs" },
+      {
+        stat: "27%",
+        title: "of cloud spend is wasted on idle and oversized resources",
+        why: "Servers left running after a project ends, and sizes picked once and never revisited.",
+        who: "Finance sees the bill; engineering never sees the cost.",
+      },
+      {
+        stat: "3",
+        title: "local clouds (STC, SCCC, CNTXT) that global FinOps tools leave out",
+        why: "Data residency rules push workloads onto local clouds that global tools cannot read.",
+        who: "Saudi companies running local and global clouds side by side.",
+      },
+      {
+        stat: "1",
+        title: "wrong click on an automated fix can take production down",
+        why: "Tools that act on their own can stop a server that looked idle but was not.",
+        who: "IT teams that cannot risk downtime, so they fix nothing.",
+      },
+      {
+        stat: "12",
+        title: "month contracts that put enterprise FinOps tools out of reach for SMEs",
+        why: "Enterprise tools sell yearly licences sized for large cloud budgets.",
+        who: "Companies of 50 to 250 staff without a FinOps team.",
+      },
     ],
+    whyLabel: "Why",
+    whoLabel: "Who it hits",
+    source:
+      "Sources: 27% is the share of cloud spend that organizations estimate they waste (Flexera 2024 State of the Cloud Report). The other figures are CloudTrim team estimates.",
+  },
+  how: {
+    kicker: "How it works",
+    title: "From sign-up to savings in four steps.",
+    steps: [
+      { title: "Create account", body: "Name, work email and company. One minute, no credit card." },
+      { title: "Connect read-only", body: "Paste a read-only API key or create a read-only role. CloudTrim can read costs and resources, and nothing else." },
+      { title: "AI analysis", body: "The AI agent scans every resource, finds waste and ranks savings by value and risk." },
+      { title: "Approve and save", body: "Your dashboard shows the numbers in plain language. You approve each fix with one click." },
+    ],
+  },
+  compare: {
+    kicker: "Why CloudTrim",
+    title: "Built for Saudi SMEs, not adapted for them.",
+    cols: ["CloudTrim", "Global FinOps suites", "Cloud-native cost tools"],
+    rows: [
+      { label: "STC, SCCC and CNTXT", v: ["yes", "no", "no"] },
+      { label: "Human approval before any change", v: ["yes", "some", "no"] },
+      { label: "Fixes, not just reports", v: ["yes", "some", "no"] },
+      { label: "WhatsApp alerts and Arabic", v: ["yes", "no", "no"] },
+      { label: "Priced for 50 to 250 staff", v: ["yes", "no", "yes"] },
+    ],
+    legend: { yes: "Yes", some: "Partly", no: "No" },
   },
   safety: {
     kicker: "Safety first",
@@ -69,6 +116,7 @@ export const en = {
     kicker: "Pricing",
     title: "Start free, then pay per resource.",
     core: "Core",
+    cap: "Usage-based plans have a monthly cap you set, so the CloudTrim bill never grows past what you agreed.",
     plans: [
       { title: "First scan", price: "Free", unit: "one-time, no card", items: ["Connect multi cloud account", "Full waste report as PDF", "Top savings with expected value"] },
       {
@@ -120,11 +168,58 @@ export const ar: LandingCopy = {
     kicker: "المشكلة",
     title: "لماذا تخرج تكاليف السحابة عن السيطرة؟",
     items: [
-      { stat: "27%", title: "من الإنفاق السحابي يُهدر على موارد خاملة أو أكبر من الحاجة" },
-      { stat: "3", title: "سحابات محلية (STC وSCCC وCNTXT) لا تدعمها الأدوات العالمية" },
-      { stat: "1", title: "نقرة خاطئة في إصلاح آلي قد توقف بيئة الإنتاج" },
-      { stat: "12", title: "شهرًا مدة عقود الأدوات الكبرى، وهذا يبعدها عن الشركات الصغيرة والمتوسطة" },
+      {
+        stat: "27%",
+        title: "من الإنفاق السحابي يُهدر على موارد خاملة أو أكبر من الحاجة",
+        why: "خوادم تبقى تعمل بعد انتهاء المشروع، وأحجام اختيرت مرة ولم تُراجع.",
+        who: "المالية ترى الفاتورة، والهندسة لا ترى التكلفة.",
+      },
+      {
+        stat: "3",
+        title: "سحابات محلية (STC وSCCC وCNTXT) لا تدعمها الأدوات العالمية",
+        why: "أنظمة توطين البيانات تنقل الأعمال إلى سحابات محلية لا تقرؤها الأدوات العالمية.",
+        who: "الشركات السعودية التي تستخدم سحابات محلية وعالمية معًا.",
+      },
+      {
+        stat: "1",
+        title: "نقرة خاطئة في إصلاح آلي قد توقف بيئة الإنتاج",
+        why: "الأدوات التي تتصرف وحدها قد توقف خادمًا بدا خاملًا وهو ليس كذلك.",
+        who: "فرق التقنية التي لا تتحمل التوقف، فلا تصلح شيئًا.",
+      },
+      {
+        stat: "12",
+        title: "شهرًا مدة عقود الأدوات الكبرى، وهذا يبعدها عن الشركات الصغيرة والمتوسطة",
+        why: "الأدوات الكبرى تبيع تراخيص سنوية مصممة لميزانيات سحابية ضخمة.",
+        who: "الشركات من 50 إلى 250 موظفًا بدون فريق FinOps.",
+      },
     ],
+    whyLabel: "السبب",
+    whoLabel: "المتأثرون",
+    source:
+      "المصادر: نسبة 27% هي تقدير المؤسسات لحجم الهدر في إنفاقها السحابي (تقرير Flexera لحالة السحابة 2024). باقي الأرقام تقديرات فريق CloudTrim.",
+  },
+  how: {
+    kicker: "كيف يعمل",
+    title: "من التسجيل إلى التوفير في أربع خطوات.",
+    steps: [
+      { title: "أنشئ حسابًا", body: "الاسم والبريد واسم الشركة. دقيقة واحدة وبدون بطاقة." },
+      { title: "اربط للقراءة فقط", body: "الصق مفتاحًا للقراءة فقط أو أنشئ دورًا للقراءة فقط. يقرأ CloudTrim التكاليف والموارد ولا شيء غيرها." },
+      { title: "تحليل بالذكاء الاصطناعي", body: "يفحص الوكيل الذكي كل مورد، ويكتشف الهدر، ويرتب فرص التوفير حسب القيمة والمخاطرة." },
+      { title: "وافق ووفّر", body: "تعرض لوحتك الأرقام بلغة واضحة، وتوافق على كل إصلاح بنقرة واحدة." },
+    ],
+  },
+  compare: {
+    kicker: "لماذا CloudTrim",
+    title: "مصمم للشركات السعودية الصغيرة والمتوسطة من البداية.",
+    cols: ["CloudTrim", "منصات FinOps العالمية", "أدوات التكلفة المدمجة في السحابة"],
+    rows: [
+      { label: "STC وSCCC وCNTXT", v: ["yes", "no", "no"] },
+      { label: "موافقة بشرية قبل أي تغيير", v: ["yes", "some", "no"] },
+      { label: "إصلاحات، وليس تقارير فقط", v: ["yes", "some", "no"] },
+      { label: "تنبيهات واتساب وواجهة عربية", v: ["yes", "no", "no"] },
+      { label: "أسعار مناسبة لـ 50 إلى 250 موظفًا", v: ["yes", "no", "yes"] },
+    ],
+    legend: { yes: "نعم", some: "جزئيًا", no: "لا" },
   },
   safety: {
     kicker: "الأمان أولًا",
@@ -156,6 +251,7 @@ export const ar: LandingCopy = {
     kicker: "الأسعار",
     title: "ابدأ مجانًا، ثم ادفع لكل مورد.",
     core: "الأساسية",
+    cap: "خطة الاستخدام لها حد أقصى شهري تحدده أنت، فلا تتجاوز فاتورة CloudTrim ما اتفقنا عليه.",
     plans: [
       { title: "الفحص الأول", price: "مجاني", unit: "مرة واحدة، بدون بطاقة", items: ["ربط حسابات سحابية متعددة", "تقرير كامل عن الهدر بصيغة PDF", "أعلى فرص التوفير مع قيمتها المتوقعة"] },
       {

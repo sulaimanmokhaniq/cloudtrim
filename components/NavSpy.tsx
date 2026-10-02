@@ -5,7 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 type Item = { id: string; label: string };
 
 /** Section links in the top nav. A burgundy pill slides behind the link of the section in view. */
-export function NavSpy({ items }: { items: Item[] }) {
+export function NavSpy({ items, className = "hidden md:flex" }: { items: Item[]; className?: string }) {
   const [active, setActive] = useState<string | null>(null);
   const [pill, setPill] = useState<{ left: number; width: number } | null>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -42,7 +42,7 @@ export function NavSpy({ items }: { items: Item[] }) {
   }, [active]);
 
   return (
-    <nav ref={navRef} className="relative hidden items-center gap-1 text-sm text-ink-2 md:flex">
+    <nav ref={navRef} className={`relative items-center gap-1 text-sm text-ink-2 ${className}`}>
       <span
         aria-hidden
         className="absolute inset-y-0 rounded-full bg-brand transition-all duration-300 ease-out"

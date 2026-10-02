@@ -28,8 +28,8 @@ export function Landing({ t }: { t: LandingCopy }) {
     <main className="overflow-x-clip" lang={t.lang} dir={t.dir}>
       {/* Floating capsule nav */}
       <header className="fixed inset-x-0 top-4 z-30 px-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between border border-line/80 bg-card py-2 ps-5 pe-2">
-          <Logo />
+        <div className="mx-auto flex max-w-6xl items-center justify-between border border-line/80 bg-card py-2 ps-3 pe-1.5 sm:ps-5 sm:pe-2">
+          <Logo wordClassName="hidden min-[380px]:inline" />
           <NavSpy
             items={[
               { id: "problem", label: t.nav.problem },
@@ -38,17 +38,29 @@ export function Landing({ t }: { t: LandingCopy }) {
               { id: "pricing", label: t.nav.pricing },
             ]}
           />
-          <div className="flex items-center gap-2">
-            <Link href={t.switchHref} lang={t.lang === "en" ? "ar" : "en"} className="px-2 py-2 text-sm text-ink-2 hover:text-ink">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Link href={t.switchHref} lang={t.lang === "en" ? "ar" : "en"} className="px-1.5 py-2 text-sm text-ink-2 hover:text-ink sm:px-2">
               {t.switchLabel}
             </Link>
             <ThemeToggle />
-            <span className="hidden sm:block">
-              <Link href="/start" className="btn-primary arrow whitespace-nowrap bg-brand px-4 py-2 text-sm font-semibold text-onbrand">
+            <span>
+              <Link href="/start" className="btn-primary arrow whitespace-nowrap bg-brand px-2.5 py-2 text-xs font-semibold text-onbrand sm:px-4 sm:text-sm">
                 {t.cta}
               </Link>
             </span>
           </div>
+        </div>
+        {/* On phones the section links sit in their own row under the capsule */}
+        <div className="mx-auto mt-2 flex max-w-6xl justify-center md:hidden">
+          <NavSpy
+            className="flex rounded-full border border-line/80 bg-card p-1 text-[13px] [&>a]:px-3 [&>a]:py-2"
+            items={[
+              { id: "problem", label: t.nav.problem },
+              { id: "safety", label: t.nav.safety },
+              { id: "compliance", label: t.nav.compliance },
+              { id: "pricing", label: t.nav.pricing },
+            ]}
+          />
         </div>
       </header>
 
@@ -152,7 +164,25 @@ export function Landing({ t }: { t: LandingCopy }) {
       <section id="compare" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
           <SectionTitle kicker={t.compare.kicker} title={t.compare.title} />
-          <div className="mt-12 overflow-x-auto border border-line bg-card">
+          {/* On phones each row becomes a card so nothing is cut off */}
+          <ul className="mt-12 space-y-3 md:hidden">
+            {t.compare.rows.map((r) => (
+              <li key={r.label} className="border border-line bg-card p-4">
+                <p className="font-medium text-ink">{r.label}</p>
+                <dl className="mt-3 space-y-2 text-sm">
+                  {r.v.map((v, i) => (
+                    <div key={i} className="flex items-center justify-between gap-3">
+                      <dt className={i === 0 ? "font-semibold text-brand" : "text-ink-2"}>{t.compare.cols[i]}</dt>
+                      <dd>
+                        <Mark v={v} label={t.compare.legend[v as keyof typeof t.compare.legend]} strong={i === 0} />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-12 hidden overflow-x-auto border border-line bg-card md:block">
             <table className="w-full min-w-[560px] text-sm">
               <thead>
                 <tr className="border-b border-line text-start">
@@ -225,7 +255,7 @@ export function Landing({ t }: { t: LandingCopy }) {
       <footer className="bg-bg py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted md:flex-row md:px-6">
           <Logo />
-          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2" aria-label="Footer">
+          <nav className="flex flex-wrap justify-center gap-x-4 [&>a]:py-2.5 md:gap-x-6 md:[&>a]:py-0" aria-label="Footer">
             <Link href="/demo" className="hover:text-ink">{t.footer.demo}</Link>
             <Link href="/start" className="hover:text-ink">{t.footer.signup}</Link>
             <Link href="/privacy" className="hover:text-ink">{t.footer.privacy}</Link>

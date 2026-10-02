@@ -56,6 +56,7 @@
   --color-band-shade: #0f0a0b;
   --color-ridge: #2a1e1b;
   --color-snow: #4a3832;
+  --color-art: #4f3a40;
   color-scheme: dark;
 }
 
@@ -83,6 +84,7 @@
   --color-band-shade: #c99a8c;
   --color-ridge: #d9b3a6;
   --color-snow: #f6efe6;
+  --color-art: #2a1d17;
   --color-wave-1: #a8434f;
   --color-wave-2: #8e2f3c;
   --color-wave-3: #5e1f28;

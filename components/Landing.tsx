@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ParallaxHero } from "@/components/ParallaxHero";
 import { Horizon } from "@/components/Horizon";
+import { IdleServer, LaptopCloud, PhoneApprove } from "@/components/Illustrations";
 import { Reveal } from "@/components/Reveal";
 import { SafetyFlow, TiltCard } from "@/components/Interactive";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -81,7 +82,10 @@ export function Landing({ t }: { t: LandingCopy }) {
       {/* Problem */}
       <section id="problem" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <SectionTitle kicker={t.problem.kicker} title={t.problem.title} />
+          <div className="flex items-end justify-between gap-8">
+            <SectionTitle kicker={t.problem.kicker} title={t.problem.title} />
+            <IdleServer cut="var(--color-bg)" className="hidden w-56 shrink-0 md:block" />
+          </div>
           <div className="mt-12 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {t.problem.items.map((p, i) => (
               <Reveal key={p.title} delay={i * 90}>
@@ -97,13 +101,18 @@ export function Landing({ t }: { t: LandingCopy }) {
 
 
       {/* Dunes lead into the deeper sand band */}
-      <Horizon kind="mountains" from="var(--color-bg)" back="var(--color-ridge)" mid="var(--color-band-shade)" accent="var(--color-snow)" to="var(--color-band)" />
+      <Horizon kind="clouds" from="var(--color-bg)" back="var(--color-ridge)" to="var(--color-band)" accent="var(--color-ridge)" />
       <div style={{ background: "var(--color-band)" }}>
       {/* Safety */}
       <section id="safety" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-6xl px-4 md:px-6">
-          <SectionTitle kicker={t.safety.kicker} title={t.safety.title} />
-          <p className="mt-4 max-w-2xl text-base leading-7 text-ink-2">{t.safety.body}</p>
+          <div className="flex items-end justify-between gap-8">
+            <div>
+              <SectionTitle kicker={t.safety.kicker} title={t.safety.title} />
+              <p className="mt-4 max-w-2xl text-base leading-7 text-ink-2">{t.safety.body}</p>
+            </div>
+            <PhoneApprove cut="var(--color-band)" className="hidden w-56 shrink-0 md:block" />
+          </div>
           <Reveal className="mt-12 md:mt-14">
             <SafetyFlow steps={t.safety.steps} stepLabel={t.safety.step} />
           </Reveal>
@@ -118,6 +127,7 @@ export function Landing({ t }: { t: LandingCopy }) {
               <p className="micro text-brand">{t.compliance.kicker}</p>
               <h2 className="font-display mt-3 text-4xl font-bold tracking-tight md:text-5xl">{t.compliance.title}</h2>
               <p className="mt-5 text-base leading-8 text-ink-2">{t.compliance.body}</p>
+              <LaptopCloud cut="var(--color-band)" className="mt-8 hidden w-64 md:block" />
             </div>
             <div className="grid grid-cols-2 gap-4">
               {t.compliance.items.map((c) => (
@@ -168,7 +178,7 @@ export function Landing({ t }: { t: LandingCopy }) {
       </div>
 
       {/* Waves lead into the dark band that holds pricing and the footer */}
-      <Horizon kind="waves" from="var(--color-band)" back="var(--color-wave-1)" mid="var(--color-wave-2)" to="var(--color-wave-3)" />
+      <Horizon kind="clouds" from="var(--color-band)" back="var(--color-wave-1)" to="var(--color-wave-3)" accent="var(--color-wave-2)" />
       <div data-band="sea" className="bg-bg text-ink">
       {/* Pricing */}
       <section id="pricing" className="border-b border-line py-20 md:py-28">

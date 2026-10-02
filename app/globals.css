@@ -53,15 +53,15 @@
 }
 
 [data-theme="light"] {
-  --color-bg: #f8f3ef;
-  --color-bg-2: #f1e9e3;
-  --color-card: #fffbf8;
-  --color-card-2: #f4ece6;
-  --color-line: #e3d5cc;
-  --color-line-strong: #cdb9ad;
-  --color-ink: #21141a;
-  --color-ink-2: #4b3a40;
-  --color-muted: #7f6c72;
+  --color-bg: #f4ece0;
+  --color-bg-2: #ede2d3;
+  --color-card: #faf5ee;
+  --color-card-2: #f0e6d8;
+  --color-line: #ddd0bd;
+  --color-line-strong: #c7b59d;
+  --color-ink: #2a1d17;
+  --color-ink-2: #54443a;
+  --color-muted: #85735f;
   --color-brand-soft: #8e2f3c14;
   --color-brand-text: #8e2f3c;
   --color-brand-dim: #c9a0a6;
@@ -71,7 +71,7 @@
   --color-good: #3f7f45;
   --color-warn: #93682c;
   --color-bad: #b3261e;
-  --grid-line: #21141a0a;
+  --grid-line: #2a1d170a;
   color-scheme: light;
 }
 

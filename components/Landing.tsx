@@ -31,9 +31,6 @@ export function Landing({ t }: { t: LandingCopy }) {
             <Link href={t.switchHref} lang={t.lang === "en" ? "ar" : "en"} className="px-2 py-2 text-sm text-ink-2 hover:text-ink">
               {t.switchLabel}
             </Link>
-            <Link href="/demo" className="hidden px-3 py-2 text-sm text-ink-2 hover:text-ink lg:block">
-              {t.nav.dashboard}
-            </Link>
             <ThemeToggle />
             <span className="hidden sm:block">
               <Link href="/start" className="btn-primary arrow whitespace-nowrap bg-brand px-4 py-2 text-sm font-semibold text-onbrand">

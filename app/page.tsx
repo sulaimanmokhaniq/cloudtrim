@@ -25,14 +25,7 @@ const steps = [
   { n: "04", title: "Stats & feedback", body: "Your dashboard shows the numbers and plain-language feedback on what to fix first." },
 ];
 
-const providers = [
-  { name: "STC Cloud", color: "var(--color-amber)" },
-  { name: "SCCC Alibaba", color: "var(--color-sage)" },
-  { name: "CNTXT", color: "var(--color-brand-text)" },
-  { name: "AWS", color: "var(--color-brand-text)" },
-  { name: "Azure", color: "var(--color-sage)" },
-  { name: "Google Cloud", color: "var(--color-amber)" },
-];
+const providers = ["STC Cloud", "SCCC Alibaba", "CNTXT", "AWS", "Azure", "Google Cloud"];
 const compliance = [
   { k: "NCA ECC", v: "National Cybersecurity Authority controls" },
   { k: "PDPL", v: "Personal Data Protection Law" },
@@ -99,13 +92,15 @@ export default function Home() {
               Scan, <span className="text-brand">Explain,</span> Approve, <span className="text-amber">Save.</span>
             </p>
           </Reveal>
-          <Reveal delay={120} className="flex flex-wrap items-center gap-2">
-            {providers.map((p) => (
-              <span key={p.name} className="lift flex items-center gap-1.5 border border-line bg-card px-3 py-1.5 text-xs text-ink-2">
-                <CloudIcon color={p.color} />
-                {p.name}
-              </span>
-            ))}
+          <Reveal delay={120}>
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2" aria-label="Works with">
+              <li className="micro text-muted">Works with</li>
+              {providers.map((p) => (
+                <li key={p} className="font-display text-base font-semibold tracking-tight text-muted">
+                  {p}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </section>
@@ -235,15 +230,6 @@ function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
 function Dot() {
   return <span className="h-1 w-1 bg-brand" aria-hidden />;
 }
-
-function CloudIcon({ color }: { color: string }) {
-  return (
-    <svg width="18" height="12" viewBox="0 0 24 16" aria-hidden>
-      <path d="M6 15a5 5 0 0 1-.6-10A6.5 6.5 0 0 1 17.8 4 4.5 4.5 0 0 1 18.5 15Z" style={{ fill: color }} />
-    </svg>
-  );
-}
-
 
 function Feature({ title, body }: { title: string; body: string }) {
   return (

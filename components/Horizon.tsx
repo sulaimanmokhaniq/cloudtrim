@@ -123,10 +123,10 @@ const FRONT_ROW = cloudRow(23, 196, 100);
 
 // Burgundy clouds with a light outline floating below the bank, many sizes
 const LOW_CLOUDS: Spot[] = [
-  [50, 262, 0.7, "red-1"], [170, 248, 0.9, "red-5"], [300, 318, 1.3, "red-4"], [420, 244, 0.7, "red-6"],
-  [540, 280, 1.0, "red-2"], [660, 340, 1.5, "red-3"], [790, 252, 0.9, "red-7"], [900, 300, 1.1, "red-5"],
-  [1010, 248, 0.8, "red-1"], [1130, 338, 1.45, "red-4"], [1250, 262, 1.0, "red-6"], [1360, 304, 0.9, "red-2"],
-  [1430, 246, 0.6, "red-7"],
+  [50, 250, 0.7, "red-1"], [170, 236, 0.9, "red-5"], [300, 306, 1.3, "red-4"], [420, 232, 0.7, "red-6"],
+  [540, 268, 1.0, "red-2"], [660, 328, 1.5, "red-3"], [790, 240, 0.9, "red-7"], [900, 288, 1.1, "red-5"],
+  [1010, 236, 0.8, "red-1"], [1130, 326, 1.45, "red-4"], [1250, 250, 1.0, "red-6"], [1360, 292, 0.9, "red-2"],
+  [1430, 234, 0.6, "red-7"],
 ];
 
 function CloudMasks({ uid }: { uid: string }) {
@@ -233,7 +233,7 @@ type Props = {
   accent?: string;
 };
 
-const HEIGHT = { clouds: 350, mountains: 200, waves: 190 };
+const HEIGHT = { clouds: 330, mountains: 200, waves: 190 };
 
 export function Horizon({ kind, from, to, back, mid, accent }: Props) {
   const ref = useEasedVar<HTMLDivElement>("--s", viewportPos);

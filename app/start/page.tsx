@@ -158,6 +158,11 @@ export default function Start() {
   const [step, setStep] = useState(0);
   const [account, setAccount] = useState({ name: "", email: "", company: "" });
   const [selectedCloudProvider, setSelectedCloudProvider] = useState("AWS");
+  // A provider button on the landing page links here with ?provider=<name> to preselect it
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get("provider");
+    if (wanted && providers.some((p) => p.name === wanted)) setSelectedCloudProvider(wanted);
+  }, []);
   const [connectedClouds, setConnectedClouds] = useState<CloudAccount[]>([]);
 
   // Function called after completing analysis for a cloud account

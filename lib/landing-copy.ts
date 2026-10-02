@@ -28,6 +28,7 @@ export const en = {
   },
   tagline: ["Scan, ", "Explain, ", "Approve, ", "Save."],
   worksWith: "Works with",
+  preview: "Preview",
   problem: {
     kicker: "The problem",
     title: "Why cloud spend gets out of control.",
@@ -140,6 +141,7 @@ export const ar: LandingCopy = {
   },
   tagline: ["افحص، ", "اشرح، ", "وافق، ", "وفّر."],
   worksWith: "يعمل مع",
+  preview: "تجريبي",
   problem: {
     kicker: "المشكلة",
     title: "لماذا تخرج تكاليف السحابة عن السيطرة؟",

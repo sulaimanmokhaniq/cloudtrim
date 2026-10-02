@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useId, useLayoutEffect, useRef } from "react";
 
 // Flat illustrated horizons between page bands (clouds, mountains, waves), drawn in solid
 // colors. Each one has layers that slide at different speeds while the visitor scrolls,
@@ -105,53 +105,58 @@ function bank(seed: number, base: number, rMin: number, rMax: number): Puff[] {
 const BACK_CLOUDS = bank(7, 128, 44, 74);
 const FRONT_CLOUDS = bank(23, 160, 34, 58);
 
-// Our own flat cloud shapes (in the style of the reference): domes on a rounded base,
-// with a fold line inside. Three variants, placed many times at different sizes.
-type Variant = { puffs: Puff[]; base: [number, number]; fold?: [number, number, number] };
-const VARIANTS: Variant[] = [
-  { puffs: [{ cx: -18, cy: -10, r: 30 }, { cx: 20, cy: -2, r: 22 }, { cx: -44, cy: 6, r: 14 }, { cx: 42, cy: 8, r: 12 }], base: [-58, 114], fold: [-14, 10, 18] },
-  { puffs: [{ cx: -14, cy: -8, r: 28 }, { cx: 18, cy: -16, r: 22 }, { cx: 38, cy: 0, r: 16 }, { cx: -40, cy: 4, r: 16 }], base: [-56, 112], fold: [14, 2, 16] },
-  { puffs: [{ cx: -26, cy: -2, r: 18 }, { cx: 4, cy: -8, r: 24 }, { cx: 30, cy: 0, r: 16 }], base: [-52, 102], fold: [2, 8, 12] },
-];
+// Cloud artwork from the reference site (public/clouds), split into a body mask and a
+// line mask so both parts can be painted in our theme colors: [width, height] in px
+const CLOUD_ART = {
+  "plain-1": [127, 74], "plain-2": [205, 88], "plain-3": [348, 201],
+  "red-1": [86, 43], "red-2": [118, 70], "red-3": [162, 93], "red-4": [168, 114],
+  "red-5": [111, 70], "red-6": [148, 69], "red-7": [134, 78],
+} as const;
+type Art = keyof typeof CLOUD_ART;
 
-// [x, y, scale, variant]
-type Spot = readonly [number, number, number, number];
-// Plain clouds drifting in the sky above the cloud bank
+// [center x, bottom y, scale, artwork]
+type Spot = readonly [number, number, number, Art];
+// Deep burgundy clouds drifting in the sky behind the bank
 const SKY_CLOUDS: Spot[] = [
-  [110, 70, 0.6, 2], [330, 44, 0.85, 0], [590, 80, 0.5, 1], [840, 40, 0.75, 2], [1060, 74, 0.55, 0], [1290, 46, 0.9, 1],
+  [120, 96, 0.7, "plain-1"], [380, 80, 0.55, "plain-2"], [640, 100, 0.6, "plain-1"],
+  [900, 112, 0.45, "plain-3"], [1150, 98, 0.7, "plain-2"], [1360, 82, 0.6, "plain-1"],
 ];
-// Burgundy clouds with a light outline, floating below the bank
+// Light clouds piled on the top of the bank
+const BANK_CLOUDS: Spot[] = [
+  [140, 190, 0.8, "plain-1"], [470, 186, 0.8, "plain-2"], [760, 192, 0.6, "plain-2"],
+  [1040, 184, 0.9, "plain-1"], [1300, 190, 0.85, "plain-1"],
+];
+// Burgundy clouds with a light outline floating below the bank, many sizes
 const LOW_CLOUDS: Spot[] = [
-  [40, 262, 0.55, 2], [170, 236, 0.8, 0], [300, 300, 1.15, 1], [420, 228, 0.5, 2], [520, 262, 0.9, 2],
-  [660, 312, 1.4, 0], [780, 236, 0.7, 1], [890, 286, 0.85, 2], [1000, 232, 0.6, 0], [1120, 304, 1.3, 1],
-  [1240, 246, 0.8, 0], [1350, 290, 0.65, 2], [1420, 230, 0.45, 1],
+  [50, 262, 0.7, "red-1"], [170, 248, 0.9, "red-5"], [300, 318, 1.3, "red-4"], [420, 244, 0.7, "red-6"],
+  [540, 280, 1.0, "red-2"], [660, 340, 1.5, "red-3"], [790, 252, 0.9, "red-7"], [900, 300, 1.1, "red-5"],
+  [1010, 248, 0.8, "red-1"], [1130, 338, 1.45, "red-4"], [1250, 262, 1.0, "red-6"], [1360, 304, 0.9, "red-2"],
+  [1430, 246, 0.6, "red-7"],
 ];
 
-// Arc inside a cloud, drawn in the sky color, like the fold lines in a flat illustration
-function fold(cx: number, cy: number, r: number) {
-  const a0 = (205 * Math.PI) / 180;
-  const a1 = (325 * Math.PI) / 180;
-  const p = (a: number) => `${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)}`;
-  return `M${p(a0)} A${r.toFixed(1)} ${r.toFixed(1)} 0 0 1 ${p(a1)}`;
+function CloudMasks({ uid }: { uid: string }) {
+  return (
+    <defs>
+      {(Object.keys(CLOUD_ART) as Art[]).flatMap((art) =>
+        (art.startsWith("red") ? ["", "-line"] : [""]).map((part) => (
+          <mask key={art + part} id={`${uid}-${art}${part}`} maskContentUnits="objectBoundingBox">
+            <image href={`/clouds/${art}${part}.png`} width="1" height="1" preserveAspectRatio="none" />
+          </mask>
+        )),
+      )}
+    </defs>
+  );
 }
 
-function Cloud({ spot, fill, line, outline }: { spot: Spot; fill: string; line: string; outline?: string }) {
-  const [x, y, s, v] = spot;
-  const { puffs, base, fold: f } = VARIANTS[v];
-  const shape = (
-    <>
-      {puffs.map((p, i) => (
-        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} />
-      ))}
-      <rect x={base[0]} y="0" width={base[1]} height="24" rx="12" />
-    </>
-  );
+function Cloud({ spot, uid, fill, line }: { spot: Spot; uid: string; fill: string; line?: string }) {
+  const [x, y, s, art] = spot;
+  const [w, h] = CLOUD_ART[art];
+  const box = { x: x - (w * s) / 2, y: y - h * s, width: w * s, height: h * s };
   return (
-    <g transform={`translate(${x} ${y}) scale(${s})`}>
-      {outline && <g style={{ fill: outline, stroke: outline }} strokeWidth="12">{shape}</g>}
-      <g style={{ fill }}>{shape}</g>
-      {f && <path d={fold(f[0], f[1], f[2])} fill="none" stroke={line} strokeWidth="4" />}
-    </g>
+    <>
+      <rect {...box} style={{ fill }} mask={`url(#${uid}-${art})`} />
+      {line && <rect {...box} style={{ fill: line }} mask={`url(#${uid}-${art}-line)`} />}
+    </>
   );
 }
 
@@ -160,7 +165,7 @@ function Cloud({ spot, fill, line, outline }: { spot: Spot; fill: string; line: 
 const WAVE = 72;
 /** k scales the whole curl, so each row can have its own size and thickness */
 function curls(top: number, offset: number, h: number, k = 1) {
-  let d = `M-200 ${h} L-200 ${top}`;
+  let d = `M-200 ${h + 120} L-200 ${top}`;
   for (let x = -200 + offset; x < 1640; x += WAVE * k) {
     const X = (n: number) => (x + n * k).toFixed(1);
     const t = (n: number) => (top + n * k).toFixed(1);
@@ -170,7 +175,7 @@ function curls(top: number, offset: number, h: number, k = 1) {
     d += ` C${X(72)} ${t(36)} ${X(82)} ${t(26)} ${X(80)} ${t(14)}`;
     d += ` C${X(79)} ${t(7)} ${X(76)} ${t(2)} ${X(WAVE)} ${t(0)}`;
   }
-  return `${d} L1640 ${h} Z`;
+  return `${d} L1640 ${h + 120} Z`;
 }
 
 // A jagged mountain ridge: alternating peaks and valleys, each peak with a snow cap on
@@ -196,7 +201,7 @@ function Ridge({ pts, h, body, snow, shade }: { pts: Pt[]; h: number; body: stri
   const peaks = pts.map((p, i) => i).filter((i) => i % 2 === 1 && i + 1 < pts.length);
   return (
     <>
-      <polygon points={poly([[-120, h], ...pts, [pts[pts.length - 1][0], h]])} style={{ fill: body }} />
+      <polygon points={poly([[-120, h + 120], ...pts, [pts[pts.length - 1][0], h + 120]])} style={{ fill: body }} />
       {peaks.map((i) => {
         const [l, p, r] = [pts[i - 1], pts[i], pts[i + 1]];
         const ls = lerp(p, l, 0.5);
@@ -238,6 +243,7 @@ const HEIGHT = { clouds: 350, mountains: 200, waves: 190 };
 export function Horizon({ kind, from, to, back, mid, accent }: Props) {
   const ref = useEasedVar<HTMLDivElement>("--s", viewportPos);
   const h = HEIGHT[kind];
+  const uid = "c" + useId().replace(/[^a-zA-Z0-9]/g, "");
 
   return (
     <div ref={ref} className="relative -my-px overflow-hidden" style={{ background: from }} aria-hidden>
@@ -249,27 +255,31 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
       >
         {kind === "clouds" && (
           <>
-            <g style={shift(-14, 8)}>
+            <CloudMasks uid={uid} />
+            <g style={shift(-14, 34)}>
               {SKY_CLOUDS.map((c, i) => (
-                <Cloud key={i} spot={c} fill={back} line={from} />
+                <Cloud key={i} spot={c} uid={uid} fill={back} />
               ))}
             </g>
-            <g style={{ ...shift(-24, 6), fill: back }}>
+            <g style={{ ...shift(-24, 20), fill: back }}>
               {BACK_CLOUDS.map((c, i) => (
                 <circle key={i} cx={c.cx} cy={c.cy} r={c.r} />
               ))}
               <rect x="-80" y="128" width="1640" height={h} />
             </g>
-            <g style={{ ...shift(30, -4), fill: to }}>
+            <g style={{ ...shift(30, -10), fill: to }}>
               {FRONT_CLOUDS.map((c, i) => (
                 <circle key={i} cx={c.cx} cy={c.cy} r={c.r} />
               ))}
               <rect x="-80" y="160" width="1640" height={h} />
+              {BANK_CLOUDS.map((c, i) => (
+                <Cloud key={i} spot={c} uid={uid} fill={to} />
+              ))}
             </g>
             {accent && (
-              <g style={shift(50, -8)}>
+              <g style={shift(50, -36)}>
                 {LOW_CLOUDS.map((c, i) => (
-                  <Cloud key={i} spot={c} fill={accent} line={to} outline={to} />
+                  <Cloud key={i} spot={c} uid={uid} fill={accent} line={to} />
                 ))}
               </g>
             )}
@@ -278,10 +288,10 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
 
         {kind === "mountains" && (
           <>
-            <g style={shift(-18, 4)}>
+            <g style={shift(-18, 22)}>
               <Ridge pts={BACK_RIDGE} h={h} body={back} snow={accent ?? from} shade={mid ?? back} />
             </g>
-            <g style={shift(22, -3)}>
+            <g style={shift(22, -14)}>
               <Ridge pts={FRONT_RIDGE} h={h} body={to} snow={accent ?? from} shade={mid ?? back} />
             </g>
           </>
@@ -291,11 +301,11 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
           <>
             {/* Like boy-coy: each row slides sideways on scroll; the outer rows curl and
                 move one way, the middle row is mirrored and moves the other way */}
-            <path style={{ ...shift(-50, 6), fill: back }} d={curls(20, 0, h, 0.7)} />
-            <g style={shift(60, 3)}>
+            <path style={{ ...shift(-50, 20), fill: back }} d={curls(20, 0, h, 0.7)} />
+            <g style={shift(60, 6)}>
               <path transform="translate(1440 0) scale(-1 1)" style={{ fill: mid ?? back }} d={curls(52, 30, h, 1)} />
             </g>
-            <path style={{ ...shift(-70, 0), fill: to }} d={curls(98, 18, h, 1.4)} />
+            <path style={{ ...shift(-70, -14), fill: to }} d={curls(98, 18, h, 1.4)} />
           </>
         )}
       </svg>

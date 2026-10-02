@@ -34,19 +34,19 @@ export const en = {
     items: [
       {
         stat: "27%",
-        title: "of cloud spend is wasted on idle and oversized resources",
+        title: "of cloud spend wasted",
       },
       {
         stat: "3",
-        title: "local clouds (STC, SCCC, CNTXT) that global FinOps tools leave out",
+        title: "local clouds left out",
       },
       {
         stat: "1",
-        title: "wrong click on an automated fix can take production down",
+        title: "wrong click, full outage",
       },
       {
         stat: "12",
-        title: "month contracts that put enterprise FinOps tools out of reach for SMEs",
+        title: "month lock-in contracts",
       },
     ],
   },
@@ -146,19 +146,19 @@ export const ar: LandingCopy = {
     items: [
       {
         stat: "27%",
-        title: "من الإنفاق السحابي يُهدر على موارد خاملة أو أكبر من الحاجة",
+        title: "من الإنفاق السحابي مهدر",
       },
       {
         stat: "3",
-        title: "سحابات محلية (STC وSCCC وCNTXT) لا تدعمها الأدوات العالمية",
+        title: "سحابات محلية غير مدعومة",
       },
       {
         stat: "1",
-        title: "نقرة خاطئة في إصلاح آلي قد توقف بيئة الإنتاج",
+        title: "نقرة خاطئة توقف الإنتاج",
       },
       {
         stat: "12",
-        title: "شهرًا مدة عقود الأدوات الكبرى، وهذا يبعدها عن الشركات الصغيرة والمتوسطة",
+        title: "شهرًا مدة العقود الملزمة",
       },
     ],
   },

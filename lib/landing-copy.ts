@@ -36,32 +36,20 @@ export const en = {
       {
         stat: "27%",
         title: "of cloud spend is wasted on idle and oversized resources",
-        why: "Servers left running after a project ends, and sizes picked once and never revisited.",
-        who: "Finance sees the bill; engineering never sees the cost.",
       },
       {
         stat: "3",
         title: "local clouds (STC, SCCC, CNTXT) that global FinOps tools leave out",
-        why: "Data residency rules push workloads onto local clouds that global tools cannot read.",
-        who: "Saudi companies running local and global clouds side by side.",
       },
       {
         stat: "1",
         title: "wrong click on an automated fix can take production down",
-        why: "Tools that act on their own can stop a server that looked idle but was not.",
-        who: "IT teams that cannot risk downtime, so they fix nothing.",
       },
       {
         stat: "12",
         title: "month contracts that put enterprise FinOps tools out of reach for SMEs",
-        why: "Enterprise tools sell yearly licences sized for large cloud budgets.",
-        who: "Companies of 50 to 250 staff without a FinOps team.",
       },
     ],
-    whyLabel: "Why",
-    whoLabel: "Who it hits",
-    source:
-      "Sources: 27% is the share of cloud spend that organizations estimate they waste (Flexera 2024 State of the Cloud Report). The other figures are CloudTrim team estimates.",
   },
   how: {
     kicker: "How it works",
@@ -171,32 +159,20 @@ export const ar: LandingCopy = {
       {
         stat: "27%",
         title: "من الإنفاق السحابي يُهدر على موارد خاملة أو أكبر من الحاجة",
-        why: "خوادم تبقى تعمل بعد انتهاء المشروع، وأحجام اختيرت مرة ولم تُراجع.",
-        who: "المالية ترى الفاتورة، والهندسة لا ترى التكلفة.",
       },
       {
         stat: "3",
         title: "سحابات محلية (STC وSCCC وCNTXT) لا تدعمها الأدوات العالمية",
-        why: "أنظمة توطين البيانات تنقل الأعمال إلى سحابات محلية لا تقرؤها الأدوات العالمية.",
-        who: "الشركات السعودية التي تستخدم سحابات محلية وعالمية معًا.",
       },
       {
         stat: "1",
         title: "نقرة خاطئة في إصلاح آلي قد توقف بيئة الإنتاج",
-        why: "الأدوات التي تتصرف وحدها قد توقف خادمًا بدا خاملًا وهو ليس كذلك.",
-        who: "فرق التقنية التي لا تتحمل التوقف، فلا تصلح شيئًا.",
       },
       {
         stat: "12",
         title: "شهرًا مدة عقود الأدوات الكبرى، وهذا يبعدها عن الشركات الصغيرة والمتوسطة",
-        why: "الأدوات الكبرى تبيع تراخيص سنوية مصممة لميزانيات سحابية ضخمة.",
-        who: "الشركات من 50 إلى 250 موظفًا بدون فريق FinOps.",
       },
     ],
-    whyLabel: "السبب",
-    whoLabel: "المتأثرون",
-    source:
-      "المصادر: نسبة 27% هي تقدير المؤسسات لحجم الهدر في إنفاقها السحابي (تقرير Flexera لحالة السحابة 2024). باقي الأرقام تقديرات فريق CloudTrim.",
   },
   how: {
     kicker: "كيف يعمل",

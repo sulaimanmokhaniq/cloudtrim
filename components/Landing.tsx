@@ -93,24 +93,13 @@ export function Landing({ t }: { t: LandingCopy }) {
           <div className="mt-12 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {t.problem.items.map((p, i) => (
               <Reveal key={p.title} delay={i * 90}>
-                <TiltCard className="h-full border border-line bg-card p-6 md:p-7 text-center flex flex-col items-center">
+                <TiltCard className="h-full border border-line bg-card p-6 md:p-7 text-center flex flex-col items-center justify-center">
                   <p className="font-display text-4xl font-semibold text-brand">{p.stat}</p>
                   <h3 className="mt-3 font-medium text-ink leading-snug">{p.title}</h3>
-                  <dl className="mt-5 w-full space-y-3 border-t border-line pt-4 text-start text-sm leading-6">
-                    <div>
-                      <dt className="text-xs text-muted">{t.problem.whyLabel}</dt>
-                      <dd className="text-ink-2">{p.why}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs text-muted">{t.problem.whoLabel}</dt>
-                      <dd className="text-ink-2">{p.who}</dd>
-                    </div>
-                  </dl>
                 </TiltCard>
               </Reveal>
             ))}
           </div>
-          <p className="mt-8 max-w-3xl text-xs leading-5 text-muted">{t.problem.source}</p>
         </div>
       </section>
 

@@ -81,7 +81,9 @@ export function ParallaxHero({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Cloud bank into the page below; small burgundy clouds float under it */}
-      <Horizon kind="clouds" from={SKY} back={SKY_DEEP} to="var(--color-bg)" accent={SKY} />
+      <div className="-mt-12 lg:-mt-20">
+        <Horizon kind="clouds" from={SKY} back={SKY_DEEP} to="var(--color-bg)" accent={SKY} />
+      </div>
     </section>
   );
 }

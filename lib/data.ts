@@ -1,6 +1,6 @@
 // Seeded demo data: a fictional Saudi SME so the live demo never depends on a real account.
 
-export const TEAM_NAME = "CloudTrim Team"; // TODO: replace with the official team name
+export const TEAM_NAME = "SSB";
 
 export type Risk = "low" | "medium" | "high";
 

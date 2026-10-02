@@ -144,15 +144,17 @@ function SmallCloud({ x, y, s, fill, line }: { x: number; y: number; s: number; 
 // A row of curling waves (like a woodblock print): from each crest a long slope runs
 // down into a round hollow, and the far side of the hollow rises and curls back over it.
 const WAVE = 72;
-function curls(top: number, offset: number, h: number) {
+/** k scales the whole curl, so each row can have its own size and thickness */
+function curls(top: number, offset: number, h: number, k = 1) {
   let d = `M-200 ${h} L-200 ${top}`;
-  for (let x = -200 + offset; x < 1640; x += WAVE) {
-    const t = (n: number) => top + n;
-    d += ` L${x} ${t(0)}`;
-    d += ` C${x + 14} ${t(4)} ${x + 28} ${t(12)} ${x + 36} ${t(22)}`;
-    d += ` C${x + 41} ${t(30)} ${x + 48} ${t(36)} ${x + 58} ${t(36)}`;
-    d += ` C${x + 72} ${t(36)} ${x + 82} ${t(26)} ${x + 80} ${t(14)}`;
-    d += ` C${x + 79} ${t(7)} ${x + 76} ${t(2)} ${x + WAVE} ${t(0)}`;
+  for (let x = -200 + offset; x < 1640; x += WAVE * k) {
+    const X = (n: number) => (x + n * k).toFixed(1);
+    const t = (n: number) => (top + n * k).toFixed(1);
+    d += ` L${X(0)} ${t(0)}`;
+    d += ` C${X(14)} ${t(4)} ${X(28)} ${t(12)} ${X(36)} ${t(22)}`;
+    d += ` C${X(41)} ${t(30)} ${X(48)} ${t(36)} ${X(58)} ${t(36)}`;
+    d += ` C${X(72)} ${t(36)} ${X(82)} ${t(26)} ${X(80)} ${t(14)}`;
+    d += ` C${X(79)} ${t(7)} ${X(76)} ${t(2)} ${X(WAVE)} ${t(0)}`;
   }
   return `${d} L1640 ${h} Z`;
 }
@@ -217,7 +219,7 @@ type Props = {
   accent?: string;
 };
 
-const HEIGHT = { clouds: 300, mountains: 200, waves: 160 };
+const HEIGHT = { clouds: 300, mountains: 200, waves: 190 };
 
 export function Horizon({ kind, from, to, back, mid, accent }: Props) {
   const ref = useEasedVar<HTMLDivElement>("--s", viewportPos);
@@ -268,9 +270,13 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
 
         {kind === "waves" && (
           <>
-            <path style={{ ...shift(-20, 2), fill: back }} d={curls(26, 0, h)} />
-            <path style={{ ...shift(16, 0), fill: mid ?? back }} d={curls(70, WAVE / 2, h)} />
-            <path style={{ ...shift(-28, -2), fill: to }} d={curls(114, WAVE / 4, h)} />
+            {/* Like boy-coy: each row slides sideways on scroll; the outer rows curl and
+                move one way, the middle row is mirrored and moves the other way */}
+            <path style={{ ...shift(-50, 6), fill: back }} d={curls(20, 0, h, 0.7)} />
+            <g style={shift(60, 3)}>
+              <path transform="translate(1440 0) scale(-1 1)" style={{ fill: mid ?? back }} d={curls(52, 30, h, 1)} />
+            </g>
+            <path style={{ ...shift(-70, 0), fill: to }} d={curls(98, 18, h, 1.4)} />
           </>
         )}
       </svg>

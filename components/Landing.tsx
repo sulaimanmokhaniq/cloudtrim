@@ -80,10 +80,9 @@ export function Landing({ t }: { t: LandingCopy }) {
                 <li key={label}>
                   <Link
                     href={`/start?provider=${encodeURIComponent(name)}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-line-strong bg-card px-4 py-2 font-display text-sm font-semibold tracking-tight text-ink-2 transition-colors hover:border-brand hover:text-ink"
+                    className="inline-flex items-center rounded-full border border-line-strong bg-card px-4 py-2 font-display text-sm font-semibold tracking-tight text-ink-2 transition-colors hover:border-brand hover:text-ink"
                   >
                     <span dir="ltr">{label}</span>
-                    {label !== "AWS" && <span className="text-[10px] font-medium uppercase tracking-wider text-muted">{t.preview}</span>}
                   </Link>
                 </li>
               ))}

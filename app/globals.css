@@ -49,6 +49,7 @@
   --color-warn: #c9a46e;
   --color-bad: #f0624d;
   --grid-line: #ffffff07;
+  --color-band: #160f11;
   color-scheme: dark;
 }
 
@@ -72,6 +73,7 @@
   --color-warn: #93682c;
   --color-bad: #b3261e;
   --grid-line: #2a1d170a;
+  --color-band: #e8dac5;
   color-scheme: light;
 }
 
@@ -83,6 +85,19 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hero "sky" band: copy sits on solid burgundy, so flip the tokens it uses */
+[data-band="sky"] {
+  --color-ink: #fbf6ee;
+  --color-ink-2: #f3dfe1;
+  --color-muted: #ecc9cd;
+  --color-brand: #fbf6ee;
+  --color-onbrand: #8e2f3c;
+  --color-brand-text: #f6d29a;
+  --color-amber: #f6d29a;
+  --color-bg: #8e2f3c;
+  color: var(--color-ink);
 }
 
 /* Burgundy is for fills; text accents use the readable brand-text shade of the current theme */

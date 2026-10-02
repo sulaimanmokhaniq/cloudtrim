@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ParallaxHero } from "@/components/ParallaxHero";
+import { Horizon } from "@/components/Horizon";
 import { Reveal } from "@/components/Reveal";
 import { SafetyFlow, SavingsCalculator, TiltCard } from "@/components/Interactive";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -134,6 +135,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Dunes lead into the deeper sand band */}
+      <Horizon kind="dunes" from="var(--color-bg)" back="var(--color-line-strong)" to="var(--color-band)" />
+      <div style={{ background: "var(--color-band)" }}>
       {/* Safety */}
       <section id="safety" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -172,6 +176,11 @@ export default function Home() {
         </div>
       </section>
 
+      </div>
+
+      {/* Waves lead into the dark band that holds pricing and the footer */}
+      <Horizon kind="waves" from="var(--color-band)" back="var(--color-line-strong)" to="#0c0809" />
+      <div data-theme="dark" className="bg-bg text-ink">
       {/* Pricing */}
       <section id="pricing" className="border-b border-line py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
@@ -195,6 +204,7 @@ export default function Home() {
           <span>{TEAM_NAME} · VentureX 2026</span>
         </div>
       </footer>
+      </div>
     </main>
   );
 }

@@ -179,7 +179,7 @@ export default function Home() {
       </div>
 
       {/* Waves lead into the dark band that holds pricing and the footer */}
-      <Horizon kind="waves" from="var(--color-band)" back="var(--color-line-strong)" to="#0c0809" />
+      <Horizon kind="waves" from="var(--color-band)" back="#3a2a24" mid="#221819" to="#0c0809" />
       <div data-theme="dark" className="bg-bg text-ink">
       {/* Pricing */}
       <section id="pricing" className="border-b border-line py-20 md:py-28">

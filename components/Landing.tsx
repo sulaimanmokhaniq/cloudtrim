@@ -175,7 +175,7 @@ export function Landing({ t }: { t: LandingCopy }) {
             <Link href="/start" className="btn-primary arrow bg-brand px-7 py-3.5 font-semibold text-onbrand">
               {t.cta}
             </Link>
-            <Link href="/demo" className="border border-line-strong px-7 py-3.5 font-semibold text-ink hover:border-ink-2">
+            <Link href="/demo" className="rounded-full border border-line-strong px-7 py-3.5 font-semibold text-ink hover:border-ink-2">
               {t.demo}
             </Link>
           </div>
@@ -247,7 +247,7 @@ function PriceCard({
       </ul>
       <Link
         href={href}
-        className={`mt-auto px-5 py-3 text-center text-sm font-semibold ${highlight ? "btn-primary bg-brand text-onbrand" : "border border-line-strong text-ink hover:border-ink-2"}`}
+        className={`mt-auto px-5 py-3 text-center text-sm font-semibold ${highlight ? "btn-primary bg-brand text-onbrand" : "rounded-full border border-line-strong text-ink hover:border-ink-2"}`}
       >
         {cta}
       </Link>

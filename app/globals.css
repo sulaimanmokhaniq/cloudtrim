@@ -162,14 +162,20 @@ body {
   background: var(--color-bg);
 }
 
-/* Buttons: sharp, solid, chamfered corner. No rounding, shadows or gradients. */
+/* Soft "cloud" edges: framed boxes (cards, nav, inputs) get a gentle radius.
+   Solid colors only, no shadows or gradients. */
+.border:not(.rounded-full) {
+  border-radius: 14px;
+}
+
+/* Buttons: solid pills. */
 .btn-primary,
 .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  border-radius: 0;
+  border-radius: 999px;
   border: 1px solid transparent;
   letter-spacing: 0.01em;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
@@ -177,7 +183,6 @@ body {
 .btn-primary {
   background-color: var(--color-brand);
   color: var(--color-onbrand);
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
 }
 .btn-primary:hover {
   background-color: var(--color-ink);
@@ -256,19 +261,19 @@ body {
   .reveal { opacity: 1; transform: none; }
 }
 
-/* Square slider thumb to match the sharp style */
+/* Round slider thumb to match the soft style */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  border-radius: 0;
+  border-radius: 999px;
   background: var(--color-ink);
   border: 3px solid var(--color-brand);
 }
 input[type="range"]::-moz-range-thumb {
   width: 14px;
   height: 14px;
-  border-radius: 0;
+  border-radius: 999px;
   background: var(--color-ink);
   border: 3px solid var(--color-brand);
 }

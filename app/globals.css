@@ -50,6 +50,9 @@
   --color-bad: #f0624d;
   --grid-line: #ffffff07;
   --color-band: #160f11;
+  --color-wave-1: #3a2a24;
+  --color-wave-2: #221819;
+  --color-wave-3: #0c0809;
   --color-band-shade: #0f0a0b;
   --color-ridge: #2a1e1b;
   --color-snow: #4a3832;
@@ -57,7 +60,7 @@
 }
 
 [data-theme="light"] {
-  --color-bg: #f4ece0;
+  --color-bg: #f6efe6;
   --color-bg-2: #ede2d3;
   --color-card: #faf5ee;
   --color-card-2: #f0e6d8;
@@ -76,10 +79,13 @@
   --color-warn: #93682c;
   --color-bad: #b3261e;
   --grid-line: #2a1d170a;
-  --color-band: #dcc8a6;
-  --color-band-shade: #c2aa83;
-  --color-ridge: #c7b59d;
-  --color-snow: #f4ece0;
+  --color-band: #efdccf;
+  --color-band-shade: #c99a8c;
+  --color-ridge: #d9b3a6;
+  --color-snow: #f6efe6;
+  --color-wave-1: #a8434f;
+  --color-wave-2: #8e2f3c;
+  --color-wave-3: #5e1f28;
   color-scheme: light;
 }
 
@@ -91,6 +97,22 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* "Sea" band at the bottom (pricing, footer): night sea in dark mode, deep wine sea by day */
+[data-theme="light"] [data-band="sea"] {
+  --color-bg: #5e1f28;
+  --color-card: #6a2530;
+  --color-card-2: #74303a;
+  --color-line: #7f3943;
+  --color-line-strong: #94505a;
+  --color-ink: #fbf6ee;
+  --color-ink-2: #f1dcd8;
+  --color-muted: #e2bfc2;
+  --color-brand: #fbf6ee;
+  --color-onbrand: #5e1f28;
+  --color-brand-text: #f6d29a;
+  color-scheme: dark;
 }
 
 /* Hero "sky" band: copy sits on solid burgundy, so flip the tokens it uses */

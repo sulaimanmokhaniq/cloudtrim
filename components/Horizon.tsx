@@ -241,11 +241,14 @@ export function Horizon({ kind, from, to, back, mid, accent }: Props) {
   const uid = "c" + useId().replace(/[^a-zA-Z0-9]/g, "");
 
   return (
-    <div ref={ref} className="relative -my-px overflow-hidden" style={{ background: from }} aria-hidden>
+    // Shapes may drift above the top edge into the band above (same color), so only the
+    // sides and bottom are clipped and nothing gets its top cut off while scrolling
+    <div ref={ref} className="relative -my-px" style={{ background: from, clipPath: "inset(-400px 0 0 0)" }} aria-hidden>
       {/* Height follows the width so the tops are never cut; on phones a minimum height crops the sides instead */}
       <svg
         viewBox={`0 0 1440 ${h}`}
         preserveAspectRatio="xMidYMax slice"
+        overflow="visible"
         className={`block h-auto w-full ${kind === "clouds" ? "min-h-[150px]" : "min-h-[90px]"}`}
       >
         {kind === "clouds" && (

@@ -78,7 +78,7 @@ export function ParallaxHero({
                 <div key={i} className="relative flex-1" style={{ height: "100%" }}>
                   {after && <div className="absolute inset-0 border border-dashed border-brand" title={`${card.was} ${money(BEFORE)}`} />}
                   <div
-                    className={`absolute inset-x-0 bottom-0 ${after ? "bg-brand" : "bg-line-strong"}`}
+                    className={`absolute inset-x-0 bottom-0 ${after ? "bg-brand" : "rounded-t-[14px] bg-line-strong"}`}
                     style={{ height: `${(v / BEFORE) * 100}%` }}
                   />
                 </div>

@@ -112,8 +112,8 @@ export function Landing({ t }: { t: LandingCopy }) {
       </section>
 
 
-      {/* Dunes lead into the deeper sand band */}
-      <Horizon kind="mountains" from="var(--color-bg)" back="var(--color-ridge)" mid="var(--color-band-shade)" accent="var(--color-snow)" to="var(--color-band)" />
+      {/* Clouds lead into the deeper sand band */}
+      <Horizon kind="clouds" from="var(--color-bg)" back="var(--color-ridge)" to="var(--color-band)" accent="var(--color-ridge)" />
       <div style={{ background: "var(--color-band)" }}>
       {/* Safety */}
       <section id="safety" className="border-b border-line py-20 md:py-28">
@@ -183,8 +183,8 @@ export function Landing({ t }: { t: LandingCopy }) {
 
       </div>
 
-      {/* Waves lead into the dark band that holds pricing and the footer */}
-      <Horizon kind="waves" from="var(--color-band)" back="var(--color-wave-1)" mid="var(--color-wave-2)" to="var(--color-wave-3)" />
+      {/* Clouds lead into the dark band that holds pricing and the footer */}
+      <Horizon kind="clouds" from="var(--color-band)" back="var(--color-wave-1)" to="var(--color-wave-3)" accent="var(--color-wave-2)" />
       <div data-band="sea" className="bg-bg text-ink">
       {/* Pricing */}
       <section id="pricing" className="border-b border-line py-20 md:py-28">

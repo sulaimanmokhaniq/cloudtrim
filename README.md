@@ -1,5 +1,11 @@
 # CloudTrim
 
+> **Live site: https://cloudtrim-sa.vercel.app**
+>
+> - Interactive demo: https://cloudtrim-sa.vercel.app/demo
+> - Sign-up walkthrough: https://cloudtrim-sa.vercel.app/start
+> - Arabic version: https://cloudtrim-sa.vercel.app/ar
+
 Landing page (`/`) and interactive MVP demo (`/demo`) in one Next.js app, built for VentureX 2026.
 
 The demo runs on seeded data for a fictional Saudi SME (`lib/data.ts`), so it never depends on a live cloud account.

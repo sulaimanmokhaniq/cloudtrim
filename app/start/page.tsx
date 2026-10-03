@@ -6,6 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/Logo";
 import { Finding, company, findings, providers, readOnlyPermissions, sar, totalSavings, monthlyTrend, byService } from "@/lib/data";
 import { MonthlySpendBarChart, SpendByServiceWidget } from "@/components/Charts";
+import { WhatsAppModal, type WaSubscription } from "@/components/WhatsAppAlerts";
 
 const STEPS = ["Create Account", "Connect Cloud", "AI Analysis", "Dashboard"];
 
@@ -603,6 +604,8 @@ function DashboardStep({
   const [pendingItem, setPendingItem] = useState<(Finding & { cloudProvider: string; accountName: string }) | null>(null);
   const [appliedItemIds, setAppliedItemIds] = useState<Set<string>>(new Set());
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [waOpen, setWaOpen] = useState(false);
+  const [waSub, setWaSub] = useState<WaSubscription | null>(null);
   const [auditLog, setAuditLog] = useState<{ time: string; event: string }[]>([
     { time: "Just now", event: "Multi-cloud AI waste scan completed successfully." },
     { time: "Just now", event: "Read-only access checked for all connected API keys." },
@@ -725,6 +728,25 @@ function DashboardStep({
       )}
 
       {/* PDF Report Modal Preview */}
+      {waOpen && (
+        <WhatsAppModal
+          current={waSub}
+          onClose={() => setWaOpen(false)}
+          onSubscribe={(sub) => {
+            setWaSub(sub);
+            const t = new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+            setAuditLog((prev) => [{ time: t, event: `Subscribed ${sub.phone} to WhatsApp alerts` }, ...prev]);
+            showToast("WhatsApp alerts are on (demo: no real message is sent)");
+          }}
+          onUnsubscribe={() => {
+            const t = new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+            if (waSub) setAuditLog((prev) => [{ time: t, event: `Unsubscribed ${waSub.phone} from WhatsApp alerts` }, ...prev]);
+            setWaSub(null);
+            setWaOpen(false);
+            showToast("WhatsApp alerts are off");
+          }}
+        />
+      )}
       {showPdfModal && (
         <PdfReportModal
           companyName={companyName}
@@ -986,24 +1008,15 @@ function DashboardStep({
             <span>📄 Download PDF Executive Report</span>
           </button>
 
-          {/* Send to WhatsApp (Clickable with Alert) */}
+          {/* WhatsApp alerts: opens the subscribe window (offline, nothing is sent) */}
           <button
             type="button"
-            onClick={() => showToast("⚠️ Feature Unavailable: WhatsApp export is currently under development.")}
-            className="btn-ghost border border-line bg-card px-3 py-1.5 font-semibold text-ink hover:bg-bg-2 flex items-center gap-1.5 cursor-pointer"
+            onClick={() => setWaOpen(true)}
+            className={`btn-ghost border px-3 py-1.5 font-semibold flex items-center gap-1.5 cursor-pointer ${
+              waSub ? "border-brand/50 bg-brand-soft text-brand" : "border-line bg-card text-ink hover:bg-bg-2"
+            }`}
           >
-            <span>💬 Send to WhatsApp</span>
-            <span className="text-[10px] bg-amber-soft text-amber px-1 rounded font-mono">(Unavailable)</span>
-          </button>
-
-          {/* Send to Telegram (Clickable with Alert) */}
-          <button
-            type="button"
-            onClick={() => showToast("⚠️ Feature Unavailable: Telegram export is currently under development.")}
-            className="btn-ghost border border-line bg-card px-3 py-1.5 font-semibold text-ink hover:bg-bg-2 flex items-center gap-1.5 cursor-pointer"
-          >
-            <span>✈️ Send to Telegram</span>
-            <span className="text-[10px] bg-amber-soft text-amber px-1 rounded font-mono">(Unavailable)</span>
+            <span>{waSub ? "✓ WhatsApp alerts on" : "💬 WhatsApp alerts"}</span>
           </button>
         </div>
       </div>
